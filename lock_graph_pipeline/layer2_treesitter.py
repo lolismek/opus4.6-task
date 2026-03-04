@@ -105,6 +105,23 @@ def _collect_synchronized_statements(root: Node) -> list[Node]:
     return _collect_nodes_of_type(root, "synchronized_statement")
 
 
+def _qualify_lock(lock_expr: str, class_name: str) -> str:
+    """Qualify a lock identity with the class name to avoid cross-class conflation.
+
+    'this' → 'Leader.this'
+    'ClassName.class' → kept as-is (already qualified)
+    'fieldName' → 'Leader.fieldName'
+    'obj.field' → kept as-is (already has context)
+    """
+    if not lock_expr or lock_expr == "<unknown>":
+        return lock_expr
+    # Already qualified with a class name or contains a dot
+    if "." in lock_expr or lock_expr.endswith(".class"):
+        return lock_expr
+    # Qualify bare identifiers: this, fieldName, etc.
+    return f"{class_name}.{lock_expr}"
+
+
 class TreeSitterExtractor:
     def __init__(self):
         self.parser = Parser(JAVA_LANGUAGE)
@@ -180,7 +197,7 @@ class TreeSitterExtractor:
 
         # 1. Synchronized methods
         if _has_modifier(method, "synchronized"):
-            lock_id = f"{class_name}.class" if is_static else "this"
+            lock_id = f"{class_name}.class" if is_static else f"{class_name}.this"
             profile.lock_acquisitions.append(LockAcquisition(
                 file_path=file_path,
                 class_name=class_name,
@@ -230,6 +247,7 @@ class TreeSitterExtractor:
 
         if lock_expr is None:
             lock_expr = "<unknown>"
+        lock_expr = _qualify_lock(lock_expr, class_name)
 
         profile.lock_acquisitions.append(LockAcquisition(
             file_path=file_path,
@@ -290,13 +308,13 @@ class TreeSitterExtractor:
             # Determine lock type
             if ".readLock()" in obj_text:
                 lock_type = "read_lock"
-                lock_id = obj_text.replace(".readLock()", "")
+                lock_id = _qualify_lock(obj_text.replace(".readLock()", ""), class_name)
             elif ".writeLock()" in obj_text:
                 lock_type = "write_lock"
-                lock_id = obj_text.replace(".writeLock()", "")
+                lock_id = _qualify_lock(obj_text.replace(".writeLock()", ""), class_name)
             else:
                 lock_type = "reentrant_lock"
-                lock_id = obj_text
+                lock_id = _qualify_lock(obj_text, class_name)
 
             profile.lock_acquisitions.append(LockAcquisition(
                 file_path=file_path,
@@ -423,7 +441,7 @@ class TreeSitterExtractor:
                     for child in sync.children:
                         if child.type == "parenthesized_expression":
                             inner = child.children[1] if len(child.children) >= 2 else child
-                            actual_lock = _node_text(inner)
+                            actual_lock = _qualify_lock(_node_text(inner), class_name)
                             break
 
             profile.wait_notify_sites.append(WaitNotifySite(

@@ -10,7 +10,7 @@ from .data_types import LockGraph
 from .layer1_scanner import scan_repo
 from .layer2_treesitter import TreeSitterExtractor
 from .layer3_resolver import resolve_cross_class_edges
-from .infer_adapter import parse_infer_output
+from .infer_adapter import parse_infer_output, extract_infer_lock_profiles
 from .template_matcher import match_patterns
 from .output_formatter import write_json, write_markdown
 
@@ -55,21 +55,28 @@ def run_light_mode(repo_path: str, include_tests: bool = False) -> LockGraph:
     return graph
 
 
-def run_infer_mode(repo_path: str, infer_out: str) -> LockGraph:
+def run_infer_mode(repo_path: str, infer_out: str, infer_bin: str | None = None) -> LockGraph:
     """Run Infer-based extraction."""
     print(f"[infer] Parsing Infer output from {infer_out}...")
-    edges = parse_infer_output(infer_out)
+    edges = parse_infer_output(infer_out, infer_bin=infer_bin)
     print(f"[infer] Extracted {len(edges)} lock ordering edges from Infer")
 
+    # Also extract per-class lock profiles
+    print("[infer] Extracting per-class lock profiles...")
+    profiles = extract_infer_lock_profiles(infer_out, infer_bin=infer_bin)
+    print(f"[infer] Extracted {len(profiles)} class profiles")
+
     graph = LockGraph(repo_path=repo_path)
+    graph.classes = profiles
     graph.lock_order_edges = edges
     return graph
 
 
-def run_both_mode(repo_path: str, infer_out: str, include_tests: bool = False) -> LockGraph:
+def run_both_mode(repo_path: str, infer_out: str, include_tests: bool = False,
+                   infer_bin: str | None = None) -> LockGraph:
     """Run both modes and merge results."""
     light_graph = run_light_mode(repo_path, include_tests=include_tests)
-    infer_edges = parse_infer_output(infer_out)
+    infer_edges = parse_infer_output(infer_out, infer_bin=infer_bin)
 
     print(f"[merge] Merging {len(light_graph.lock_order_edges)} tree-sitter edges "
           f"with {len(infer_edges)} Infer edges...")
@@ -107,6 +114,7 @@ def main():
     parser.add_argument("--patterns", help="Path to deadlock_patterns.json (default: auto-detect)")
     parser.add_argument("--include-tests", action="store_true",
                         help="Include test directories in scan")
+    parser.add_argument("--infer-bin", help="Path to infer binary (default: infer on PATH)")
 
     args = parser.parse_args()
 
@@ -118,9 +126,10 @@ def main():
     if args.mode == "light":
         graph = run_light_mode(args.repo_path, include_tests=args.include_tests)
     elif args.mode == "infer":
-        graph = run_infer_mode(args.repo_path, args.infer_out)
+        graph = run_infer_mode(args.repo_path, args.infer_out, infer_bin=args.infer_bin)
     elif args.mode == "both":
-        graph = run_both_mode(args.repo_path, args.infer_out, include_tests=args.include_tests)
+        graph = run_both_mode(args.repo_path, args.infer_out,
+                              include_tests=args.include_tests, infer_bin=args.infer_bin)
 
     # Template matching
     print("[match] Matching against deadlock patterns...")

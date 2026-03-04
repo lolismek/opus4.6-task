@@ -60,7 +60,13 @@ def _resolve_callee_class(
     call: MethodCallUnderLock,
     classes: dict[str, ClassLockProfile],
 ) -> list[str]:
-    """Resolve the callee class from the call-under-lock info."""
+    """Resolve the callee class from the call-under-lock info.
+
+    Only returns candidates when we have positive evidence of the callee's type
+    (field declaration or 'this' reference). Does NOT do a global scan for
+    matching method names, as that produces too many false positives
+    (e.g., List.size() matching WatchManager.size()).
+    """
     candidates = []
 
     # 1. Direct class hint from field type resolution
@@ -71,13 +77,6 @@ def _resolve_callee_class(
     if call.callee_object == "this":
         if call.class_name in classes:
             candidates.append(call.class_name)
-
-    # 3. Search all classes for a method with that name
-    if not candidates:
-        for cls_name, cls_profile in classes.items():
-            method_names = {a.method_name for a in cls_profile.lock_acquisitions}
-            if call.callee_method in method_names:
-                candidates.append(cls_name)
 
     return candidates
 
