@@ -1,0 +1,539 @@
+[
+  {
+    "id": "DBCP-270",
+    "type": "resource_deadlock",
+    "project": "Apache Commons DBCP",
+    "version": "1.2",
+    "source_file": "jacontebe/dbcp/src/Dbcp270.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DBCP-270",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["Pool", "Connection"],
+    "lock_graph": {
+      "Thread1": ["Pool", "Connection"],
+      "Thread2": ["Connection", "Pool"]
+    },
+    "description": "Thread1 closes a poolable connection (acquires pool lock, then connection lock for validation). Thread2 runs pool eviction (acquires connection lock during testing, then pool lock). Inverse lock ordering creates cycle.",
+    "trigger_operations": ["PoolableConnection.close()", "GenericObjectPool.evict()"],
+    "abstract_template": {
+      "resource_A": "shared_pool",
+      "resource_B": "pooled_object",
+      "operation_1": "return_to_pool(object) → lock(pool) → validate(object) → lock(object)",
+      "operation_2": "evict_idle() → lock(object) → test(object) → lock(pool)"
+    }
+  },
+  {
+    "id": "DBCP-65",
+    "type": "resource_deadlock",
+    "project": "Apache Commons DBCP",
+    "version": "1.2",
+    "source_file": "jacontebe/dbcp/src/Dbcp65.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DBCP-65",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["GenericKeyedObjectPool", "PoolingConnection"],
+    "lock_graph": {
+      "Thread1": ["GenericKeyedObjectPool", "PoolingConnection"],
+      "Thread2": ["PoolingConnection", "GenericKeyedObjectPool"]
+    },
+    "description": "Thread1 evicts idle keyed objects (pool lock, then connection lock via validation callback). Thread2 prepares a statement (connection lock, then pool lock to borrow from keyed pool).",
+    "trigger_operations": ["GenericKeyedObjectPool.evict()", "PoolingConnection.prepareStatement()"],
+    "abstract_template": {
+      "resource_A": "keyed_pool",
+      "resource_B": "connection_wrapper",
+      "operation_1": "evict() → lock(pool) → validate_idle(conn) → lock(conn)",
+      "operation_2": "prepare() → lock(conn) → borrow_from_pool() → lock(pool)"
+    }
+  },
+  {
+    "id": "DERBY-4129",
+    "type": "resource_deadlock",
+    "project": "Apache Derby",
+    "version": "10.5.1.1",
+    "source_file": "jacontebe/derby/src/Derby4129.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DERBY-4129",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["Connection", "BlobContainer"],
+    "lock_graph": {
+      "Thread1": ["Connection", "BlobContainer"],
+      "Thread2": ["BlobContainer", "Connection"]
+    },
+    "description": "Two threads share one JDBC Connection, repeatedly executing BLOB queries. Lock contention between connection-level and container-level locks during concurrent read/close.",
+    "trigger_operations": ["PreparedStatement.executeQuery()", "ResultSet.getBytes()"],
+    "abstract_template": {
+      "resource_A": "shared_connection",
+      "resource_B": "data_container",
+      "operation_1": "query() → lock(conn) → read_blob() → lock(container)",
+      "operation_2": "query() → lock(container) → access_conn() → lock(conn)"
+    }
+  },
+  {
+    "id": "DERBY-5447",
+    "type": "resource_deadlock",
+    "project": "Apache Derby",
+    "version": "10.5.1.1",
+    "source_file": "jacontebe/derby/src/org/apache/derby/impl/store/raw/data/Derby5447.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DERBY-5447",
+    "pattern": "callback_induced_cycle",
+    "num_threads": 2,
+    "locks": ["BaseContainerHandle", "StoredPage"],
+    "lock_graph": {
+      "Thread1": ["StoredPage", "BaseContainerHandle"],
+      "Thread2": ["BaseContainerHandle", "StoredPage"]
+    },
+    "description": "StoredPage is registered as observer of BaseContainerHandle. Thread2 closes container (notifies observers → needs page lock). Thread1 releases page exclusive lock (needs container lock). Observer pattern creates bidirectional dependency.",
+    "trigger_operations": ["StoredPage.releaseExclusive()", "BaseContainerHandle.close()"],
+    "abstract_template": {
+      "resource_A": "container",
+      "resource_B": "page",
+      "relationship": "observer_pattern",
+      "operation_1": "release_page() → lock(page) → detach_from_container() → lock(container)",
+      "operation_2": "close_container() → lock(container) → notify_observers() → lock(page)"
+    }
+  },
+  {
+    "id": "DERBY-5560",
+    "type": "resource_deadlock",
+    "project": "Apache Derby",
+    "version": "10.5.1.1",
+    "source_file": "jacontebe/derby/src/Derby5560.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DERBY-5560",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["LogicalConnection", "ClientXAConnection40"],
+    "lock_graph": {
+      "Thread1": ["LogicalConnection", "ClientXAConnection40"],
+      "Thread2": ["ClientXAConnection40", "LogicalConnection"]
+    },
+    "description": "Thread1 closes logical connection (needs to notify pooled connection). Thread2 closes pooled connection (needs to invalidate logical connection). Both close operations need each other's lock.",
+    "trigger_operations": ["LogicalConnection.close()", "ClientXAConnection40.close()"],
+    "abstract_template": {
+      "resource_A": "logical_wrapper",
+      "resource_B": "physical_resource",
+      "operation_1": "close_wrapper() → lock(wrapper) → detach(physical) → lock(physical)",
+      "operation_2": "close_physical() → lock(physical) → invalidate(wrapper) → lock(wrapper)"
+    }
+  },
+  {
+    "id": "DERBY-764",
+    "type": "resource_deadlock",
+    "project": "Apache Derby",
+    "version": "10.5.1.1",
+    "source_file": "jacontebe/derby/src/org/apache/derby/impl/services/reflect/Derby764.java",
+    "bug_url": "https://issues.apache.org/jira/browse/DERBY-764",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["ClassLoaderLock", "LockFactory"],
+    "lock_graph": {
+      "Thread1": ["ClassLoaderLock", "LockFactory"],
+      "Thread2": ["LockFactory", "ClassLoaderLock"]
+    },
+    "description": "Thread1 modifies a JAR in the classloader (needs classloader lock and lock factory). Thread2 unlocks via lock factory (needs lock factory and classloader lock).",
+    "trigger_operations": ["UpdateLoader.modifyJar()", "LockOperator.unlock()"],
+    "abstract_template": {
+      "resource_A": "classloader_lock",
+      "resource_B": "lock_manager",
+      "operation_1": "modify_resource() → lock(classloader) → acquire_via(lock_manager)",
+      "operation_2": "release_lock() → lock(lock_manager) → release_from(classloader)"
+    }
+  },
+  {
+    "id": "GROOVY-4736",
+    "type": "resource_deadlock",
+    "subtype": "native_deadlock",
+    "project": "Apache Groovy",
+    "version": "1.7.9",
+    "source_file": "jacontebe/groovy/src/Groovy4736.java",
+    "bug_url": "http://jira.codehaus.org/browse/GROOVY-4736",
+    "pattern": "callback_induced_cycle",
+    "num_threads": 6,
+    "locks": ["Groovy4736.this", "GroovyClassLoader.cache"],
+    "lock_graph": {
+      "WriterThread": ["Groovy4736.this", "GroovyClassLoader.cache"],
+      "CompilerThread": ["GroovyClassLoader.cache", "Groovy4736.this"]
+    },
+    "description": "Writer threads hold synchronized method lock, then clear classloader cache. Compiler threads hold classloader lock, then callback into synchronized resource loader. Native lock involvement via class loading.",
+    "trigger_operations": ["writeFile() + clearCache()", "loadClass()"],
+    "abstract_template": {
+      "resource_A": "instance_monitor",
+      "resource_B": "classloader_cache",
+      "operation_1": "synchronized_write() → lock(instance) → clear_cache() → lock(cache)",
+      "operation_2": "load_class() → lock(cache) → resource_loader_callback() → lock(instance)"
+    }
+  },
+  {
+    "id": "LOG4J-38137",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Log4j",
+    "version": "1.2.13",
+    "source_file": "jacontebe/log4j/src/org/apache/log4j/Test38137.java",
+    "bug_url": "https://issues.apache.org/bugzilla/show_bug.cgi?id=38137",
+    "pattern": "all_waiters",
+    "num_threads": 10,
+    "locks": ["AsyncAppender.buffer"],
+    "lock_graph": {
+      "AllAppendThreads": ["buffer.wait()"],
+      "Dispatcher": ["blocked_or_unable_to_drain"]
+    },
+    "description": "10 threads append events to AsyncAppender bounded buffer. When buffer fills, all threads call wait(). Dispatcher thread cannot drain properly, no thread calls notify(). All threads permanently blocked.",
+    "trigger_operations": ["AsyncAppender.append()"],
+    "abstract_template": {
+      "resource_A": "bounded_buffer",
+      "condition": "all_producers_wait_on_full_buffer",
+      "failure": "dispatcher_cannot_drain_and_notify",
+      "pattern": "N producers fill buffer → all wait() → no notify()"
+    }
+  },
+  {
+    "id": "LOG4J-41214",
+    "type": "resource_deadlock",
+    "project": "Apache Log4j",
+    "version": "1.2.13",
+    "source_file": "jacontebe/log4j/src/com/main/Test41214.java",
+    "bug_url": "https://issues.apache.org/bugzilla/show_bug.cgi?id=41214",
+    "pattern": "callback_induced_cycle",
+    "num_threads": 3,
+    "locks": ["LogManager", "AnObject", "AnException"],
+    "lock_graph": {
+      "AnObjectThread": ["AnObject", "LogManager"],
+      "AnExceptionThread": ["AnException", "LogManager"],
+      "RootLoggerThread": ["LogManager", "AnObject_or_AnException"]
+    },
+    "description": "Two threads hold domain object locks while logging (need LogManager lock). One thread holds LogManager lock while formatting log output (calls toString()/getMessage() needing domain object locks).",
+    "trigger_operations": ["Logger.info()", "AnObject.toString()", "AnException.getMessage()"],
+    "abstract_template": {
+      "resource_A": "logger_framework",
+      "resource_B": "domain_object",
+      "operation_1": "log_message() → lock(logger) → format(obj.toString()) → lock(domain_obj)",
+      "operation_2": "domain_operation() → lock(domain_obj) → log() → lock(logger)"
+    }
+  },
+  {
+    "id": "LUCENE-1544",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Lucene",
+    "version": "2.4.0",
+    "source_file": "jacontebe/lucene/src/org/apache/lucene/Test1544.java",
+    "bug_url": "https://issues.apache.org/jira/browse/LUCENE-1544",
+    "pattern": "lock_wait_cycle",
+    "num_threads": 2,
+    "locks": ["IndexWriter.writeLock", "IndexWriter.readLock", "runningMerges"],
+    "lock_graph": {
+      "MainThread": ["writeLock_held", "wait_runningMerges_empty"],
+      "MergeThread": ["wait_readLock", "blocked_by_writeLock"]
+    },
+    "description": "Main thread acquires write lock during addIndexes(), triggers optimization, then waits for running merges to complete. Merge thread needs read lock (blocked by write lock). Main waits for merge; merge waits for lock release.",
+    "trigger_operations": ["IndexWriter.addIndexes()", "ConcurrentMergeScheduler.merge()"],
+    "abstract_template": {
+      "resource_A": "write_lock",
+      "resource_B": "merge_completion_signal",
+      "operation_1": "add_indexes() → acquire(write_lock) → wait(merge_complete)",
+      "operation_2": "merge() → acquire(read_lock) ← blocked_by(write_lock)"
+    }
+  },
+  {
+    "id": "LUCENE-2783",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Lucene",
+    "version": "2.9.3",
+    "source_file": "jacontebe/lucene/src/org/apache/lucene/index/Test2783.java",
+    "bug_url": "https://issues.apache.org/jira/browse/LUCENE-2783",
+    "pattern": "multi_resource_contention",
+    "num_threads": 5,
+    "locks": ["SegmentWriteLock", "SegmentReadLock", "MergeLock"],
+    "lock_graph": {
+      "IndexerThread1": ["SegmentWriteLock", "wait_merge"],
+      "IndexerThread2": ["SegmentWriteLock", "wait_merge"],
+      "SearcherThread1": ["SegmentReadLock"],
+      "SearcherThread2": ["SegmentReadLock"],
+      "MergeScheduler": ["MergeLock"]
+    },
+    "description": "Stress test: 2 indexer + 2 searcher threads on same directory. Mixed resource locks and wait-notify between merge scheduler, document updates, and index reader operations.",
+    "trigger_operations": ["IndexWriter.updateDocument()", "IndexReader.open()"],
+    "abstract_template": {
+      "resource_A": "index_write_lock",
+      "resource_B": "index_read_lock",
+      "resource_C": "merge_scheduler",
+      "pattern": "concurrent_read_write_with_background_merge"
+    }
+  },
+  {
+    "id": "POOL-146",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Commons Pool",
+    "version": "1.5",
+    "source_file": "jacontebe/pool/src/Test146.java",
+    "bug_url": "https://issues.apache.org/jira/browse/POOL-146",
+    "pattern": "incorrect_exhaustion_check",
+    "num_threads": 2,
+    "locks": ["GenericKeyedObjectPool.globalState"],
+    "lock_graph": {
+      "MainThread": ["holds_key_one", "blocks_on_key_two"],
+      "BorrowThread": ["blocks_on_key_one"]
+    },
+    "description": "With maxActive=1 per key, borrowing 'one' succeeds, second thread blocks on 'one'. Main thread then tries 'two' (different key) but blocks due to bug in global pool exhaustion logic. Neither can proceed.",
+    "trigger_operations": ["GenericKeyedObjectPool.borrowObject()"],
+    "abstract_template": {
+      "resource_A": "key_specific_pool",
+      "resource_B": "global_pool_state",
+      "bug": "global_exhaustion_blocks_independent_key_queues",
+      "pattern": "hold(key_A) → borrow(key_B) blocks due to global state"
+    }
+  },
+  {
+    "id": "POOL-149",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Commons Pool",
+    "version": "1.5",
+    "source_file": "jacontebe/pool/src/Test149.java",
+    "bug_url": "https://issues.apache.org/jira/browse/POOL-149",
+    "pattern": "missed_notification",
+    "num_threads": 2,
+    "locks": ["GenericObjectPool.conditionVar"],
+    "lock_graph": {
+      "Thread1": ["borrow", "invalidate", "maybe_no_notify"],
+      "Thread2": ["borrow", "wait_forever"]
+    },
+    "description": "With maxActive=1, Thread1 borrows then invalidates object. Thread2 waits to borrow. If invalidateObject() doesn't notify (e.g., exception during destruction), Thread2 waits forever.",
+    "trigger_operations": ["GenericObjectPool.borrowObject()", "GenericObjectPool.invalidateObject()"],
+    "abstract_template": {
+      "resource_A": "pool_object",
+      "condition_var": "object_available",
+      "operation_1": "borrow() → invalidate() → destroy() [may skip notify()]",
+      "operation_2": "borrow() → wait(object_available) → never_notified"
+    }
+  },
+  {
+    "id": "POOL-162",
+    "type": "wait_notify_deadlock",
+    "project": "Apache Commons Pool",
+    "version": "1.5",
+    "source_file": "jacontebe/pool/src/Test162.java",
+    "bug_url": "https://issues.apache.org/jira/browse/POOL-162",
+    "pattern": "interrupted_notifier",
+    "num_threads": 2,
+    "locks": ["GenericObjectPool.conditionVar"],
+    "lock_graph": {
+      "MainThread": ["borrow_success", "interrupt_waiter", "return_object", "borrow_blocks"],
+      "WaitingThread": ["borrow_blocks", "interrupted", "dies"]
+    },
+    "description": "Thread interruption kills a thread in wait() state. That thread was supposed to eventually notify() other waiters. When it dies, the notification chain breaks and subsequent borrowObject() blocks forever.",
+    "trigger_operations": ["GenericObjectPool.borrowObject()", "Thread.interrupt()"],
+    "abstract_template": {
+      "resource_A": "pool_object",
+      "condition_var": "object_available",
+      "bug": "interrupted_thread_was_the_designated_notifier",
+      "pattern": "waiter interrupted → dies → no one calls notify() → future waiters stuck"
+    }
+  },
+  {
+    "id": "JDK-6492872",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6492872.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6492872",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["SSLEngine.clientState", "SSLEngine.serverState"],
+    "lock_graph": {
+      "MainThread": ["SSLEngine.wrap_unwrap"],
+      "TaskDispatcher": ["SSLEngine.getDelegatedTask"]
+    },
+    "description": "Main thread does SSL handshake (wrap/unwrap). Task dispatcher executes delegated tasks. Both contend for SSLEngine internal state locks.",
+    "trigger_operations": ["SSLEngine.wrap()", "SSLEngine.unwrap()", "SSLEngine.getDelegatedTask()"],
+    "abstract_template": {
+      "resource_A": "ssl_engine_state",
+      "operation_1": "handshake_operation() → lock(engine_state)",
+      "operation_2": "delegated_task() → lock(engine_state)"
+    }
+  },
+  {
+    "id": "JDK-6582568",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6582568.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6582568",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["Hashtable_p1", "Hashtable_p2"],
+    "lock_graph": {
+      "Thread1": ["p1", "p2"],
+      "Thread2": ["p2", "p1"]
+    },
+    "description": "Simplest resource deadlock. Two Hashtables; two threads call equals() in opposite directions. Hashtable is synchronized, so equals() acquires this lock then iterates other table (acquiring its lock).",
+    "trigger_operations": ["Hashtable.equals()"],
+    "abstract_template": {
+      "resource_A": "synchronized_collection_1",
+      "resource_B": "synchronized_collection_2",
+      "operation_1": "A.equals(B) → lock(A) → iterate_and_compare(B) → lock(B)",
+      "operation_2": "B.equals(A) → lock(B) → iterate_and_compare(A) → lock(A)"
+    }
+  },
+  {
+    "id": "JDK-6588239",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6588239.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6588239",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["Class.annotationData", "AnnotationType.cache"],
+    "lock_graph": {
+      "Thread1": ["Class.annotationData", "AnnotationType.cache"],
+      "Thread2": ["AnnotationType.cache", "Class.annotationData"]
+    },
+    "description": "Two threads access annotation info via different API paths. getAnnotations() locks annotation data then AnnotationType cache. getInstance() locks cache then annotation data.",
+    "trigger_operations": ["Class.getAnnotations()", "AnnotationType.getInstance()"],
+    "abstract_template": {
+      "resource_A": "metadata_store",
+      "resource_B": "metadata_cache",
+      "operation_1": "get_metadata() → lock(store) → populate_cache() → lock(cache)",
+      "operation_2": "get_cached() → lock(cache) → load_from_store() → lock(store)"
+    }
+  },
+  {
+    "id": "JDK-6927486",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6927486.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6927486",
+    "pattern": "serialization_graph_cycle",
+    "num_threads": 2,
+    "locks": ["Hashtable_ht1", "Hashtable_ht2"],
+    "lock_graph": {
+      "Thread1": ["ht1", "ht2"],
+      "Thread2": ["ht2", "ht1"]
+    },
+    "description": "Two Hashtables contain objects referencing each other. Serialization locks the table being serialized, then encounters the other table in the object graph. Cross-reference cycle.",
+    "trigger_operations": ["ObjectOutputStream.writeObject()"],
+    "abstract_template": {
+      "resource_A": "collection_1",
+      "resource_B": "collection_2",
+      "relationship": "bidirectional_object_graph",
+      "operation_1": "serialize(A) → lock(A) → traverse(A.contents) → serialize(B) → lock(B)",
+      "operation_2": "serialize(B) → lock(B) → traverse(B.contents) → serialize(A) → lock(A)"
+    }
+  },
+  {
+    "id": "JDK-6934356",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6934356.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6934356",
+    "pattern": "serialization_graph_cycle",
+    "num_threads": 2,
+    "locks": ["Vector_v1", "Vector_v2"],
+    "lock_graph": {
+      "Thread1": ["v1", "v2"],
+      "Thread2": ["v2", "v1"]
+    },
+    "description": "Two Vectors contain [barrier, other_vector]. Serialization locks Vector, serializes barrier (both threads sync here), then tries to serialize the other Vector. Barrier ensures both threads reach the cross-reference point simultaneously.",
+    "trigger_operations": ["ObjectOutputStream.writeObject()"],
+    "abstract_template": {
+      "resource_A": "synchronized_list_1",
+      "resource_B": "synchronized_list_2",
+      "relationship": "mutual_reference_with_barrier",
+      "operation_1": "serialize(v1) → lock(v1) → barrier → serialize(v2) → lock(v2)",
+      "operation_2": "serialize(v2) → lock(v2) → barrier → serialize(v1) → lock(v1)"
+    }
+  },
+  {
+    "id": "JDK-6977738",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6977738.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6977738",
+    "pattern": "infrastructure_vs_application",
+    "num_threads": 2,
+    "locks": ["System.Properties", "ClassLoader"],
+    "lock_graph": {
+      "Thread1": ["System.Properties", "ClassLoader"],
+      "Thread2": ["ClassLoader", "System.Properties"]
+    },
+    "description": "Thread1 holds System.Properties lock during store() which may trigger ClassLoader operations. Thread2 loads resources via ClassLoader which internally reads System.Properties.",
+    "trigger_operations": ["Properties.store()", "ClassLoader.getResource()"],
+    "abstract_template": {
+      "resource_A": "system_properties",
+      "resource_B": "classloader",
+      "operation_1": "store_properties() → lock(props) → classloader_operation() → lock(classloader)",
+      "operation_2": "load_resource() → lock(classloader) → read_property() → lock(props)"
+    }
+  },
+  {
+    "id": "JDK-6648001",
+    "type": "wait_notify_deadlock",
+    "project": "OpenJDK",
+    "version": "6",
+    "source_file": "jacontebe/jdk6/src/Test6648001.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-6648001",
+    "pattern": "missed_notification",
+    "num_threads": 2,
+    "locks": ["AuthenticationInfo.monitor"],
+    "lock_graph": {
+      "ServerRunner0": ["auth_fails", "should_notify"],
+      "ServerRunner1": ["wait_for_auth", "never_notified"]
+    },
+    "description": "With http.auth.serializeRequests=true, authentication requests are serialized. First request returns null, second waiter never gets notified. Lost notification in HTTP auth handling.",
+    "trigger_operations": ["HttpURLConnection.getInputStream()", "Authenticator.getPasswordAuthentication()"],
+    "abstract_template": {
+      "resource_A": "auth_serialization_monitor",
+      "condition": "serialized_requests_enabled",
+      "operation_1": "request_auth() → fail → should_notify_next() [notification lost]",
+      "operation_2": "request_auth() → wait_for_turn() → never_notified"
+    }
+  },
+  {
+    "id": "JDK-7122142",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "7",
+    "source_file": "jacontebe/jdk7/src/Test7122142.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-7122142",
+    "pattern": "two_object_cycle",
+    "num_threads": 2,
+    "locks": ["AnnA.parsingLock", "AnnB.parsingLock"],
+    "lock_graph": {
+      "Thread1": ["AnnA.parsing", "AnnB.parsing"],
+      "Thread2": ["AnnB.parsing", "AnnA.parsing"]
+    },
+    "description": "Mutually-referencing annotations: @AnnA is annotated with @AnnB and vice versa. Two threads parse them simultaneously, each holding one parsing lock and needing the other.",
+    "trigger_operations": ["Class.getDeclaredAnnotations()"],
+    "abstract_template": {
+      "resource_A": "type_metadata_A",
+      "resource_B": "type_metadata_B",
+      "relationship": "mutual_reference",
+      "operation_1": "parse(A) → lock(A.meta) → resolve_ref(B) → lock(B.meta)",
+      "operation_2": "parse(B) → lock(B.meta) → resolve_ref(A) → lock(A.meta)"
+    }
+  },
+  {
+    "id": "JDK-8010939",
+    "type": "resource_deadlock",
+    "project": "OpenJDK",
+    "version": "7",
+    "source_file": "jacontebe/jdk7/src/Test8010939.java",
+    "bug_url": "https://bugs.openjdk.java.net/browse/JDK-8010939",
+    "pattern": "infrastructure_vs_application",
+    "num_threads": 2,
+    "locks": ["LogManager.config", "LoggerHierarchy"],
+    "lock_graph": {
+      "SetupLogger": ["LoggerHierarchy", "LogManager.config"],
+      "ReadConfig": ["LogManager.config", "LoggerHierarchy"]
+    },
+    "description": "Thread1 creates loggers (acquires hierarchy lock, needs config). Thread2 reads configuration (acquires config lock, needs hierarchy lock to update loggers).",
+    "trigger_operations": ["Logger.getLogger()", "LogManager.readConfiguration()"],
+    "abstract_template": {
+      "resource_A": "config_store",
+      "resource_B": "object_hierarchy",
+      "operation_1": "create_object() → lock(hierarchy) → read_config() → lock(config)",
+      "operation_2": "reload_config() → lock(config) → update_objects() → lock(hierarchy)"
+    }
+  }
+]

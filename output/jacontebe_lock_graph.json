@@ -1,0 +1,3619 @@
+{
+  "metadata": {
+    "repo_path": "JaConTeBe_TSVD/jacontebe",
+    "mode": "light",
+    "total_java_files": 27,
+    "files_with_locks": 18,
+    "total_lock_acquisitions": 66,
+    "total_lock_order_edges": 27
+  },
+  "classes": {
+    "Test6977738": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "prop",
+          "line_number": 55,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "lock_type": "synchronized_block",
+          "lock_identity": "prop",
+          "line_number": 55,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "go",
+          "line_number": 58,
+          "inside_lock": "prop"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "done",
+          "line_number": 61,
+          "inside_lock": "prop"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "go",
+          "line_number": 78,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "done",
+          "line_number": 92,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "call_type": "await",
+          "object_expr": "go",
+          "line_number": 58,
+          "inside_lock": "prop"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "call_type": "await",
+          "object_expr": "done",
+          "line_number": 61,
+          "inside_lock": "prop"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "call_type": "await",
+          "object_expr": "go",
+          "line_number": 78,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "call_type": "await",
+          "object_expr": "done",
+          "line_number": 92,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "holding_lock": "prop",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 56
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "holding_lock": "prop",
+          "callee_object": "prop",
+          "callee_method": "put",
+          "callee_class_hint": "prop",
+          "line_number": 59
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "run",
+          "holding_lock": "prop",
+          "callee_object": "prop",
+          "callee_method": "store",
+          "callee_class_hint": "prop",
+          "line_number": 60
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "holding_lock": "prop",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 56
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "holding_lock": "prop",
+          "callee_object": "prop",
+          "callee_method": "put",
+          "callee_class_hint": "prop",
+          "line_number": 59
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+          "class_name": "Test6977738",
+          "method_name": "Test6977738",
+          "holding_lock": "prop",
+          "callee_object": "prop",
+          "callee_method": "store",
+          "callee_class_hint": "prop",
+          "line_number": 60
+        }
+      ],
+      "field_types": {
+        "go": "CyclicBarrier",
+        "done": "CyclicBarrier",
+        "t1": "Thread"
+      }
+    },
+    "Test6934356": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "addException",
+          "lock_type": "synchronized_method",
+          "lock_identity": "Test6934356.class",
+          "line_number": 152,
+          "is_static": true
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "handleExceptions",
+          "lock_type": "synchronized_method",
+          "lock_identity": "Test6934356.class",
+          "line_number": 156,
+          "is_static": true
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "main",
+          "call_type": "await",
+          "object_expr": "testStart",
+          "line_number": 91,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "main",
+          "call_type": "await",
+          "object_expr": "testEnd",
+          "line_number": 97,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "writeObject",
+          "call_type": "await",
+          "object_expr": "this",
+          "line_number": 114,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "testEnd",
+          "line_number": 145,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "addException",
+          "holding_lock": "Test6934356.class",
+          "callee_object": "exceptions",
+          "callee_method": "add",
+          "callee_class_hint": "List<Exception>",
+          "line_number": 153
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "handleExceptions",
+          "holding_lock": "Test6934356.class",
+          "callee_object": "exceptions",
+          "callee_method": "isEmpty",
+          "callee_class_hint": "List<Exception>",
+          "line_number": 157
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "Test6934356",
+          "method_name": "handleExceptions",
+          "holding_lock": "Test6934356.class",
+          "callee_object": "this",
+          "callee_method": "getErrorText",
+          "callee_class_hint": "",
+          "line_number": 158
+        }
+      ],
+      "field_types": {
+        "exceptions": "List<Exception>",
+        "vector": "Vector",
+        "testEnd": "CyclicBarrier"
+      }
+    },
+    "TestBarrier": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestBarrier",
+          "method_name": "writeObject",
+          "call_type": "await",
+          "object_expr": "this",
+          "line_number": 114,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "TestThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "addException",
+          "lock_type": "synchronized_method",
+          "lock_identity": "TestThread.class",
+          "line_number": 152,
+          "is_static": true
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "handleExceptions",
+          "lock_type": "synchronized_method",
+          "lock_identity": "TestThread.class",
+          "line_number": 156,
+          "is_static": true
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "testEnd",
+          "line_number": 145,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "addException",
+          "holding_lock": "TestThread.class",
+          "callee_object": "exceptions",
+          "callee_method": "add",
+          "callee_class_hint": "List<Exception>",
+          "line_number": 153
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "handleExceptions",
+          "holding_lock": "TestThread.class",
+          "callee_object": "exceptions",
+          "callee_method": "isEmpty",
+          "callee_class_hint": "List<Exception>",
+          "line_number": 157
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+          "class_name": "TestThread",
+          "method_name": "handleExceptions",
+          "holding_lock": "TestThread.class",
+          "callee_object": "this",
+          "callee_method": "getErrorText",
+          "callee_class_hint": "",
+          "line_number": 158
+        }
+      ],
+      "field_types": {
+        "exceptions": "List<Exception>",
+        "vector": "Vector",
+        "testEnd": "CyclicBarrier",
+        "_random": "java.util.Random",
+        "_pool": "ObjectPool",
+        "_complete": "boolean",
+        "_failed": "boolean",
+        "_iter": "int",
+        "_delay": "int",
+        "_randomDelay": "boolean"
+      }
+    },
+    "Test4779253": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+          "class_name": "Test4779253",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 127,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "logger": "Logger",
+        "buggy": "boolean",
+        "latch": "CountDownLatch",
+        "exceptionQ": "Queue<Exception>"
+      }
+    },
+    "WorkerThread1": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "WorkerThread2": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+          "class_name": "WorkerThread2",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 127,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "AddSleep2LoggerAdapter": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk6/src/asm/AddSleep2LoggerAdapter.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "insideMonitor": "boolean"
+      }
+    },
+    "Test7122142": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/Test7122142.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/Test7122142.java",
+          "class_name": "Test7122142",
+          "method_name": "main",
+          "call_type": "await",
+          "object_expr": "prepareLatch",
+          "line_number": 109,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "prepareLatch": "CountDownLatch",
+        "goLatch": "AtomicInteger",
+        "clazz": "Class<?>"
+      }
+    },
+    "Task": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/Test7122142.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "prepareLatch": "CountDownLatch",
+        "goLatch": "AtomicInteger",
+        "clazz": "Class<?>"
+      }
+    },
+    "RacingThreadsTest": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.startBarrier",
+          "line_number": 526,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.finishBarrier",
+          "line_number": 540,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.resetBarrier",
+          "line_number": 564,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.startBarrier",
+          "line_number": 652,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.finishBarrier",
+          "line_number": 665,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "RacingThreadsTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.resetBarrier",
+          "line_number": 675,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "TEST_NAME": "String",
+        "N_LOOPS": "int",
+        "N_SECS": "int",
+        "N_THREADS": "int",
+        "done": "boolean",
+        "failCnt": "AtomicInteger",
+        "loopCnt": "AtomicInteger",
+        "verbose": "boolean",
+        "finishBarrier": "CyclicBarrier",
+        "resetBarrier": "CyclicBarrier",
+        "startBarrier": "CyclicBarrier",
+        "test": "RacingThreadsTest",
+        "workerNum": "int"
+      }
+    },
+    "DriverThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "DriverThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.startBarrier",
+          "line_number": 526,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "DriverThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.finishBarrier",
+          "line_number": 540,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "DriverThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.resetBarrier",
+          "line_number": 564,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "test": "RacingThreadsTest"
+      }
+    },
+    "WorkerThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "WorkerThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.startBarrier",
+          "line_number": 652,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "WorkerThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.finishBarrier",
+          "line_number": 665,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+          "class_name": "WorkerThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "test.resetBarrier",
+          "line_number": 675,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "test": "RacingThreadsTest",
+        "workerNum": "int"
+      }
+    },
+    "TestLibrary": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+          "class_name": "TestLibrary",
+          "method_name": "getExtraProperties",
+          "lock_type": "synchronized_method",
+          "lock_identity": "TestLibrary.class",
+          "line_number": 356,
+          "is_static": true
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+          "class_name": "TestLibrary",
+          "method_name": "getExtraProperties",
+          "holding_lock": "TestLibrary.class",
+          "callee_object": "f",
+          "callee_method": "exists",
+          "callee_class_hint": "f",
+          "line_number": 363
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+          "class_name": "TestLibrary",
+          "method_name": "getExtraProperties",
+          "holding_lock": "TestLibrary.class",
+          "callee_object": "props",
+          "callee_method": "load",
+          "callee_class_hint": "Properties",
+          "line_number": 369
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+          "class_name": "TestLibrary",
+          "method_name": "getExtraProperties",
+          "holding_lock": "TestLibrary.class",
+          "callee_object": "in",
+          "callee_method": "close",
+          "callee_class_hint": "in",
+          "line_number": 371
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+          "class_name": "TestLibrary",
+          "method_name": "getExtraProperties",
+          "holding_lock": "TestLibrary.class",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 374
+        }
+      ],
+      "field_types": {
+        "REGISTRY_PORT": "int",
+        "RMID_PORT": "int",
+        "props": "Properties"
+      }
+    },
+    "ActivationLibrary": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+          "class_name": "ActivationLibrary",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 203,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+          "class_name": "ActivationLibrary",
+          "method_name": "shutdownSucceeded",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 213,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "SAFE_WAIT_TIME": "int",
+        "SYSTEM_NAME": "String",
+        "rmid": "RMID",
+        "port": "int",
+        "succeeded": "boolean"
+      }
+    },
+    "DestroyThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+          "class_name": "DestroyThread",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 203,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/ActivationLibrary.java",
+          "class_name": "DestroyThread",
+          "method_name": "shutdownSucceeded",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 213,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "rmid": "RMID",
+        "port": "int",
+        "succeeded": "boolean"
+      }
+    },
+    "TestFailedException": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "lock_type": "synchronized_block",
+          "lock_identity": "ps",
+          "line_number": 59,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "lock_type": "synchronized_block",
+          "lock_identity": "pw",
+          "line_number": 74,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "holding_lock": "ps",
+          "callee_object": "ps",
+          "callee_method": "println",
+          "callee_class_hint": "ps",
+          "line_number": 60
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "holding_lock": "ps",
+          "callee_object": "detail",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "Throwable",
+          "line_number": 61
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "holding_lock": "pw",
+          "callee_object": "pw",
+          "callee_method": "println",
+          "callee_class_hint": "pw",
+          "line_number": 75
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+          "class_name": "TestFailedException",
+          "method_name": "printStackTrace",
+          "holding_lock": "pw",
+          "callee_object": "detail",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "Throwable",
+          "line_number": 76
+        }
+      ],
+      "field_types": {
+        "detail": "Throwable"
+      }
+    },
+    "StreamPipe": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/StreamPipe.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/StreamPipe.java",
+          "class_name": "StreamPipe",
+          "method_name": "plugTogether",
+          "lock_type": "synchronized_block",
+          "lock_identity": "lock",
+          "line_number": 80,
+          "is_static": true
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "in": "InputStream",
+        "out": "OutputStream",
+        "preamble": "String",
+        "lock": "Object",
+        "count": "int"
+      }
+    },
+    "MockRAMDirectory": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "init",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 62,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "sync",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 102,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 113,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "clearCrash",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 140,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 199,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 203,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 222,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 257,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 275,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedActualSizeInBytes",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 290,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "close",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 299,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "failOn",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 358,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "maybeThrowDeterministicException",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 370,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "sync",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "maybeThrowDeterministicException",
+          "callee_class_hint": "",
+          "line_number": 103
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "sync",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "contains",
+          "callee_class_hint": "Set",
+          "line_number": 106
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "sync",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "remove",
+          "callee_class_hint": "Set",
+          "line_number": 107
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "iterator",
+          "callee_class_hint": "Set",
+          "line_number": 117
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "hasNext",
+          "callee_class_hint": "it",
+          "line_number": 120
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "next",
+          "callee_class_hint": "it",
+          "line_number": 121
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "get",
+          "callee_class_hint": "fileMap",
+          "line_number": 122
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "deleteFile",
+          "callee_class_hint": "",
+          "line_number": 124
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "numBuffers",
+          "callee_class_hint": "file",
+          "line_number": 127
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "getBuffer",
+          "callee_class_hint": "file",
+          "line_number": 129
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "Arrays",
+          "callee_method": "fill",
+          "callee_class_hint": "Arrays",
+          "line_number": 130
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "setLength",
+          "callee_class_hint": "file",
+          "line_number": 134
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "crash",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "getLength",
+          "callee_class_hint": "file",
+          "line_number": 134
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "deleteFile",
+          "callee_class_hint": "",
+          "line_number": 200
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "maybeThrowDeterministicException",
+          "callee_class_hint": "",
+          "line_number": 206
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "contains",
+          "callee_class_hint": "Set",
+          "line_number": 211
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "remove",
+          "callee_class_hint": "Set",
+          "line_number": 212
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "containsKey",
+          "callee_class_hint": "Map",
+          "line_number": 214
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "deleteFile",
+          "holding_lock": "this",
+          "callee_object": "super",
+          "callee_method": "deleteFile",
+          "callee_class_hint": "super",
+          "line_number": 219
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "init",
+          "callee_class_hint": "",
+          "line_number": 227
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "createdFiles",
+          "callee_method": "contains",
+          "callee_class_hint": "Set",
+          "line_number": 228
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "name",
+          "callee_method": "equals",
+          "callee_class_hint": "name",
+          "line_number": 229
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "containsKey",
+          "callee_class_hint": "Map",
+          "line_number": 232
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "unSyncedFiles",
+          "callee_method": "add",
+          "callee_class_hint": "Set",
+          "line_number": 238
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "createdFiles",
+          "callee_method": "add",
+          "callee_class_hint": "Set",
+          "line_number": 239
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "get",
+          "callee_class_hint": "fileMap",
+          "line_number": 240
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "name",
+          "callee_method": "equals",
+          "callee_class_hint": "name",
+          "line_number": 242
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "createOutput",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "put",
+          "callee_class_hint": "fileMap",
+          "line_number": 251
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "get",
+          "callee_class_hint": "fileMap",
+          "line_number": 259
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "containsKey",
+          "callee_class_hint": "Map",
+          "line_number": 263
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "get",
+          "callee_class_hint": "Map",
+          "line_number": 264
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "v",
+          "callee_method": "intValue",
+          "callee_class_hint": "v",
+          "line_number": 265
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "put",
+          "callee_class_hint": "Map",
+          "line_number": 266
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "openInput",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "put",
+          "callee_class_hint": "Map",
+          "line_number": 268
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "fileMap.values()",
+          "callee_method": "iterator",
+          "callee_class_hint": "fileMap.values()",
+          "line_number": 278
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "values",
+          "callee_class_hint": "fileMap",
+          "line_number": 278
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "hasNext",
+          "callee_class_hint": "it",
+          "line_number": 279
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "((RAMFile) it.next())",
+          "callee_method": "getSizeInBytes",
+          "callee_class_hint": "((RAMFile) it.next())",
+          "line_number": 280
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "next",
+          "callee_class_hint": "it",
+          "line_number": 280
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedActualSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "fileMap.values()",
+          "callee_method": "iterator",
+          "callee_class_hint": "fileMap.values()",
+          "line_number": 293
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedActualSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "fileMap",
+          "callee_method": "values",
+          "callee_class_hint": "fileMap",
+          "line_number": 293
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedActualSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "hasNext",
+          "callee_class_hint": "it",
+          "line_number": 294
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "getRecomputedActualSizeInBytes",
+          "holding_lock": "this",
+          "callee_object": "it",
+          "callee_method": "next",
+          "callee_class_hint": "it",
+          "line_number": 295
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "close",
+          "holding_lock": "this",
+          "callee_object": "openFiles",
+          "callee_method": "size",
+          "callee_class_hint": "Map",
+          "line_number": 304
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "failOn",
+          "holding_lock": "this",
+          "callee_object": "failures",
+          "callee_method": "add",
+          "callee_class_hint": "ArrayList",
+          "line_number": 363
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "maybeThrowDeterministicException",
+          "holding_lock": "this",
+          "callee_object": "failures",
+          "callee_method": "size",
+          "callee_class_hint": "ArrayList",
+          "line_number": 372
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "maybeThrowDeterministicException",
+          "holding_lock": "this",
+          "callee_object": "((Failure) failures.get(i))",
+          "callee_method": "eval",
+          "callee_class_hint": "((Failure) failures.get(i))",
+          "line_number": 373
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+          "class_name": "MockRAMDirectory",
+          "method_name": "maybeThrowDeterministicException",
+          "holding_lock": "this",
+          "callee_object": "failures",
+          "callee_method": "get",
+          "callee_class_hint": "ArrayList",
+          "line_number": 373
+        }
+      ],
+      "field_types": {
+        "maxSize": "long",
+        "maxUsedSize": "long",
+        "randomIOExceptionRate": "double",
+        "randomState": "Random",
+        "noDeleteOpenFile": "boolean",
+        "preventDoubleWrite": "boolean",
+        "unSyncedFiles": "Set",
+        "createdFiles": "Set",
+        "crashed": "boolean",
+        "openFiles": "Map",
+        "doFail": "boolean",
+        "failures": "ArrayList"
+      }
+    },
+    "Failure": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMDirectory.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "doFail": "boolean"
+      }
+    },
+    "MockRAMInputStream": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "lock_type": "synchronized_block",
+          "lock_identity": "dir",
+          "line_number": 51,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "holding_lock": "dir",
+          "callee_object": "dir.openFiles",
+          "callee_method": "get",
+          "callee_class_hint": "dir.openFiles",
+          "line_number": 52
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "holding_lock": "dir",
+          "callee_object": "v",
+          "callee_method": "intValue",
+          "callee_class_hint": "v",
+          "line_number": 55
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "holding_lock": "dir",
+          "callee_object": "dir.openFiles",
+          "callee_method": "remove",
+          "callee_class_hint": "dir.openFiles",
+          "line_number": 56
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "holding_lock": "dir",
+          "callee_object": "v",
+          "callee_method": "intValue",
+          "callee_class_hint": "v",
+          "line_number": 58
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/lucene/src/org/apache/lucene/store/MockRAMInputStream.java",
+          "class_name": "MockRAMInputStream",
+          "method_name": "close",
+          "holding_lock": "dir",
+          "callee_object": "dir.openFiles",
+          "callee_method": "put",
+          "callee_class_hint": "dir.openFiles",
+          "line_number": 59
+        }
+      ],
+      "field_types": {
+        "dir": "MockRAMDirectory",
+        "name": "String",
+        "isClone": "boolean"
+      }
+    },
+    "DeadlockMonitorTest": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 19,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 29,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 29,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 38,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 48,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 48,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 21,
+          "inside_lock": "o1"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 40,
+          "inside_lock": "o2"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 58,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 24
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 27
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 43
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 46
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "DeadlockMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        }
+      ],
+      "field_types": {
+        "o1": "Object",
+        "o2": "Object",
+        "barrier": "CyclicBarrier",
+        "monitor": "DeadlockMonitor"
+      }
+    },
+    "Thread1": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 19,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 29,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 29,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 21,
+          "inside_lock": "o1"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5560.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 41,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/store/raw/data/Derby5447.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 39,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 24
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 27
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread1",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 30
+        }
+      ],
+      "field_types": {}
+    },
+    "Thread2": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o2",
+          "line_number": 38,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 48,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o1",
+          "line_number": 48,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 40,
+          "inside_lock": "o2"
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 43
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 46
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "holding_lock": "o2",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread2",
+          "method_name": "run",
+          "holding_lock": "o1",
+          "callee_object": "System.out",
+          "callee_method": "println",
+          "callee_class_hint": "System.out",
+          "line_number": 49
+        }
+      ],
+      "field_types": {}
+    },
+    "Thread3": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+          "class_name": "Thread3",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 58,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "WaitingMonitorTest": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "main",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o",
+          "line_number": 12,
+          "is_static": true
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "o",
+          "line_number": 12,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "main",
+          "call_type": "wait",
+          "object_expr": "o",
+          "line_number": 14,
+          "inside_lock": "o"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "run",
+          "call_type": "wait",
+          "object_expr": "o",
+          "line_number": 14,
+          "inside_lock": "o"
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "main",
+          "holding_lock": "o",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 17
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+          "class_name": "WaitingMonitorTest",
+          "method_name": "run",
+          "holding_lock": "o",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 17
+        }
+      ],
+      "field_types": {}
+    },
+    "GlobalDriver": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "endStep",
+          "lock_type": "synchronized_block",
+          "lock_identity": "sequenceObjects.get(i)",
+          "line_number": 46,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "startStep",
+          "lock_type": "synchronized_block",
+          "lock_identity": "ob",
+          "line_number": 56,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "endStep",
+          "call_type": "notify",
+          "object_expr": "sequenceObjects.get(i)",
+          "line_number": 49,
+          "inside_lock": "sequenceObjects.get(i)"
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "startStep",
+          "call_type": "wait",
+          "object_expr": "sequenceObjects.get(i - 1)",
+          "line_number": 59,
+          "inside_lock": "ob"
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "endStep",
+          "holding_lock": "sequenceObjects.get(i)",
+          "callee_object": "sequenceObjects",
+          "callee_method": "get",
+          "callee_class_hint": "Map<Integer, Object>",
+          "line_number": 49
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "startStep",
+          "holding_lock": "ob",
+          "callee_object": "sequenceObjects",
+          "callee_method": "put",
+          "callee_class_hint": "Map<Integer, Object>",
+          "line_number": 57
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "startStep",
+          "holding_lock": "ob",
+          "callee_object": "sequenceObjects",
+          "callee_method": "get",
+          "callee_class_hint": "Map<Integer, Object>",
+          "line_number": 59
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+          "class_name": "GlobalDriver",
+          "method_name": "startStep",
+          "holding_lock": "ob",
+          "callee_object": "e",
+          "callee_method": "printStackTrace",
+          "callee_class_hint": "e",
+          "line_number": 61
+        }
+      ],
+      "field_types": {
+        "INSTANCE": "GlobalDriver",
+        "sequenceObjects": "Map<Integer, Object>",
+        "TIMEOUT": "int"
+      }
+    },
+    "Derby5561": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+          "class_name": "Derby5561",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 44,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+          "class_name": "Derby5561",
+          "method_name": "nativeSQL",
+          "call_type": "await",
+          "object_expr": "endLatch",
+          "line_number": 77,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "logicalConnection": "LogicalConnection",
+        "buggy": "boolean",
+        "sql": "String",
+        "ret": "String",
+        "latch": "CountDownLatch",
+        "endLatch": "CountDownLatch"
+      }
+    },
+    "NativeRunnable": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "NullRunnable": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+          "class_name": "NullRunnable",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 44,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "TestConnection": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+          "class_name": "TestConnection",
+          "method_name": "nativeSQL",
+          "call_type": "await",
+          "object_expr": "endLatch",
+          "line_number": 77,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "Derby5560": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5560.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5560.java",
+          "class_name": "Derby5560",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 41,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "latch": "CountDownLatch",
+        "clientPooledConnection": "ClientXAConnection40",
+        "logicalConnection": "LogicalConnection",
+        "SERVER": "String"
+      }
+    },
+    "Derby764": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/services/reflect/Derby764.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/services/reflect/Derby764.java",
+          "class_name": "Derby764",
+          "method_name": "setUp",
+          "lock_type": "reentrant_lock",
+          "lock_identity": "operator",
+          "line_number": 97,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "updateLoader": "UpdateLoader",
+        "factory": "SinglePool",
+        "operator": "LockOperator"
+      }
+    },
+    "Derby5447": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/store/raw/data/Derby5447.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/store/raw/data/Derby5447.java",
+          "class_name": "Derby5447",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 39,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "storedPage": "StoredPage",
+        "baseContainerHandle": "BaseContainerHandle",
+        "latch": "CountDownLatch"
+      }
+    },
+    "Dbcp271": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Dbcp271",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "test",
+          "line_number": 84,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Dbcp271",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "test",
+          "line_number": 115,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Dbcp271",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 108,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Dbcp271",
+          "method_name": "run",
+          "holding_lock": "test",
+          "callee_object": "test",
+          "callee_method": "getLastUsed",
+          "callee_class_hint": "AbandonedTrace",
+          "line_number": 85
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Dbcp271",
+          "method_name": "run",
+          "holding_lock": "test",
+          "callee_object": "test",
+          "callee_method": "setLastUsed",
+          "callee_class_hint": "AbandonedTrace",
+          "line_number": 116
+        }
+      ],
+      "field_types": {
+        "test": "AbandonedTrace",
+        "latch": "CountDownLatch",
+        "sync": "boolean",
+        "READS": "int",
+        "SIZE": "int"
+      }
+    },
+    "Read": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Read",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "test",
+          "line_number": 84,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Read",
+          "method_name": "run",
+          "holding_lock": "test",
+          "callee_object": "test",
+          "callee_method": "getLastUsed",
+          "callee_class_hint": "test",
+          "line_number": 85
+        }
+      ],
+      "field_types": {}
+    },
+    "Write": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Write",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "test",
+          "line_number": 115,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Write",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 108,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+          "class_name": "Write",
+          "method_name": "run",
+          "holding_lock": "test",
+          "callee_object": "test",
+          "callee_method": "setLastUsed",
+          "callee_class_hint": "test",
+          "line_number": 116
+        }
+      ],
+      "field_types": {}
+    },
+    "Dbcp369": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/datasources/Dbcp369.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/datasources/Dbcp369.java",
+          "class_name": "Dbcp369",
+          "method_name": "main",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 94,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/datasources/Dbcp369.java",
+          "class_name": "Dbcp369",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 94,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "buggy": "boolean",
+        "DEFAULT_LOOPS": "int",
+        "name": "String",
+        "ids": "InstanceKeyDataSource"
+      }
+    },
+    "Datasource": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/datasources/Dbcp369.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "name": "String",
+        "ids": "InstanceKeyDataSource"
+      }
+    },
+    "Groovy4736": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "lock_type": "synchronized_method",
+          "lock_identity": "this",
+          "line_number": 57,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "this",
+          "callee_method": "getFile",
+          "callee_class_hint": "",
+          "line_number": 59
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "exists",
+          "callee_class_hint": "file",
+          "line_number": 60
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "delete",
+          "callee_class_hint": "file",
+          "line_number": 61
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "file.getParentFile()",
+          "callee_method": "mkdirs",
+          "callee_class_hint": "file.getParentFile()",
+          "line_number": 62
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "file",
+          "callee_method": "getParentFile",
+          "callee_class_hint": "file",
+          "line_number": 62
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "writer",
+          "callee_method": "write",
+          "callee_class_hint": "writer",
+          "line_number": 67
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "writer",
+          "callee_method": "flush",
+          "callee_class_hint": "writer",
+          "line_number": 68
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "writer",
+          "callee_method": "close",
+          "callee_class_hint": "writer",
+          "line_number": 70
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "output",
+          "callee_method": "flush",
+          "callee_class_hint": "output",
+          "line_number": 72
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+          "class_name": "Groovy4736",
+          "method_name": "writeFile",
+          "holding_lock": "this",
+          "callee_object": "output",
+          "callee_method": "close",
+          "callee_class_hint": "output",
+          "line_number": 74
+        }
+      ],
+      "field_types": {
+        "DEFAULT_THREAD_NUM": "int",
+        "root": "File",
+        "classLoader": "GroovyClassLoader",
+        "LOOPS": "int"
+      }
+    },
+    "Test50463": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+          "class_name": "Test50463",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 85,
+          "inside_lock": null
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+          "class_name": "Test50463",
+          "method_name": "logToKillDispatcher",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 99,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {
+        "BUFFER_SIZE": "int",
+        "logger": "Logger",
+        "THREAD_NUM": "int",
+        "barrier": "CyclicBarrier"
+      }
+    },
+    "FillBufferThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+          "class_name": "FillBufferThread",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "barrier",
+          "line_number": 85,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [],
+      "field_types": {}
+    },
+    "Test162": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+          "class_name": "Test162",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 91,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+          "class_name": "Test162",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 108,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "makeCounter": "int",
+        "validateCounter": "int",
+        "activeCount": "int",
+        "evenValid": "boolean",
+        "oddValid": "boolean",
+        "exceptionOnPassivate": "boolean",
+        "exceptionOnActivate": "boolean",
+        "exceptionOnDestroy": "boolean",
+        "enableValidation": "boolean",
+        "destroyLatency": "long",
+        "makeLatency": "long",
+        "maxActive": "int",
+        "_pool": "GenericObjectPool",
+        "_pause": "long",
+        "_thrown": "Throwable"
+      }
+    },
+    "SimpleFactory": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+          "class_name": "SimpleFactory",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 91,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+          "class_name": "SimpleFactory",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 108,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+          "class_name": "SimpleFactory",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 116,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+          "class_name": "SimpleFactory",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 128,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test120.java",
+          "class_name": "SimpleFactory",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 216,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test120.java",
+          "class_name": "SimpleFactory",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 233,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "makeCounter": "int",
+        "validateCounter": "int",
+        "activeCount": "int",
+        "evenValid": "boolean",
+        "oddValid": "boolean",
+        "exceptionOnPassivate": "boolean",
+        "exceptionOnActivate": "boolean",
+        "exceptionOnDestroy": "boolean",
+        "enableValidation": "boolean",
+        "destroyLatency": "long",
+        "makeLatency": "long",
+        "maxActive": "int",
+        "counter": "int",
+        "valid": "boolean"
+      }
+    },
+    "WaitingTestThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test162.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "_pool": "GenericObjectPool",
+        "_pause": "long",
+        "_thrown": "Throwable"
+      }
+    },
+    "Test146": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+          "class_name": "Test146",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 116,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+          "class_name": "Test146",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 128,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "_pool": "KeyedObjectPool",
+        "_key": "String",
+        "counter": "int",
+        "valid": "boolean",
+        "activeCount": "int",
+        "validateCounter": "int",
+        "evenValid": "boolean",
+        "oddValid": "boolean",
+        "enableValidation": "boolean",
+        "destroyLatency": "long",
+        "maxActive": "int",
+        "exceptionOnPassivate": "boolean",
+        "exceptionOnActivate": "boolean",
+        "exceptionOnDestroy": "boolean"
+      }
+    },
+    "SimpleTestThread": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test146.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "_pool": "KeyedObjectPool",
+        "_key": "String"
+      }
+    },
+    "Test120": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test120.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test120.java",
+          "class_name": "Test120",
+          "method_name": "makeObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 216,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/Test120.java",
+          "class_name": "Test120",
+          "method_name": "destroyObject",
+          "lock_type": "synchronized_block",
+          "lock_identity": "this",
+          "line_number": 233,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "buggy": "boolean",
+        "_random": "java.util.Random",
+        "_pool": "ObjectPool",
+        "_complete": "boolean",
+        "_failed": "boolean",
+        "_iter": "int",
+        "_delay": "int",
+        "_randomDelay": "boolean",
+        "makeCounter": "int",
+        "validateCounter": "int",
+        "activeCount": "int",
+        "evenValid": "boolean",
+        "oddValid": "boolean",
+        "exceptionOnPassivate": "boolean",
+        "exceptionOnActivate": "boolean",
+        "enableValidation": "boolean",
+        "destroyLatency": "long",
+        "makeLatency": "long",
+        "maxActive": "int"
+      }
+    },
+    "Test46": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Test46",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "testBasePool",
+          "line_number": 121,
+          "is_static": false
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Test46",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "testBasePool",
+          "line_number": 162,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Test46",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 155,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Test46",
+          "method_name": "run",
+          "holding_lock": "testBasePool",
+          "callee_object": "testBasePool",
+          "callee_method": "isClosed",
+          "callee_class_hint": "TestBaseObjectPool",
+          "line_number": 122
+        },
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Test46",
+          "method_name": "run",
+          "holding_lock": "testBasePool",
+          "callee_object": "testBasePool",
+          "callee_method": "close",
+          "callee_class_hint": "TestBaseObjectPool",
+          "line_number": 163
+        }
+      ],
+      "field_types": {
+        "testBasePool": "TestBaseObjectPool",
+        "latch": "CountDownLatch",
+        "DEFAULT_READS": "int",
+        "threads": "int",
+        "dosync": "boolean"
+      }
+    },
+    "Reader": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Reader",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "testBasePool",
+          "line_number": 121,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Reader",
+          "method_name": "run",
+          "holding_lock": "testBasePool",
+          "callee_object": "testBasePool",
+          "callee_method": "isClosed",
+          "callee_class_hint": "testBasePool",
+          "line_number": 122
+        }
+      ],
+      "field_types": {
+        "dosync": "boolean"
+      }
+    },
+    "Writer": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "lock_acquisitions": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Writer",
+          "method_name": "run",
+          "lock_type": "synchronized_block",
+          "lock_identity": "testBasePool",
+          "line_number": 162,
+          "is_static": false
+        }
+      ],
+      "wait_notify_sites": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Writer",
+          "method_name": "run",
+          "call_type": "await",
+          "object_expr": "latch",
+          "line_number": 155,
+          "inside_lock": null
+        }
+      ],
+      "calls_under_lock": [
+        {
+          "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+          "class_name": "Writer",
+          "method_name": "run",
+          "holding_lock": "testBasePool",
+          "callee_object": "testBasePool",
+          "callee_method": "close",
+          "callee_class_hint": "testBasePool",
+          "line_number": 163
+        }
+      ],
+      "field_types": {
+        "dosync": "boolean"
+      }
+    },
+    "TestBaseObjectPool": {
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "lock_acquisitions": [],
+      "wait_notify_sites": [],
+      "calls_under_lock": [],
+      "field_types": {
+        "done": "boolean"
+      }
+    }
+  },
+  "lock_order_edges": [
+    {
+      "from_lock": "o1",
+      "to_lock": "o2",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "nested_synchronized",
+      "call_chain": [],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 29,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "o1",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "nested_synchronized",
+      "call_chain": [],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 48,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o1",
+      "to_lock": "o2",
+      "from_class": "Thread1",
+      "from_method": "run",
+      "mechanism": "nested_synchronized",
+      "call_chain": [],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 29,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "o1",
+      "from_class": "Thread2",
+      "from_method": "run",
+      "mechanism": "nested_synchronized",
+      "call_chain": [],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 48,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "TestLibrary.class",
+      "to_lock": "this",
+      "from_class": "TestLibrary",
+      "from_method": "getExtraProperties",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestLibrary.getExtraProperties",
+        "MockRAMDirectory.close"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+      "line_number": 371,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "TestLibrary.class",
+      "to_lock": "dir",
+      "from_class": "TestLibrary",
+      "from_method": "getExtraProperties",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestLibrary.getExtraProperties",
+        "MockRAMInputStream.close"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+      "line_number": 371,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "TestLibrary.class",
+      "to_lock": "ps",
+      "from_class": "TestLibrary",
+      "from_method": "getExtraProperties",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestLibrary.getExtraProperties",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+      "line_number": 374,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "TestLibrary.class",
+      "to_lock": "pw",
+      "from_class": "TestLibrary",
+      "from_method": "getExtraProperties",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestLibrary.getExtraProperties",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestLibrary.java",
+      "line_number": 374,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "ps",
+      "to_lock": "pw",
+      "from_class": "TestFailedException",
+      "from_method": "printStackTrace",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestFailedException.printStackTrace",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+      "line_number": 61,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "pw",
+      "to_lock": "ps",
+      "from_class": "TestFailedException",
+      "from_method": "printStackTrace",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "TestFailedException.printStackTrace",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+      "line_number": 76,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o1",
+      "to_lock": "ps",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "DeadlockMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 24,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o1",
+      "to_lock": "pw",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "DeadlockMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 24,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "ps",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "DeadlockMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 43,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "pw",
+      "from_class": "DeadlockMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "DeadlockMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 43,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o1",
+      "to_lock": "ps",
+      "from_class": "Thread1",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Thread1.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 24,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o1",
+      "to_lock": "pw",
+      "from_class": "Thread1",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Thread1.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 24,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "ps",
+      "from_class": "Thread2",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Thread2.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 43,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o2",
+      "to_lock": "pw",
+      "from_class": "Thread2",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Thread2.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "line_number": 43,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o",
+      "to_lock": "ps",
+      "from_class": "WaitingMonitorTest",
+      "from_method": "main",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "WaitingMonitorTest.main",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "line_number": 17,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o",
+      "to_lock": "pw",
+      "from_class": "WaitingMonitorTest",
+      "from_method": "main",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "WaitingMonitorTest.main",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "line_number": 17,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o",
+      "to_lock": "ps",
+      "from_class": "WaitingMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "WaitingMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "line_number": 17,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "o",
+      "to_lock": "pw",
+      "from_class": "WaitingMonitorTest",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "WaitingMonitorTest.run",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "line_number": 17,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "ob",
+      "to_lock": "ps",
+      "from_class": "GlobalDriver",
+      "from_method": "startStep",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "GlobalDriver.startStep",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+      "line_number": 61,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "ob",
+      "to_lock": "pw",
+      "from_class": "GlobalDriver",
+      "from_method": "startStep",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "GlobalDriver.startStep",
+        "TestFailedException.printStackTrace"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/jacontebe/src/edu/illinois/jacontebe/globalevent/GlobalDriver.java",
+      "line_number": 61,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "this",
+      "to_lock": "dir",
+      "from_class": "Groovy4736",
+      "from_method": "writeFile",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Groovy4736.writeFile",
+        "MockRAMInputStream.close"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/groovy/src/Groovy4736.java",
+      "line_number": 70,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "testBasePool",
+      "to_lock": "this",
+      "from_class": "Writer",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Writer.run",
+        "MockRAMDirectory.close"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "line_number": 163,
+      "source": "treesitter"
+    },
+    {
+      "from_lock": "testBasePool",
+      "to_lock": "dir",
+      "from_class": "Writer",
+      "from_method": "run",
+      "mechanism": "call_to_locking_method",
+      "call_chain": [
+        "Writer.run",
+        "MockRAMInputStream.close"
+      ],
+      "file_path": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "line_number": 163,
+      "source": "treesitter"
+    }
+  ],
+  "wait_notify_summary": {
+    "classes_with_wait": [
+      "Dbcp271",
+      "Dbcp369",
+      "DeadlockMonitorTest",
+      "Derby5447",
+      "Derby5560",
+      "Derby5561",
+      "DriverThread",
+      "FillBufferThread",
+      "GlobalDriver",
+      "NullRunnable",
+      "RacingThreadsTest",
+      "Test46",
+      "Test4779253",
+      "Test50463",
+      "Test6934356",
+      "Test6977738",
+      "Test7122142",
+      "TestBarrier",
+      "TestConnection",
+      "TestThread",
+      "Thread1",
+      "Thread2",
+      "Thread3",
+      "WaitingMonitorTest",
+      "WorkerThread",
+      "WorkerThread2",
+      "Write",
+      "Writer"
+    ],
+    "classes_with_notify": [
+      "GlobalDriver"
+    ],
+    "classes_with_wait_but_no_notify": [
+      "Dbcp271",
+      "Dbcp369",
+      "DeadlockMonitorTest",
+      "Derby5447",
+      "Derby5560",
+      "Derby5561",
+      "DriverThread",
+      "FillBufferThread",
+      "NullRunnable",
+      "RacingThreadsTest",
+      "Test46",
+      "Test4779253",
+      "Test50463",
+      "Test6934356",
+      "Test6977738",
+      "Test7122142",
+      "TestBarrier",
+      "TestConnection",
+      "TestThread",
+      "Thread1",
+      "Thread2",
+      "Thread3",
+      "WaitingMonitorTest",
+      "WorkerThread",
+      "WorkerThread2",
+      "Write",
+      "Writer"
+    ]
+  },
+  "candidate_matches": [
+    {
+      "type": "resource_deadlock_cycle",
+      "lock_a": "o1",
+      "lock_b": "o2",
+      "edge_a": {
+        "from_class": "Thread1",
+        "from_method": "run",
+        "mechanism": "nested_synchronized",
+        "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+        "line": 29,
+        "source": "treesitter"
+      },
+      "edge_b": {
+        "from_class": "Thread2",
+        "from_method": "run",
+        "mechanism": "nested_synchronized",
+        "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+        "line": 48,
+        "source": "treesitter"
+      },
+      "best_matching_pattern": "JDK-6492872",
+      "similarity_score": 0.53125
+    },
+    {
+      "type": "resource_deadlock_cycle",
+      "lock_a": "ps",
+      "lock_b": "pw",
+      "edge_a": {
+        "from_class": "TestFailedException",
+        "from_method": "printStackTrace",
+        "mechanism": "call_to_locking_method",
+        "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+        "line": 61,
+        "source": "treesitter"
+      },
+      "edge_b": {
+        "from_class": "TestFailedException",
+        "from_method": "printStackTrace",
+        "mechanism": "call_to_locking_method",
+        "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/testUtils/TestFailedException.java",
+        "line": 76,
+        "source": "treesitter"
+      },
+      "best_matching_pattern": "DERBY-5447",
+      "similarity_score": 0.7
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "NullRunnable",
+      "file": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "TestConnection",
+      "file": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Dbcp271",
+      "file": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Thread1",
+      "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test7122142",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/Test7122142.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Writer",
+      "file": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Thread2",
+      "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Derby5561",
+      "file": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5561.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test46",
+      "file": "JaConTeBe_TSVD/jacontebe/pool/src/org/apache/commons/pool/Test46.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Dbcp369",
+      "file": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/datasources/Dbcp369.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "FillBufferThread",
+      "file": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.25
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test6934356",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "DriverThread",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "TestThread",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test6977738",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6977738.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Derby5447",
+      "file": "JaConTeBe_TSVD/jacontebe/derby/src/org/apache/derby/impl/store/raw/data/Derby5447.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test50463",
+      "file": "JaConTeBe_TSVD/jacontebe/log4j/src/org/apache/log4j/Test50463.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "TestBarrier",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test6934356.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Thread3",
+      "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Derby5560",
+      "file": "JaConTeBe_TSVD/jacontebe/derby/src/Derby5560.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Test4779253",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "WorkerThread2",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk6/src/Test4779253.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "Write",
+      "file": "JaConTeBe_TSVD/jacontebe/dbcp/src/org/apache/commons/dbcp/Dbcp271.java",
+      "best_matching_pattern": "LUCENE-1544",
+      "similarity_score": 0.22380952380952382
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "DeadlockMonitorTest",
+      "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/DeadlockMonitorTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "WaitingMonitorTest",
+      "file": "JaConTeBe_TSVD/jacontebe/jacontebe/test/edu/illinois/jacontebe/monitors/WaitingMonitorTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.2
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "WorkerThread",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "best_matching_pattern": "LOG4J-38137",
+      "similarity_score": 0.225
+    },
+    {
+      "type": "wait_without_notify",
+      "class": "RacingThreadsTest",
+      "file": "JaConTeBe_TSVD/jacontebe/jdk7/src/RacingThreadsTest.java",
+      "best_matching_pattern": "LUCENE-2783",
+      "similarity_score": 0.22631578947368422
+    }
+  ]
+}
