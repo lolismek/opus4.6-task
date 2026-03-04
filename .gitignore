@@ -32,4 +32,5 @@ Thumbs.db
 JaConTeBe_TSVD/
 
 # Output artifacts
+output/
 *.log
