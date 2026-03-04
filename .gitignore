@@ -37,6 +37,3 @@ output/
 
 # Harbor run outputs
 jobs/
-
-# Cloned repos for tasks (have their own git history)
-tasks/
