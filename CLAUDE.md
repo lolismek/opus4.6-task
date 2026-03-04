@@ -13,6 +13,7 @@ This repository is a research project for analyzing and cataloging **Java concur
 - `deadlock_patterns.json` — Machine-readable structured catalog with lock graphs, abstract templates, and metadata for each deadlock bug. Designed for programmatic pattern injection.
 - `lock_graph_pipeline/` — Python pipeline for extracting lock graphs from Java repos. See `lock_graph_pipeline/README.md` for full documentation.
 - `output/` — Generated lock graph outputs (JSON + Markdown) from pipeline runs.
+- `harbor_tasks/` — [Harbor](https://github.com/harbor-framework/harbor) benchmark tasks for evaluating AI agents on concurrency bug fixing. Each task is a standalone Docker environment with a buggy Java file, Fray-based verification, and a gold patch. See `harbor_tasks/PORTING_GUIDE.md` for how to port more tasks from [SCTBench](https://github.com/cmu-pasta/spaghetti-bench).
 
 ## Key Data
 

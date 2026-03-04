@@ -1,15 +1,10 @@
 #!/bin/bash
-# Gold patch: fix Deadlock01Bad by making thread2 acquire locks in the same
-# order as thread1 (a first, then b).
-#
-# Original thread2:
-#   b.lock();  ... a.lock();   (opposite order → deadlock)
-# Fixed thread2:
-#   a.lock();  ... b.lock();   (same order as thread1 → no deadlock)
+# Gold patch: fix Deadlock01Bad by making both threads acquire locks
+# in the same order (a first, then b), eliminating the cyclic dependency.
 
 cd /app
 
-cat > src/main/java/Deadlock01Bad.java << 'JAVA'
+cat > Deadlock01Bad.java << 'JAVA'
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Deadlock01Bad {

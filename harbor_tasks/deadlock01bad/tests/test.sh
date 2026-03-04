@@ -2,10 +2,10 @@
 cd /app
 
 # Recompile with agent's changes
-./gradlew compileJava compileTestJava --no-daemon 2>/dev/null
+javac Deadlock01Bad.java 2>/dev/null
 
-# Run Fray test
-./gradlew frayTest --no-daemon > /tmp/fray_output.txt 2>&1
+# Run Fray to systematically explore thread interleavings
+fray -cp . Deadlock01Bad -- --iter 1000 --redirect-stdout --output=/tmp/fray_workdir > /tmp/fray_output.txt 2>&1
 RESULT=$?
 
 # Write reward
