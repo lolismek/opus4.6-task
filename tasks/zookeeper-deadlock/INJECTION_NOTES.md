@@ -94,7 +94,7 @@ A verification test confirms the deadlock triggers reliably:
 ### Running the verification test
 
 ```bash
-cd tasks/zookeeper
+cd tasks/zookeeper-deadlock/zookeeper
 mvn install -DskipTests    # Build all modules (needed once)
 mvn test -pl zookeeper-server -Dtest="DeadlockVerificationTest" -DfailIfNoTests=false
 ```

@@ -52,11 +52,14 @@ This repo implements each stage of that pipeline.
 ├── deadlock_patterns.json     # Machine-readable patterns with lock graphs
 ├── lock_graph_pipeline/       # Python tool: extract lock graphs from Java repos
 ├── harbor_tasks/              # Harbor benchmark tasks for AI agent evaluation
+│   ├── README.md              # Task format, running instructions, platform notes
 │   ├── PORTING_GUIDE.md       # How to port more SCTBench tasks
 │   └── deadlock01bad/         # Example task: 2-lock cyclic deadlock
-├── tasks/                     # Injection targets
-│   ├── INJECTION_NOTES.md     # Deadlock injection documentation
-│   └── zookeeper/             # ZooKeeper with injected ABBA deadlock
+├── tasks/                     # Injection targets (real codebases with injected bugs)
+│   ├── README.md              # Guide for creating new injection tasks
+│   └── zookeeper-deadlock/    # ZooKeeper with injected ABBA deadlock
+│       ├── INJECTION_NOTES.md # Lock cycle, trigger, verification docs
+│       └── zookeeper/         # The ZooKeeper repo clone
 ├── output/                    # Generated lock graph artifacts
 ├── JaConTeBe_TSVD/            # Cloned JaConTeBe benchmark (47 bug kernels)
 └── jobs/                      # Harbor evaluation run outputs
@@ -112,7 +115,7 @@ python -m lock_graph_pipeline /path/to/java/src --mode both --infer-out /path/to
 
 ### 3. Deadlock Injection
 
-Uses lock graph output + pattern catalog to inject realistic deadlocks into target repos at natural insertion points. Documented in [`tasks/INJECTION_NOTES.md`](tasks/INJECTION_NOTES.md).
+Uses lock graph output + pattern catalog to inject realistic deadlocks into target repos at natural insertion points. See [`tasks/README.md`](tasks/README.md) for the general injection workflow and [`tasks/zookeeper-deadlock/INJECTION_NOTES.md`](tasks/zookeeper-deadlock/INJECTION_NOTES.md) for a worked example.
 
 **Example**: DBCP-270 pattern (Two-Object ABBA Cycle) injected into ZooKeeper's leader election code:
 - `Leader.sendObserverPacket()` acquires `Leader.this` → `LearnerHandler.this`

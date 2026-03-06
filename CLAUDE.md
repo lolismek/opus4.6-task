@@ -13,7 +13,8 @@ This repository is a research project for analyzing and cataloging **Java concur
 - `deadlock_patterns.json` — Machine-readable structured catalog with lock graphs, abstract templates, and metadata for each deadlock bug. Designed for programmatic pattern injection.
 - `lock_graph_pipeline/` — Python pipeline for extracting lock graphs from Java repos. See `lock_graph_pipeline/README.md` for full documentation.
 - `output/` — Generated lock graph outputs (JSON + Markdown) from pipeline runs.
-- `harbor_tasks/` — [Harbor](https://github.com/harbor-framework/harbor) benchmark tasks for evaluating AI agents on concurrency bug fixing. Each task is a standalone Docker environment with a buggy Java file, Fray-based verification, and a gold patch. See `harbor_tasks/PORTING_GUIDE.md` for how to port more tasks from [SCTBench](https://github.com/cmu-pasta/spaghetti-bench).
+- `tasks/` — Injection targets: real open-source repos with deadlocks injected. Each injection gets a wrapper directory (e.g., `tasks/zookeeper-deadlock/`) containing `INJECTION_NOTES.md` and the repo clone. See `tasks/README.md` for the injection workflow.
+- `harbor_tasks/` — [Harbor](https://github.com/harbor-framework/harbor) benchmark tasks for evaluating AI agents on concurrency bug fixing. Each task is a standalone Docker environment with a buggy Java file, Fray-based verification, and a gold patch. See `harbor_tasks/README.md` for task format and `harbor_tasks/PORTING_GUIDE.md` for porting SCTBench tasks.
 
 ## Key Data
 
