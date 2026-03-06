@@ -22,7 +22,8 @@ This repo implements each stage of that pipeline.
   (47 real concurrency bugs)    │
                                 ▼
                         Pattern Catalog
-                    (23 deadlocks, 5 pattern types)
+                    (23 deadlocks + 1 synthetic,
+                     6 pattern types)
                                 │
                                 ▼
   Target Repo ──► Lock Graph Pipeline ──► lock_graph.json
@@ -67,7 +68,7 @@ This repo implements each stage of that pipeline.
 
 Derived from the [JaConTeBe benchmark](https://mir.cs.illinois.edu/marinov/publications/LinETAL15JaConTeBe.pdf) (ASE 2015) — 47 concurrency bug kernels from 8 open-source projects (DBCP, Derby, Groovy, JDK, Log4j, Lucene, Commons Pool).
 
-We cataloged **23 deadlock bugs** into **5 recurring patterns**:
+We cataloged **23 deadlock bugs** into **5 recurring patterns**, plus **1 synthetic injection pattern** adapted from a Go concurrency bug observed in a separate project:
 
 | Pattern | Count | Example |
 |---------|-------|---------|
@@ -76,6 +77,9 @@ We cataloged **23 deadlock bugs** into **5 recurring patterns**:
 | All-Waiters / Missed Notify | 4 | `notify()` instead of `notifyAll()`, or signal before wait |
 | Serialization Graph Cycle | 3 | Lock acquired during `readObject()`/`writeObject()` |
 | Infrastructure-vs-Application Lock | 3 | Framework lock conflicts with application lock |
+| 3-Node Conditional Callback Cycle | 1 | 3-lock cycle with conditional closing edge via listener callback (SYNTH-001) |
+
+The synthetic pattern (SYNTH-001) was derived from observing a 3-node mutex+channel deadlock in a Go codebase and carefully adapting it to idiomatic Java concurrency primitives (`synchronized`, `ReentrantReadWriteLock`, `ReentrantLock` + `Condition`). The Go channel dependency was translated to a callback/listener pattern — the closest Java analog that preserves the key difficulty property of data-flow-hidden lock dependencies. See the catalog entry for full details on what translates faithfully and what was adapted.
 
 - **`deadlock_catalog.md`** — Detailed descriptions with lock graphs for each bug
 - **`deadlock_patterns.json`** — Structured data for programmatic use (lock graphs, abstract templates, injection metadata)

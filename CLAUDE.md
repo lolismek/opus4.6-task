@@ -17,8 +17,9 @@ This repository is a research project for analyzing and cataloging **Java concur
 
 ## Key Data
 
-- **23 deadlock bugs** total: 16 resource deadlocks (cyclic lock ordering), 7 wait-notify deadlocks (communication/missed signals)
-- **5 recurring patterns**: Two-Object Cycle, Callback-Induced Cycle, All-Waiters/Missed Notify, Serialization Graph Cycle, Infrastructure-vs-Application Lock
+- **23 deadlock bugs** from JaConTeBe: 16 resource deadlocks (cyclic lock ordering), 7 wait-notify deadlocks (communication/missed signals)
+- **1 synthetic injection pattern** (SYNTH-001): 3-node conditional callback cycle, adapted from a Go concurrency bug to idiomatic Java
+- **6 recurring patterns**: Two-Object Cycle, Callback-Induced Cycle, All-Waiters/Missed Notify, Serialization Graph Cycle, Infrastructure-vs-Application Lock, 3-Node Conditional Callback Cycle
 - Bug kernel source files are Java, located under `JaConTeBe_TSVD/jacontebe/{project}/src/`
 
 ## Lock Graph Pipeline
