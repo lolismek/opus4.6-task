@@ -1,31 +1,38 @@
-# Deadlock Bug in Kafka Streams
+# Deadlock in Kafka Streams
 
-A deadlock has been detected in the Kafka Streams module. The verification test `Synth001DeadlockVerificationTest` reproduces a cyclic lock ordering bug involving three locks and three threads. When the deadlock is triggered, threads hang indefinitely and `ThreadMXBean.findDeadlockedThreads()` reports deadlocked threads.
+A Kafka Streams application occasionally hangs during rebalancing. Thread
+dumps show multiple threads permanently blocked, each waiting for a lock
+held by another. The deadlock involves the streams processing lifecycle —
+specifically the interaction between administrative operations, background
+state restoration, and topology management.
 
-## Symptoms
+## Symptom
 
-- Under certain thread interleavings, three threads form a circular wait on three different lock primitives (a mix of intrinsic monitors, `ReentrantReadWriteLock`, and `ReentrantLock`).
-- The deadlock is intermittent — it depends on runtime timing and Kafka Streams lifecycle state.
-- The verification test directly exercises the lock acquisition ordering pattern extracted from the production code.
+- Under concurrent rebalancing and administrative API calls, threads
+  form a circular wait and never make progress.
+- The hang is intermittent and depends on timing between operations.
+- `ThreadMXBean.findDeadlockedThreads()` confirms deadlocked threads.
 
-## How to verify
+## Environment
 
-Recompile and run the verification test:
+- Source: `/app/streams/src/main/java/org/apache/kafka/streams/`
+- Build: `./gradlew :streams:compileJava :streams:compileTestJava -x test --no-daemon`
 
-```bash
-cd /app
-./gradlew :streams:compileJava :streams:compileTestJava -x test --no-daemon
-./gradlew :streams:test --tests "org.apache.kafka.streams.processor.internals.Synth001DeadlockVerificationTest" --no-daemon
-```
+## Using Fray
 
-The test currently **passes** (meaning it successfully detects the deadlock). Your fix is correct when the test **fails** — i.e., the deadlock can no longer be reproduced.
+The `fray` tool systematically explores thread interleavings to find
+concurrency bugs. To use it with this project:
 
-## Where to look
+1. Write a Java class with a `main()` method that exercises the
+   suspected deadlock scenario.
+2. Place it in the test source tree and compile.
+3. Run it through Fray:
+   ```
+   fray-gradle your.package.YourTestClass -- --iter 1000
+   ```
+   Exit code 0 means no deadlock found; non-zero means Fray detected a bug.
 
-The streams module source is at `/app/streams/src/main/java/org/apache/kafka/streams/`. The deadlock involves lock ordering across multiple classes in the `processor/internals` package and the top-level `KafkaStreams` class.
+## Your Task
 
-The tool `fray` is also available for systematic thread interleaving exploration if needed.
-
-## Your task
-
-Find and fix the root cause of the cyclic lock dependency so that the deadlock cannot occur under any thread interleaving. The fix should break the lock cycle without removing necessary synchronization — ensure thread safety is preserved.
+Find and fix the root cause of the cyclic lock dependency so that the
+deadlock cannot occur under any thread interleaving.

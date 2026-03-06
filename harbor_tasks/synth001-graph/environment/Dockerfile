@@ -52,8 +52,28 @@ RUN yum install -y findutils tar gzip && yum clean all
 
 COPY kafka/ /build/kafka/
 WORKDIR /build/kafka
+
+# Add printTestClasspath task so Fray can discover the test classpath
+RUN cat >> /build/kafka/build.gradle << 'GRADLE'
+
+subprojects {
+    tasks.register("printTestClasspath") {
+        doLast {
+            def cp = []
+            cp.addAll(sourceSets.main.output.classesDirs.files.collect { it.absolutePath })
+            cp.addAll(sourceSets.test.output.classesDirs.files.collect { it.absolutePath })
+            cp.addAll(configurations.testRuntimeClasspath.files.collect { it.absolutePath })
+            println cp.join(File.pathSeparator)
+        }
+    }
+}
+GRADLE
+
 # Compile main + test classes for the streams module
 RUN ./gradlew :streams:compileJava :streams:compileTestJava -x test --no-daemon
+
+# Pre-compute test classpath for fray-gradle wrapper
+RUN ./gradlew -q :streams:printTestClasspath --no-daemon > /tmp/streams-test-classpath.txt
 
 # --- Stage 3: Final image ---
 FROM --platform=linux/amd64 amazoncorretto:25
@@ -72,5 +92,17 @@ COPY --from=kafka-builder /root/.gradle/ /root/.gradle/
 # The agent edits source here and uses ./gradlew to recompile
 COPY --from=kafka-builder /build/kafka/ /app/
 WORKDIR /app
+
+# Hide verification test from agent — moved to /opt/verifier/ so test.sh can inject it at verification time
+RUN mkdir -p /opt/verifier \
+    && mv /app/streams/src/test/java/org/apache/kafka/streams/processor/internals/Synth001DeadlockVerificationTest.java \
+       /opt/verifier/Synth001DeadlockVerificationTest.java \
+    && rm -f /app/streams/build/classes/java/test/org/apache/kafka/streams/processor/internals/Synth001DeadlockVerificationTest.class
+
+# Pre-computed test classpath for fray-gradle (fallback if live Gradle query fails)
+COPY --from=kafka-builder /tmp/streams-test-classpath.txt /opt/fray/streams-test-classpath.txt
+
+# fray-gradle wrapper: runs a test class through Fray using the streams test classpath
+RUN printf '#!/bin/bash\nset -e\nif [ $# -lt 1 ]; then echo "Usage: fray-gradle <main-class> [-- fray-options...]"; exit 1; fi\nMAIN_CLASS="$1"; shift\nFRAY_OPTS=""\nif [ "$1" = "--" ]; then shift; FRAY_OPTS="$@"; fi\ncd /app\nCP=$(./gradlew -q :streams:printTestClasspath --no-daemon 2>/dev/null || cat /opt/fray/streams-test-classpath.txt)\nexec fray -cp "$CP" "$MAIN_CLASS" -- $FRAY_OPTS\n' > /usr/local/bin/fray-gradle && chmod +x /usr/local/bin/fray-gradle
 
 RUN mkdir -p /logs/verifier
