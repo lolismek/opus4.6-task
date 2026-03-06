@@ -5,7 +5,7 @@ cd /app
 javac Deadlock01Bad.java 2>/dev/null
 
 # Run Fray to systematically explore thread interleavings
-fray -cp . Deadlock01Bad -- --iter 1000 --redirect-stdout --output=/tmp/fray_workdir > /tmp/fray_output.txt 2>&1
+fray -cp . Deadlock01Bad -- --iter 100000 --redirect-stdout --output=/tmp/fray_workdir > /tmp/fray_output.txt 2>&1
 RESULT=$?
 
 # Write reward
