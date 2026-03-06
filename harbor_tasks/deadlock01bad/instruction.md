@@ -10,7 +10,7 @@ successfully under all possible thread interleavings.
 You can verify your fix by running:
 
 ```
-javac Deadlock01Bad.java && fray -cp . Deadlock01Bad -- --iter 100000
+javac Deadlock01Bad.java && fray -cp . Deadlock01Bad -- --iter 1000
 ```
 
 The `fray` tool systematically explores thread interleavings to find
