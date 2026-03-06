@@ -535,5 +535,56 @@
       "operation_1": "create_object() → lock(hierarchy) → read_config() → lock(config)",
       "operation_2": "reload_config() → lock(config) → update_objects() → lock(hierarchy)"
     }
+  },
+  {
+    "id": "SYNTH-001",
+    "type": "resource_deadlock",
+    "subtype": "synthetic_injection",
+    "project": "Synthetic",
+    "version": "N/A",
+    "source_file": "synthetic/designed_for_injection",
+    "bug_url": null,
+    "pattern": "three_node_conditional_callback_cycle",
+    "num_threads": 3,
+    "locks": ["CacheManager.this", "ConnPool.rwLock.writeLock", "SessionStore.lock"],
+    "lock_graph": {
+      "Thread1_CacheRead": ["CacheManager.this", "ConnPool.rwLock.writeLock"],
+      "Thread2_BackgroundRefresh": ["ConnPool.rwLock.writeLock", "SessionStore.lock"],
+      "Thread3_SessionListener": ["SessionStore.lock", "CacheManager.this"]
+    },
+    "description": "3-node cycle across 3 classes with mixed lock primitives. Thread1 holds CacheManager intrinsic lock (cache miss path), calls ConnPool which acquires write lock via inherited AbstractPool.acquireExclusive(). Thread2 (background refresh) holds ConnPool write lock, calls SessionStore.refreshSession() on session expiry (acquires ReentrantLock). Thread3 holds SessionStore lock during refresh, fires registered SessionListener whose callback calls CacheManager.invalidate() (needs intrinsic lock). Closing edge is conditional: listener only invalidates cache during shard rebalancing or leader election, not during normal session renewal.",
+    "trigger_operations": [
+      "CacheManager.get()",
+      "ConnPool.fetchFromBackend()",
+      "AbstractPool.acquireExclusive()",
+      "SessionStore.refreshSession()",
+      "SessionListener.onSessionRefreshed()"
+    ],
+    "abstract_template": {
+      "resource_A": "cache_manager (intrinsic monitor / synchronized)",
+      "resource_B": "connection_pool (ReentrantReadWriteLock.writeLock, hidden in superclass)",
+      "resource_C": "session_store (ReentrantLock + Condition)",
+      "edge_A_B": "cache_miss → fetch_from_backend() → super.acquireExclusive() → writeLock",
+      "edge_B_C": "session_expired → refresh_session() → sessionStore.lock",
+      "edge_C_A": "listener_callback → cache_invalidate() → synchronized(cacheManager)",
+      "conditional_edge": "edge_C_A only fires during shard rebalance or leader election",
+      "inheritance_hiding": "writeLock acquisition hidden in AbstractPool.acquireExclusive() (2 class levels)",
+      "rw_asymmetry": "cycle only closes under write lock (exclusive); read lock (shared) does not block"
+    },
+    "difficulty_features": {
+      "cycle_length": 3,
+      "conditional_edges": 1,
+      "cross_file": true,
+      "inheritance_depth": 2,
+      "mixed_lock_primitives": ["synchronized", "ReentrantReadWriteLock", "ReentrantLock", "Condition"],
+      "callback_closing_edge": true,
+      "rw_lock_asymmetry": true,
+      "secondary_deadlock_vector": "Condition.await() releases SessionStore.lock but thread retains ConnPool.writeLock, creating hold-and-wait orthogonal to main cycle",
+      "red_herrings": [
+        "synchronized methods on same CacheManager monitor (no cycle)",
+        "ConcurrentHashMap.computeIfAbsent() in ConnPool (correct, no race)",
+        "volatile field read under lock in SessionStore (harmless redundancy)"
+      ]
+    }
   }
 ]

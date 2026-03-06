@@ -7,10 +7,11 @@
 ## Overview
 
 - **Total concurrency bugs in JaConTeBe**: 47
-- **Total deadlock bugs**: 23
-  - **Resource deadlocks** (cyclic lock ordering): 16
+- **Total deadlock bugs**: 23 (from JaConTeBe) + 1 synthetic injection pattern
+  - **Resource deadlocks** (cyclic lock ordering): 16 + 1 synthetic
   - **Wait-notify deadlocks** (missed signals / communication): 7
 - **Projects**: DBCP, Derby, Groovy, Log4j, Lucene, Commons Pool, JDK6, JDK7
+- **Synthetic patterns**: 1 (designed for injection into large codebases)
 
 ---
 
@@ -474,6 +475,56 @@ Cycle: LoggerHierarchy ↔ LogManager.config
 | 21 | JDK-6648001 | Wait-Notify | HTTP auth missed notify | AuthInfo monitor | 2 |
 | 22 | JDK-7122142 | Resource | Mutual annotation refs | AnnA ↔ AnnB | 2 |
 | 23 | JDK-8010939 | Resource | LogManager config vs create | LogHierarchy ↔ Config | 2 |
+| 25 | SYNTH-001 | Resource | 3-node conditional callback cycle | CacheMgr → ConnPool → SessionStore → CacheMgr | 3 |
+
+---
+
+### 25. SYNTH-001 — Resource Deadlock (Synthetic Injection Pattern)
+- **Source**: Designed for injection into large Java codebases; adapted from cross-language concurrency research
+- **Type**: Resource deadlock with callback-induced closing edge
+- **Target**: Any Java project with caching + connection pooling + session management
+
+**Pattern**: 3-Node Conditional Callback Cycle
+```
+Thread1 (cache read):          synchronized(CacheManager) → ConnPool.writeLock
+Thread2 (background refresh):  ConnPool.writeLock → SessionStore.lock
+Thread3 (session listener):    SessionStore.lock → listener callback → synchronized(CacheManager)
+Cycle: CacheManager → ConnPool → SessionStore → CacheManager
+```
+
+**Description**: Three classes each manage their own lock. CacheManager uses `synchronized` methods (intrinsic monitor). ConnPool uses a `ReentrantReadWriteLock`, with the write lock acquisition hidden in a superclass (`AbstractPool.acquireExclusive()`). SessionStore uses a `ReentrantLock` with a `Condition` variable.
+
+Thread1 calls `CacheManager.get()` (acquires intrinsic lock on cache miss), which calls `connPool.fetchFromBackend()` (tries to acquire write lock via `super.acquireExclusive()`). Thread2 is a background refresh task that already holds the write lock and calls `sessionStore.refreshSession()` when the session is expired (tries to acquire SessionStore.lock). Thread3 is inside `SessionStore.refreshSession()` (holds SessionStore.lock), which fires a registered `SessionListener`; the listener calls `cacheManager.invalidate()` (tries to acquire intrinsic lock).
+
+**Conditional closing edge**: The listener callback (SessionStore → CacheManager) only fires when the refreshed session maps to a different shard or host than the previous one (e.g., during shard rebalancing or leader election). Under normal session renewal (same shard), the listener is a no-op. The deadlock is invisible during regular operation and unit testing.
+
+**Layers of hiddenness**:
+1. **Inheritance**: ConnPool's write lock acquisition is in `AbstractPool.acquireExclusive()`, called via `super.acquireExclusive()`. The agent must trace the class hierarchy (2 levels) to find the lock.
+2. **Mixed lock primitives**: `synchronized` (CacheManager) + `ReentrantReadWriteLock` (ConnPool) + `ReentrantLock` + `Condition` (SessionStore). Syntactically disjoint — no single tool signature or grep pattern finds all three.
+3. **Callback closing edge**: The closing edge goes through a `SessionListener` interface. The listener was registered during initialization (e.g., in a Spring `@PostConstruct` or constructor), far from the deadlock site. The dependency is data-flow (who registered this listener?) not control-flow.
+4. **ReadWriteLock asymmetry**: The ConnPool edge only blocks when the *write* lock is held (exclusive). Read locks are shared and don't block. The deadlock only manifests during write-heavy paths (pool maintenance, connection refresh), not during normal read-heavy cache lookups.
+
+**Secondary deadlock vector (Condition.await())**: If a thread holds ConnPool.writeLock and calls `sessionStore.awaitReady()`, the `Condition.await()` releases SessionStore.lock but the thread still holds the write lock. Another thread needing the write lock to complete the work that would signal the condition is blocked — a hold-and-wait deadlock orthogonal to the main 3-node cycle. This also confuses static analysis: tools see "lock released" at the `await()` point and may stop tracing.
+
+**Red herrings**:
+- 2–3 `synchronized` methods on CacheManager that look suspicious but are all protected by the same intrinsic monitor (no cycle possible)
+- A `ConcurrentHashMap` in ConnPool with correct `computeIfAbsent()` usage that looks racy but isn't
+- A `volatile` field in SessionStore read under lock unnecessarily — looks like a concurrency bug but is harmless
+
+**Graph**:
+```
+   CacheManager ──synchronized──→ ConnPool
+   (intrinsic)                    (RWLock.writeLock,
+        ↑                         hidden in AbstractPool)
+        │                             │
+        │                             │ [only on session expiry]
+        │                             ↓
+   ←──callback──── SessionStore
+   [only on shard  (ReentrantLock + Condition)
+    rebalance]
+```
+
+---
 
 ## Recurring Structural Patterns
 
@@ -496,3 +547,7 @@ Object graph has bidirectional references; serialization locks objects as it tra
 ### Pattern 5: Infrastructure Lock vs Application Lock
 System-level lock (ClassLoader, LogManager, System.Properties) vs. application-level lock.
 **Bugs**: JDK-6977738, JDK-8010939, GROOVY-4736
+
+### Pattern 6: 3-Node Conditional Callback Cycle
+Three locks across three classes form an A→B→C→A cycle. The closing edge goes through a callback/listener interface and only triggers under a specific runtime condition. Mixed lock primitives (intrinsic + explicit) and inheritance-hidden acquisition make the cycle invisible to single-primitive analysis and direct grep.
+**Bugs**: SYNTH-001
