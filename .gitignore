@@ -37,3 +37,12 @@ output/
 
 # Harbor run outputs
 jobs/
+
+# Infer build artifacts
+infer-out/
+
+# Preserved nested git histories
+.git_preserved/
+
+# Test SSH keys from kafka (triggers GitHub push protection)
+**/tests/docker/ssh/
