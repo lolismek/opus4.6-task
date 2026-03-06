@@ -112,10 +112,13 @@ RUN mkdir -p /logs/verifier
 **IMPORTANT: .dockerignore** — Create `environment/.dockerignore` with:
 ```
 kafka/.git
+kafka/.git_preserved
 kafka/.gradle
 **/build/
 ```
-This prevents copying git history (~17MB), local Gradle cache, and stale build artifacts into the Docker build context. The kafka/ directory inside environment/ should be a copy of your injected Kafka source (copy it from your working directory in `tasks/kafka-deadlock/<your_folder>/kafka/`).
+This prevents copying git history, local Gradle cache, and stale build artifacts into the Docker build context. Note: in the injected kafka copies, `.git` has been renamed to `.git_preserved` — we exclude BOTH to be safe, and to prevent the agent from using git history to trivially find the injected changes.
+
+The kafka/ directory inside environment/ should be a copy of your injected Kafka source (copy it from your working directory in `tasks/kafka-deadlock/<your_folder>/kafka/`).
 
 **test.sh**: The verifier recompiles the agent's changes and runs the verification test using Gradle.
 
