@@ -98,7 +98,6 @@ RUN mkdir -p /opt/verifier \
     && mv /app/streams/src/test/java/org/apache/kafka/streams/state/internals/Dbcp270DeadlockVerificationTest.java \
        /opt/verifier/Dbcp270DeadlockVerificationTest.java \
     && rm -f /app/streams/build/classes/java/test/org/apache/kafka/streams/state/internals/Dbcp270DeadlockVerificationTest.class
-
 # Pre-computed test classpath for fray-gradle (fallback if live Gradle query fails)
 COPY --from=kafka-builder /tmp/streams-test-classpath.txt /opt/fray/streams-test-classpath.txt
 

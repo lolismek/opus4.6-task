@@ -86,7 +86,6 @@ RUN mkdir -p /opt/verifier \
     && mv /app/streams/src/test/java/org/apache/kafka/streams/processor/internals/Synth001DeadlockVerificationTest.java \
        /opt/verifier/Synth001DeadlockVerificationTest.java \
     && rm -f /app/streams/build/classes/java/test/org/apache/kafka/streams/processor/internals/Synth001DeadlockVerificationTest.class
-
 COPY --from=kafka-builder /tmp/streams-test-classpath.txt /opt/fray/streams-test-classpath.txt
 
 RUN printf '#!/bin/bash\nset -e\nif [ $# -lt 1 ]; then echo "Usage: fray-gradle <main-class> [-- fray-options...]"; exit 1; fi\nMAIN_CLASS="$1"; shift\nFRAY_OPTS=""\nif [ "$1" = "--" ]; then shift; FRAY_OPTS="$@"; fi\ncd /app\nCP=$(./gradlew -q :streams:printTestClasspath --no-daemon 2>/dev/null || cat /opt/fray/streams-test-classpath.txt)\nexec fray -cp "$CP" "$MAIN_CLASS" -- $FRAY_OPTS\n' > /usr/local/bin/fray-gradle && chmod +x /usr/local/bin/fray-gradle
