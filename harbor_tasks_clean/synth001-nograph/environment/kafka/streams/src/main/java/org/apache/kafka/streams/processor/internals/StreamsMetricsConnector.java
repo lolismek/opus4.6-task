@@ -43,10 +43,8 @@ public class StreamsMetricsConnector extends AbstractMetricsTransport {
     }
 
     /**
-     * Fetches the latest metrics for the given topology. Under normal
-     * conditions this acquires a shared (read) lock, which cannot deadlock.
-     * However, when the transport is detected as stale, it falls through to
-     * {@link #refreshTransport()}, which acquires the exclusive (write) lock.
+     * Fetches the latest metrics for the given topology. If the transport
+     * connection is stale, refreshes it before fetching.
      *
      * @param topologyName the name of the topology to fetch metrics for
      * @return a map of metric name to value
@@ -69,8 +67,6 @@ public class StreamsMetricsConnector extends AbstractMetricsTransport {
 
     /**
      * Refreshes the transport connection and then fetches metrics.
-     * Acquires the write lock (exclusive) — this is the A->B edge in
-     * a potential lock ordering issue with the intrinsic monitor.
      */
     private Map<String, Double> refreshTransport(final String topologyName) {
         acquireExclusive();
@@ -87,9 +83,8 @@ public class StreamsMetricsConnector extends AbstractMetricsTransport {
     }
 
     /**
-     * Performs periodic transport maintenance. This is called from the
-     * state updater thread (Thread 2). Acquires write lock first, then
-     * validates the session which may acquire the session lock.
+     * Performs periodic transport maintenance, reconnecting if the
+     * transport has gone stale and revalidating the current session.
      */
     public void performMaintenance() {
         acquireExclusive();

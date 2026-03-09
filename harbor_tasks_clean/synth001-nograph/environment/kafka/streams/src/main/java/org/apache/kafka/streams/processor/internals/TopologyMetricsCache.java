@@ -44,8 +44,7 @@ public class TopologyMetricsCache {
     /**
      * Returns a cached metrics snapshot for the given topology, refreshing
      * from the backend if the cache entry is missing or stale.
-     * Thread 1 entry point: synchronized(this) -> metricsConnector.fetchLatestMetrics()
-     * which may acquire the transport write lock.
+     * Returns null if the topology is unknown.
      */
     public synchronized CachedMetricsSnapshot getSnapshot(final String topologyName) {
         final CachedMetricsSnapshot cached = cache.get(topologyName);

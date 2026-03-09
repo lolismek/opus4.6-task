@@ -76,8 +76,7 @@ public class MetricsSessionManager {
     }
 
     /**
-     * If the current session has expired, renew it. Called from the transport
-     * maintenance path (Thread 2 in the normal flow).
+     * If the current session has expired, renew it.
      */
     public void refreshSessionIfExpired() {
         sessionLock.lock();
@@ -92,7 +91,7 @@ public class MetricsSessionManager {
     }
 
     /**
-     * Force a session renewal. Called from the session renewal thread (Thread 3).
+     * Force a session renewal regardless of expiry status.
      */
     public void renewSession() {
         sessionLock.lock();
