@@ -20,8 +20,8 @@ with open('$CWS') as f:
 # Remove the call to recordFlushCompletion in putAndMaybeForward
 src = src.replace('        recordFlushCompletion(binaryKey, entry.entry().context().timestamp());\n', '')
 
-# Remove recordFlushCompletion method
-src = re.sub(r'\n    private void recordFlushCompletion\(final Bytes key, final long timestamp\) \{[^}]*\}\n', '\n', src)
+# Remove recordFlushCompletion method (has nested if-block, needs DOTALL)
+src = re.sub(r'\n    private void recordFlushCompletion\(final Bytes key, final long timestamp\) \{.*?\n    \}\n', '\n', src, flags=re.DOTALL)
 
 # Remove verifyPersistedWindow method (has try-with-resources, need multi-line)
 src = re.sub(r'\n    private void verifyPersistedWindow\(final Bytes key, final long timestamp\) \{.*?\n    \}\n', '\n', src, flags=re.DOTALL)
