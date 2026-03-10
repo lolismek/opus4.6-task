@@ -113,6 +113,6 @@ if [ -z "$CP" ]; then
 fi
 exec fray -cp "$CP" "$MAIN_CLASS" -- $FRAY_OPTS
 WRAPPER
-chmod +x /usr/local/bin/fray-gradle
+RUN chmod +x /usr/local/bin/fray-gradle
 
 RUN mkdir -p /logs/verifier
