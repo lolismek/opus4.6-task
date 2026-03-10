@@ -38,6 +38,10 @@ output/
 # Harbor run outputs
 jobs/
 
+# Deprecated directories (kept locally for backup)
+harbor_tasks/
+results/
+
 # Infer build artifacts
 infer-out/
 
