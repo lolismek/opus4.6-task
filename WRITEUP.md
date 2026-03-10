@@ -183,13 +183,13 @@ Importantly, Fray serves double duty: it is both a **tool available to the agent
 
 The grading suite (`tests/test.sh`) has two phases:
 
-### Phase 1: Compilation check
+### Phase 1: Compilation + Kafka tests
 
 ```bash
-./gradlew :streams:compileJava :streams:compileTestJava -x test --no-daemon
+./gradlew :streams:compileJava :streams:compileTestJava --no-daemon
 ```
 
-If the agent's changes break compilation, reward = 0 immediately. This catches a common failure mode (ill-formed fixes that introduce syntax or type errors).
+The agent's changes must compile and pass Kafka Streams' existing test suite. This ensures the fix doesn't break existing functionality — a deadlock fix that changes locking semantics could easily introduce regressions. If compilation or tests fail, reward = 0 immediately.
 
 ### Phase 2: Deadlock verification via Fray
 
@@ -338,30 +338,8 @@ The evaluation consumed approximately **$100 in Anthropic API credits** across a
 
 > *How would you approach creating 100 or 1,000 tasks like these in a week?*
 
-### Current bottleneck
+The pipeline already uses LLMs for injection — Claude performs the actual code injection guided by structured prompts with the pattern catalog and lock graph as context. The infrastructure (Docker builds, Fray verification, Harbor packaging) is templated. So the core loop works today: pick a pattern, pick a codebase, run the lock graph pipeline, prompt the LLM to inject, package as a Harbor task.
 
-The pipeline is semi-automated: pattern selection and injection point identification still require human judgment. Of the ~30 hours spent, roughly 10 were on infrastructure (Docker, Fray, Harbor), 10 on pattern cataloging and injection design, and 10 on evaluation. The injection step is the bottleneck — each injection requires understanding the target codebase's lock structure, choosing natural insertion points, writing plausible-looking code, and verifying the bug is triggerable.
+**To scale to 100+ tasks**, the main work is expanding to more target codebases. Currently everything targets Kafka Streams. Adding ZooKeeper, Cassandra, Netty, gRPC-Java, or Elasticsearch is straightforward — the lock graph pipeline already supports any Java project. Each new codebase × 6 patterns × 2 variants (graph/nograph) yields 12 tasks, so ~10 codebases gets to 100+. Parameterized variants (different lock types, cycle lengths, obfuscation levels) multiply further.
 
-### Approach for 100 tasks
-
-1. **More target codebases.** Currently all tasks target Kafka Streams. Expanding to other heavily-concurrent Java projects (ZooKeeper, Cassandra, Netty, gRPC-Java, Elasticsearch) provides fresh code for injection. The lock graph pipeline already supports any Java project.
-
-2. **LLM-assisted injection.** The lock graph pipeline produces machine-readable lock orderings. An LLM could be prompted: *"Here is a lock graph for ZooKeeper. Here is the DBCP-270 deadlock pattern (two-object ABBA cycle). Inject this pattern at a natural point in the codebase, using existing class names and coding conventions."* The human role becomes review and verification rather than creation.
-
-3. **Automated verification.** Every injected bug must be verified as triggerable. Fray automates this: inject the bug, write a Fray test, confirm it finds the deadlock. This step is already scriptable.
-
-4. **Parameterized variants.** Each pattern can be injected with different lock types (`synchronized` vs. `ReentrantLock` vs. `ReadWriteLock`), different cycle lengths (2-node, 3-node, 4-node), and different obfuscation levels. This multiplies tasks from a single injection site.
-
-### Approach for 1,000 tasks
-
-At this scale, the key constraint becomes **QA** — ensuring each task is (a) solvable, (b) non-trivial, and (c) has a correct gold solution:
-
-1. **Template-based generation.** Define parameterized injection templates (lock type, cycle length, obfuscation level, target module) and generate tasks combinatorially. Each template is verified once; instances inherit correctness.
-
-2. **Automated difficulty calibration.** Run each generated task against 3–5 agent trials to estimate pass rate. Tasks outside the 10–50% range are filtered or adjusted (e.g., adding/removing obfuscation, changing cycle length).
-
-3. **Diverse bug types.** Expand beyond deadlocks to races, atomicity violations, ordering bugs, and missed signals — the JaConTeBe catalog has 24 non-deadlock bugs that could be adapted. Spaghetti Bench's SCTBench suite has 28 additional patterns.
-
-4. **Cross-language extension.** The pattern catalog (cyclic lock ordering, callback-under-lock, missed signal) applies to any language with mutex-like primitives. Go (`sync.Mutex`, channels), Rust (`Mutex<T>`, `RwLock<T>`), and C++ (`std::mutex`) are natural targets.
-
-The fundamental scaling insight is that **pattern injection is composable**: once you have a verified pattern template and a lock graph for a target codebase, injection is mechanical. The creative work is in designing new patterns and choosing target codebases — and even that can be partially automated by mining bug databases (JIRA, GitHub Issues) for concurrency-related reports.
+**The bottleneck at scale is QA.** Each generated task must be verified: (a) the injected deadlock is actually triggerable by Fray, (b) the gold solution achieves reward = 1, (c) the task is non-trivial (pass rate in the 10–50% range, not 0% or 100%). Fray handles (a) automatically. For (b), the gold solution is just a revert of the injection — this is mechanical. For (c), the only reliable method is running 3–5 agent trials per task and filtering by pass rate, which costs ~$50 per task at current API prices. At 1,000 tasks, that's $50K in calibration runs — significant but tractable if the pipeline is otherwise automated.

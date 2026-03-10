@@ -117,7 +117,7 @@ The agent correctly identifies the injected deadlock cycle but runs out of time 
 
 ### 3. Compilation Error in Fix
 
-The agent's fix introduces compilation errors (e.g., missing imports, incorrect method signatures). The verifier's first phase catches this and assigns reward=0.
+The agent's fix introduces compilation errors (e.g., missing imports, incorrect method signatures). The verifier's first phase (compilation + Kafka tests) catches this and assigns reward=0.
 
 Example: Trial u4ZcDsH on Mac.
 
