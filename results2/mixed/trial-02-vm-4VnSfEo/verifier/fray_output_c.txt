@@ -1,0 +1,62 @@
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace7122686945605455689
+Iterations: 0
+Bug C present — creating observer cycle deadlock for Fray
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace7122686945605455689
+Iterations: 1
+Bug C present — creating observer cycle deadlock for Fray
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace7122686945605455689
+Iterations: 2
+Bug C present — creating observer cycle deadlock for Fray
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace7122686945605455689
+Iterations: 3
+Bug C present — creating observer cycle deadlock for Fray
+2026-03-10 01:19:19 [INFO]: Error found at iter: 3, step: 93, Elapsed time: 310ms
+
+2026-03-10 01:19:19 [INFO]: Error: org.pastalab.fray.runtime.DeadlockException
+Thread: Thread[#31,Thread-9,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Thread.join(Thread.java:1887)
+	at java.base/java.lang.Thread.join(Thread.java:1963)
+	at org.apache.kafka.streams.processor.internals.BugCVerificationTest.main(BugCVerificationTest.java:87)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.pastalab.fray.core.command.MethodExecutor.execute(Executor.kt:67)
+	at org.pastalab.fray.core.TestRunner.run$lambda$0(TestRunner.kt:61)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#32,Thread-10,5,main]
+Stacktrace: 
+	at java.base/java.lang.Thread.getStackTrace(Thread.java:2193)
+	at org.pastalab.fray.core.RunContext.reportError(RunContext.kt:137)
+	at org.pastalab.fray.core.RunContext.scheduleNextOperation(RunContext.kt:1231)
+	at org.pastalab.fray.core.RunContext.lockImpl(RunContext.kt:673)
+	at org.pastalab.fray.core.RunContext.lockLock-gIAlu-s(RunContext.kt:701)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onLockLock(RuntimeDelegate.kt:143)
+	at java.base/org.pastalab.fray.runtime.Runtime.onLockLock(Runtime.java:70)
+	at java.base/java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java)
+	at org.apache.kafka.streams.processor.internals.BugCVerificationTest.lambda$main$0(BugCVerificationTest.java:59)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#33,Thread-11,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Object.wait(Object.java:351)
+	at org.pastalab.fray.core.utils.Sync.block(Sync.kt:29)
+	at org.pastalab.fray.core.ThreadContext.block(ThreadContext.kt:24)
+	at org.pastalab.fray.core.RunContext.scheduleNextOperation(RunContext.kt:1283)
+	at org.pastalab.fray.core.RunContext.lockImpl(RunContext.kt:673)
+	at org.pastalab.fray.core.RunContext.lockLock-gIAlu-s(RunContext.kt:701)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onLockLock(RuntimeDelegate.kt:143)
+	at java.base/org.pastalab.fray.runtime.Runtime.onLockLock(Runtime.java:70)
+	at java.base/java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java)
+	at org.apache.kafka.streams.processor.internals.BugCVerificationTest.lambda$main$1(BugCVerificationTest.java:74)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+
+2026-03-10 01:19:19 [INFO]: The recording is saved to /tmp/fray-workspace7122686945605455689/recording
+

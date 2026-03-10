@@ -1,0 +1,1274 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Caught exception: Couldn't poll for events, error = 4
+Error while receiving file changes
+net.rubygrapefruit.platform.NativeException: Couldn't poll for events, error = 4
+	at org.gradle.fileevents.internal.AbstractNativeFileEventFunctions$NativeFileWatcher.executeRunLoop0(Native Method)
+	at org.gradle.fileevents.internal.AbstractNativeFileEventFunctions$NativeFileWatcher.executeRunLoop(AbstractNativeFileEventFunctions.java:32)
+	at org.gradle.fileevents.internal.AbstractFileEventFunctions$AbstractFileWatcher$1.run(AbstractFileEventFunctions.java:154)
+Did not find udev library in operating system. Some features may not work.
+Disk Store information requires libudev, which is not present.
+
+> Configure project :
+Starting build with version 4.3.0-SNAPSHOT (commit id unknown) using Gradle 9.2.1, Java 25 and Scala 2.13.18
+Build properties: ignoreFailures=false, maxParallelForks=2, maxScalacThreads=2, maxTestRetries=0
+
+> Task :clients:processResources UP-TO-DATE
+> Task :clients:createVersionFile UP-TO-DATE
+> Task :generator:compileJava UP-TO-DATE
+> Task :generator:processResources NO-SOURCE
+> Task :generator:classes UP-TO-DATE
+> Task :generator:jar UP-TO-DATE
+> Task :test-common:test-common-util:compileJava UP-TO-DATE
+> Task :clients:processMessages UP-TO-DATE
+> Task :streams:processMessages UP-TO-DATE
+> Task :streams:processResources UP-TO-DATE
+> Task :clients:compileJava UP-TO-DATE
+> Task :clients:classes UP-TO-DATE
+> Task :clients:shadowJar UP-TO-DATE
+> Task :clients:processTestMessages UP-TO-DATE
+> Task :clients:compileTestJava UP-TO-DATE
+> Task :clients:processTestResources UP-TO-DATE
+> Task :clients:testClasses UP-TO-DATE
+
+> Task :streams:compileJava
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorNode.java:233: error: cannot access Response
+            final ProcessingExceptionHandler.Response response;
+                                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Response.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Response.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorNode.java:269: error: cannot access Result
+            if (response.result() == ProcessingExceptionHandler.Result.FAIL) {
+                                                               ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Result.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Result.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:810: error: cannot access CorruptedRecord
+            if (!(record instanceof CorruptedRecord)) {
+                                    ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/CorruptedRecord.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/CorruptedRecord.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:983: error: cannot find symbol
+            final ProcessingExceptionHandler.Response processingExceptionResponse;
+                                            ^
+  symbol:   class Response
+  location: interface ProcessingExceptionHandler
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:1014: error: cannot find symbol
+            if (processingExceptionResponse.result() == ProcessingExceptionHandler.Result.FAIL) {
+                                                                                  ^
+  symbol:   variable Result
+  location: interface ProcessingExceptionHandler
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordDeserializer.java:104: error: cannot access Response
+        final DeserializationExceptionHandler.Response response;
+                                             ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Response.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Response.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordDeserializer.java:136: error: cannot access Result
+        if (response.result() == DeserializationExceptionHandler.Result.FAIL) {
+                                                                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Result.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Result.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1322: error: cannot access VersionedChangelogTopicConfig
+            return new VersionedChangelogTopicConfig(name, factory.logConfig(), factory.historyRetention());
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/VersionedChangelogTopicConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/VersionedChangelogTopicConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1324: error: cannot access WindowedChangelogTopicConfig
+            return new WindowedChangelogTopicConfig(name, factory.logConfig(), factory.retentionPeriod());
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/WindowedChangelogTopicConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/WindowedChangelogTopicConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1326: error: cannot access UnwindowedUnversionedChangelogTopicConfig
+            return new UnwindowedUnversionedChangelogTopicConfig(name, factory.logConfig());
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/UnwindowedUnversionedChangelogTopicConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/UnwindowedUnversionedChangelogTopicConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:520: error: cannot access MetricsSessionManager
+        final MetricsSessionManager metricsSessionManager = new MetricsSessionManager(300_000L);
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionManager.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionManager.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:523: error: cannot access MetricsSessionListener
+        metricsSessionManager.registerListener(metricsCache.createInvalidationListener());
+                                                                                      ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionListener.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionListener.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:836: error: cannot access StreamThreadTotalBlockedTime
+            new StreamThreadTotalBlockedTime(
+                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/StreamThreadTotalBlockedTime.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/StreamThreadTotalBlockedTime.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1853: error: cannot access CachedMetricsSnapshot
+                    cache.getSnapshot(topology);
+                                     ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TopologyMetricsCache$CachedMetricsSnapshot.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TopologyMetricsCache$CachedMetricsSnapshot.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1944: error: cannot access ThreadMetadataImpl
+        threadMetadata = new ThreadMetadataImpl(
+                             ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ThreadMetadataImpl.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ThreadMetadataImpl.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1961: error: cannot access TaskMetadataImpl
+            activeTasksMetadata.add(new TaskMetadataImpl(
+                                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TaskMetadataImpl.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TaskMetadataImpl.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:217: error: cannot access DefaultStreamPartitioner
+                                      new DefaultStreamPartitioner<>(keySerializer));
+                                          ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/DefaultStreamPartitioner.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/DefaultStreamPartitioner.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/ChangeLoggingKeyValueBytesStore.java:54: error: cannot access MemoryLRUCache
+        if (wrapped() instanceof MemoryLRUCache) {
+                                 ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MemoryLRUCache.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MemoryLRUCache.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBTimeOrderedWindowStore.java:102: error: cannot access WindowStoreIteratorWrapper
+        return new WindowStoreIteratorWrapper(bytesIterator,
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowStoreIteratorWrapper.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowStoreIteratorWrapper.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:151: error: cannot access StoreSerdeInitializer
+        serdes = StoreSerdeInitializer.prepareStoreSerde(
+                 ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/StoreSerdeInitializer.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/StoreSerdeInitializer.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:243: error: cannot access MeteredWindowedKeyValueIterator
+        return new MeteredWindowedKeyValueIterator<>(
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowedKeyValueIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowedKeyValueIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:482: warning: [cast] redundant cast to QueryResult<R>
+                result = (QueryResult<R>) typedQueryResult;
+                         ^
+  where R is a type-variable:
+    R extends Object declared in method <R>runRangeQuery(Query<R>,PositionBound,QueryConfig)
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBTimeOrderedSessionStore.java:69: error: cannot access WrappedSessionStoreIterator
+        return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WrappedSessionStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WrappedSessionStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:192: error: cannot access BlockBasedTableConfigWithAccessibleCache
+        final BlockBasedTableConfigWithAccessibleCache tableConfig = new BlockBasedTableConfigWithAccessibleCache();
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/BlockBasedTableConfigWithAccessibleCache.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/BlockBasedTableConfigWithAccessibleCache.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:308: error: cannot access RocksDBTimestampedStore
+                    if (Arrays.equals(existingFamily, RocksDBTimestampedStore.TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME)) {
+                                                      ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBTimestampedStore.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBTimestampedStore.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:939: error: cannot access RocksDBRangeIterator
+            return new RocksDBRangeIterator(
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBRangeIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBRangeIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:967: error: cannot access RocksDbIterator
+            return new RocksDbIterator(name, innerIterWithTimestamp, forward);
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDbIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDbIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:87: error: cannot access CacheFunction
+        final Bytes binaryKey = cacheFunction.key(entry.key());
+                                             ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/CacheFunction.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/CacheFunction.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:182: error: cannot access FilteredCacheIterator
+            new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/FilteredCacheIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/FilteredCacheIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:183: error: cannot access MergedSortedCacheSessionStoreIterator
+        return new MergedSortedCacheSessionStoreIterator(filteredCacheIterator, storeIterator, cacheFunction, true);
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheSessionStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheSessionStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:52: error: cannot access ValueAndTimestampSerde
+        super(storeSupplier.name(), keySerde, valueSerde == null ? null : new ValueAndTimestampSerde<>(valueSerde), time);
+                                                                              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerde.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerde.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:63: error: cannot access WindowToTimestampedWindowByteStoreAdapter
+                store = new WindowToTimestampedWindowByteStoreAdapter(store);
+                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowToTimestampedWindowByteStoreAdapter.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowToTimestampedWindowByteStoreAdapter.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:73: error: cannot access MeteredTimestampedWindowStore
+        return new MeteredTimestampedWindowStore<>(
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStore.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStore.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:106: error: cannot access KeyValueStoreType
+            if (store instanceof TimestampedKeyValueStore && queryableStoreType instanceof QueryableStoreTypes.KeyValueStoreType) {
+                                                                                                              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$KeyValueStoreType.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$KeyValueStoreType.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:107: error: cannot access ReadOnlyKeyValueStoreFacade
+                return (T) new ReadOnlyKeyValueStoreFacade<>((TimestampedKeyValueStore<Object, Object>) store);
+                               ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyKeyValueStoreFacade.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyKeyValueStoreFacade.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:107: warning: [cast] redundant cast to T
+                return (T) new ReadOnlyKeyValueStoreFacade<>((TimestampedKeyValueStore<Object, Object>) store);
+                       ^
+  where T is a type-variable:
+    T extends Object declared in method <T>validateAndCastStores(StateStore,QueryableStoreType<T>,String,TaskId)
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:108: error: cannot access WindowStoreType
+            } else if (store instanceof TimestampedWindowStore && queryableStoreType instanceof QueryableStoreTypes.WindowStoreType) {
+                                                                                                                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$WindowStoreType.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$WindowStoreType.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:109: error: cannot access ReadOnlyWindowStoreFacade
+                return (T) new ReadOnlyWindowStoreFacade<>((TimestampedWindowStore<Object, Object>) store);
+                               ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyWindowStoreFacade.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyWindowStoreFacade.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:109: warning: [cast] redundant cast to T
+                return (T) new ReadOnlyWindowStoreFacade<>((TimestampedWindowStore<Object, Object>) store);
+                       ^
+  where T is a type-variable:
+    T extends Object declared in method <T>validateAndCastStores(StateStore,QueryableStoreType<T>,String,TaskId)
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilderWithHeaders.java:58: error: cannot access ValueTimestampHeadersSerde
+            valueSerde == null ? null : new ValueTimestampHeadersSerde<>(valueSerde),
+                                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueTimestampHeadersSerde.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueTimestampHeadersSerde.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilderWithHeaders.java:72: error: cannot access TimestampedToHeadersStoreAdapter
+                store = new TimestampedToHeadersStoreAdapter(store);
+                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersStoreAdapter.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersStoreAdapter.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredVersionedKeyValueStore.java:269: error: cannot access MeteredMultiVersionedKeyQueryIterator
+                final MeteredMultiVersionedKeyQueryIterator<V> typedResult =
+                      ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredMultiVersionedKeyQueryIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredMultiVersionedKeyQueryIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredVersionedKeyValueStore.java:280: warning: [cast] redundant cast to QueryResult<R>
+                result = (QueryResult<R>) typedQueryResult;
+                         ^
+  where R is a type-variable:
+    R extends Object declared in method <R>runMultiVersionedKeyQuery(Query<R>,PositionBound,QueryConfig)
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/SessionSegmentsWithHeaders.java:26: error: cannot access RocksDBMigratingSessionStoreWithHeaders
+class SessionSegmentsWithHeaders extends AbstractSegments<SessionSegmentWithHeaders> {
+                                                         ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBMigratingSessionStoreWithHeaders.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBMigratingSessionStoreWithHeaders.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredTimestampedKeyValueStore.java:120: error: cannot access ValueAndTimestampSerializer
+                    if (ValueAndTimestampSerializer.valuesAreSameAndTimeIsIncreasing(oldSerializedValue, newSerializedValue)) {
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerializer.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerializer.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:214: error: cannot access MergedSortedCacheWindowStoreIterator
+        return new MergedSortedCacheWindowStoreIterator(filteredCacheIterator, underlyingIterator, true);
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheWindowStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheWindowStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:280: error: cannot access AbstractMergedSortedCacheStoreIterator
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/AbstractMergedSortedCacheStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/AbstractMergedSortedCacheStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:324: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:345: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:367: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:384: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:401: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/ListValueStoreBuilder.java:43: error: cannot access ListValueStore
+                maybeWrapCaching(maybeWrapLogging(new ListValueStore(storeSupplier.get()))),
+                                                      ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ListValueStore.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ListValueStore.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:404: error: cannot access MergedSortedCacheKeyValueBytesStoreIterator
+        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, true);
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheKeyValueBytesStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheKeyValueBytesStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreWithHeadersBuilder.java:75: error: cannot access TimestampedToHeadersWindowStoreAdapter
+                store = new TimestampedToHeadersWindowStoreAdapter(store);
+                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersWindowStoreAdapter.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersWindowStoreAdapter.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreWithHeadersBuilder.java:86: error: cannot access MeteredTimestampedWindowStoreWithHeaders
+        return new MeteredTimestampedWindowStoreWithHeaders<>(
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStoreWithHeaders.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStoreWithHeaders.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimeOrderedCachingWindowStore.java:437: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimeOrderedCachingWindowStore.java:480: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+        return new MergedSortedCacheWindowStoreKeyValueIterator(
+               ^
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilder.java:62: error: cannot access KeyValueToTimestampedKeyValueByteStoreAdapter
+                store = new KeyValueToTimestampedKeyValueByteStoreAdapter(store);
+                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/KeyValueToTimestampedKeyValueByteStoreAdapter.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/KeyValueToTimestampedKeyValueByteStoreAdapter.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBVersionedStore.java:285: error: cannot access LogicalSegmentIterator
+            return new LogicalSegmentIterator(Collections.singletonList(latestValueStore).listIterator(), key, fromTimestamp, toTimestamp, order);
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/LogicalSegmentIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/LogicalSegmentIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:235: error: cannot access MeteredWindowStoreIterator
+        return new MeteredWindowStoreIterator<>(
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowStoreIterator.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowStoreIterator.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:445: warning: [cast] redundant cast to QueryResult<R>
+                result = (QueryResult<R>) typedQueryResult;
+                         ^
+  where R is a type-variable:
+    R extends Object declared in method <R>runRangeQuery(Query<R>,PositionBound,QueryConfig)
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:497: warning: [cast] redundant cast to QueryResult<R>
+                queryResult = (QueryResult<R>) typedQueryResult;
+                              ^
+  where R is a type-variable:
+    R extends Object declared in method <R>runKeyQuery(Query<R>,PositionBound,QueryConfig)
+/app/streams/src/main/java/org/apache/kafka/streams/KafkaStreams.java:1416: error: cannot access RocksDBMetricsRecordingTrigger
+                    streamsMetrics.rocksDBMetricsRecordingTrigger(),
+                                                                 ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/metrics/RocksDBMetricsRecordingTrigger.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/metrics/RocksDBMetricsRecordingTrigger.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorContextImpl.java:203: error: cannot access ToInternal
+        final ToInternal toInternal = new ToInternal(to);
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ToInternal.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ToInternal.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStateManagerImpl.java:119: error: cannot access QuietConsumerConfig
+        final int requestTimeoutMs = new ClientUtils.QuietConsumerConfig(consumerProps)
+                                                    ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietConsumerConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietConsumerConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordCollectorImpl.java:346: error: cannot access Response
+        final ProductionExceptionHandler.Response response;
+                                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProductionExceptionHandler$Response.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProductionExceptionHandler$Response.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordCollectorImpl.java:486: error: cannot find symbol
+            final ProductionExceptionHandler.Response response;
+                                            ^
+  symbol:   class Response
+  location: interface ProductionExceptionHandler
+/app/streams/src/main/java/org/apache/kafka/streams/StreamsBuilder.java:94: error: cannot access InternalConfig
+                TopologyConfig.InternalConfig.ENABLE_PROCESS_PROCESSVALUE_FIX,
+                              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/TopologyConfig$InternalConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/TopologyConfig$InternalConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/StreamsBuilder.java:92: error: cannot find symbol
+            TopologyConfig.InternalConfig.getBoolean(
+                          ^
+  symbol:   variable InternalConfig
+  location: class TopologyConfig
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:206: error: cannot access GlobalKTableImpl
+        return new GlobalKTableImpl<>(new KTableSourceValueGetterSupplier<>(storeName), materialized.queryableStoreName());
+                   ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/GlobalKTableImpl.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/GlobalKTableImpl.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:206: error: cannot access KTableSourceValueGetterSupplier
+        return new GlobalKTableImpl<>(new KTableSourceValueGetterSupplier<>(storeName), materialized.queryableStoreName());
+                                          ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTableSourceValueGetterSupplier.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTableSourceValueGetterSupplier.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:372: error: cannot access KStreamFilter
+                    new KStreamFilter<>((k, v) -> k != null, false),
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamFilter.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamFilter.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/graph/OptimizableRepartitionNode.java:81: error: cannot access ExtractRecordMetadataTimestamp
+        topologyBuilder.addSource(
+                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/ExtractRecordMetadataTimestamp.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/ExtractRecordMetadataTimestamp.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/MaterializedInternal.java:58: error: cannot access Builder
+                final InternalResourcesNaming.Builder internalResourcesNaming = InternalResourcesNaming.builder().withStateStore(storeName);
+                                             ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/InternalResourcesNaming$Builder.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/InternalResourcesNaming$Builder.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareTaskAssignor.java:348: error: cannot access Graph
+        final Graph<Integer> graph = new MinTrafficGraphConstructor<ClientState>()
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/Graph.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/Graph.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareTaskAssignor.java:348: error: cannot access MinTrafficGraphConstructor
+        final Graph<Integer> graph = new MinTrafficGraphConstructor<ClientState>()
+                                         ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/MinTrafficGraphConstructor.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/MinTrafficGraphConstructor.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:153: error: cannot access StandbyTaskAssignor
+        final StandbyTaskAssignor standbyTaskAssignor = StandbyTaskAssignorFactory.create(configs, null);
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignor.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignor.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:153: error: cannot access StandbyTaskAssignorFactory
+        final StandbyTaskAssignor standbyTaskAssignor = StandbyTaskAssignorFactory.create(configs, null);
+                                                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignorFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignorFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:235: error: cannot access ConstrainedPrioritySet
+        final ConstrainedPrioritySet statelessActiveTaskClientsByTaskLoad = new ConstrainedPrioritySet(
+              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/ConstrainedPrioritySet.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/ConstrainedPrioritySet.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:210: error: cannot access TaskId
+            final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                      ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:209: error: cannot access TaskId
+        data.setPrevTasks(prevTasks.stream().map(t -> {
+            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:215: error: incompatible types: inference variable T has incompatible bounds
+        data.setStandbyTasks(standbyTasks.stream().map(t -> {
+            ^
+    equality constraints: TaskId
+    lower bounds: Object
+  where T is a type-variable:
+    T extends Object declared in method <T>toList()
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:216: error: cannot find symbol
+            final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                      ^
+  symbol:   class TaskId
+  location: class SubscriptionInfoData
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:216: error: cannot find symbol
+            final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                                                               ^
+  symbol:   class TaskId
+  location: class SubscriptionInfoData
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:240: error: incompatible types: inference variable T#1 has incompatible bounds
+                prevTasksCache = Collections.unmodifiableSet(
+                                                            ^
+    equality constraints: TaskId
+    lower bounds: T#2,Object
+  where T#1,T#2 are type-variables:
+    T#1 extends Object declared in method <T#1>unmodifiableSet(Set<? extends T#1>)
+    T#2 extends Object declared in method <T#2>toSet()
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:256: error: incompatible types: inference variable T#1 has incompatible bounds
+                standbyTasksCache = Collections.unmodifiableSet(
+                                                               ^
+    equality constraints: TaskId
+    lower bounds: T#2,Object
+  where T#1,T#2 are type-variables:
+    T#1 extends Object declared in method <T#1>unmodifiableSet(Set<? extends T#1>)
+    T#2 extends Object declared in method <T#2>toSet()
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/AssignorConfiguration.java:53: error: cannot access QuietStreamsConfig
+        streamsConfig = new ClientUtils.QuietStreamsConfig(configs);
+                                       ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietStreamsConfig.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietStreamsConfig.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/DefaultApplicationState.java:63: error: cannot access DefaultKafkaStreamsState
+            final KafkaStreamsState kafkaStreamsState = new DefaultKafkaStreamsState(
+                                                            ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/DefaultKafkaStreamsState.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/DefaultKafkaStreamsState.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareGraphConstructorFactory.java:60: error: cannot access BalanceSubtopologyGraphConstructor
+                return new BalanceSubtopologyGraphConstructor<T>(taskSetsPerTopicGroup);
+                           ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/BalanceSubtopologyGraphConstructor.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/BalanceSubtopologyGraphConstructor.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:244: error: cannot access AbstractMetricsTransport
+                        metricsConnector.performMaintenance();
+                                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/SessionWindowedCogroupedKStreamImpl.java:95: error: cannot access SessionStoreMaterializer
+            new SessionStoreMaterializer<>(
+                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/SessionStoreMaterializer.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/SessionStoreMaterializer.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/SessionWindowedCogroupedKStreamImpl.java:100: error: cannot access SessionWindowedSerde
+                new WindowedSerdes.SessionWindowedSerde<>(
+                                  ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/WindowedSerdes$SessionWindowedSerde.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/WindowedSerdes$SessionWindowedSerde.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/CogroupedStreamAggregateBuilder.java:69: error: cannot access KStreamAggregate
+                new KStreamAggregate<>(storeFactory, initializer, kGroupedStream.getValue());
+                    ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamAggregate.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamAggregate.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/CogroupedStreamAggregateBuilder.java:253: error: cannot access KTablePassThrough
+        final KTableProcessorSupplier<K, VOut, K, VOut> passThrough = new KTablePassThrough<>(parentProcessors, storeName);
+                                                                          ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTablePassThrough.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTablePassThrough.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:103: error: cannot access KStreamReduce
+            new KStreamReduce<>(storeFactory, reducer),
+                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamReduce.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamReduce.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:249: error: cannot access MaterializedStoreFactory
+            storeFactory.storeName(),
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:251: error: cannot access MaterializedStoreFactory
+            storeFactory.queryableStoreName(),
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:252: error: cannot access MaterializedStoreFactory
+            storeFactory.keySerde(),
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:253: error: cannot access MaterializedStoreFactory
+            storeFactory.valueSerde(),
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:254: error: cannot access MaterializedStoreFactory
+            storeFactory.storeSupplier() instanceof VersionedBytesStoreSupplier);
+                        ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:86: error: cannot access Instruction
+                if (foreignKey == null && !SubscriptionWrapper.Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE.equals(record.value().instruction())) {
+                                                                                                                                                  ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:86: error: cannot access Instruction
+                if (foreignKey == null && !SubscriptionWrapper.Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE.equals(record.value().instruction())) {
+                                                              ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:118: error: cannot find symbol
+                if (record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_AND_PROPAGATE) ||
+                                                                           ^
+  symbol:   variable Instruction
+  location: class SubscriptionWrapper
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:119: error: cannot find symbol
+                    record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_NO_PROPAGATE)) {
+                                                                           ^
+  symbol:   variable Instruction
+  location: class SubscriptionWrapper
+/app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/OuterStreamJoinStoreFactory.java:126: error: cannot access WrappingNullableSerde
+                new ListValueStoreBuilder<>(
+                ^
+  bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/WrappingNullableSerde.class
+    unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/WrappingNullableSerde.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+100 errors
+6 warnings
+
+> Task :streams:compileJava FAILED
+
+[Incubating] Problems report is available at: file:///app/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':streams:compileJava'.
+> Compilation failed; see the compiler output below.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:324: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:345: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:367: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:384: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:401: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimeOrderedCachingWindowStore.java:437: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimeOrderedCachingWindowStore.java:480: error: incompatible types: MergedSortedCacheWindowStoreKeyValueIterator cannot be converted to KeyValueIterator<Windowed<Bytes>,byte[]>
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:215: error: incompatible types: inference variable T has incompatible bounds
+          data.setStandbyTasks(standbyTasks.stream().map(t -> {
+              ^
+      equality constraints: TaskId
+      lower bounds: Object
+    where T is a type-variable:
+      T extends Object declared in method <T>toList()
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:240: error: incompatible types: inference variable T#1 has incompatible bounds
+                  prevTasksCache = Collections.unmodifiableSet(
+                                                              ^
+      equality constraints: TaskId
+      lower bounds: T#2,Object
+    where T#1,T#2 are type-variables:
+      T#1 extends Object declared in method <T#1>unmodifiableSet(Set<? extends T#1>)
+      T#2 extends Object declared in method <T#2>toSet()
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:256: error: incompatible types: inference variable T#1 has incompatible bounds
+                  standbyTasksCache = Collections.unmodifiableSet(
+                                                                 ^
+      equality constraints: TaskId
+      lower bounds: T#2,Object
+    where T#1,T#2 are type-variables:
+      T#1 extends Object declared in method <T#1>unmodifiableSet(Set<? extends T#1>)
+      T#2 extends Object declared in method <T#2>toSet()
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorNode.java:233: error: cannot access Response
+              final ProcessingExceptionHandler.Response response;
+                                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Response.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Response.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorNode.java:269: error: cannot access Result
+              if (response.result() == ProcessingExceptionHandler.Result.FAIL) {
+                                                                 ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Result.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProcessingExceptionHandler$Result.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:810: error: cannot access CorruptedRecord
+              if (!(record instanceof CorruptedRecord)) {
+                                      ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/CorruptedRecord.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/CorruptedRecord.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordDeserializer.java:104: error: cannot access Response
+          final DeserializationExceptionHandler.Response response;
+                                               ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Response.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Response.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordDeserializer.java:136: error: cannot access Result
+          if (response.result() == DeserializationExceptionHandler.Result.FAIL) {
+                                                                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Result.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/DeserializationExceptionHandler$Result.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1322: error: cannot access VersionedChangelogTopicConfig
+              return new VersionedChangelogTopicConfig(name, factory.logConfig(), factory.historyRetention());
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/VersionedChangelogTopicConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/VersionedChangelogTopicConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1324: error: cannot access WindowedChangelogTopicConfig
+              return new WindowedChangelogTopicConfig(name, factory.logConfig(), factory.retentionPeriod());
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/WindowedChangelogTopicConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/WindowedChangelogTopicConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1326: error: cannot access UnwindowedUnversionedChangelogTopicConfig
+              return new UnwindowedUnversionedChangelogTopicConfig(name, factory.logConfig());
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/UnwindowedUnversionedChangelogTopicConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/UnwindowedUnversionedChangelogTopicConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:520: error: cannot access MetricsSessionManager
+          final MetricsSessionManager metricsSessionManager = new MetricsSessionManager(300_000L);
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionManager.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionManager.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:523: error: cannot access MetricsSessionListener
+          metricsSessionManager.registerListener(metricsCache.createInvalidationListener());
+                                                                                        ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionListener.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/MetricsSessionListener.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:836: error: cannot access StreamThreadTotalBlockedTime
+              new StreamThreadTotalBlockedTime(
+                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/StreamThreadTotalBlockedTime.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/StreamThreadTotalBlockedTime.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1853: error: cannot access CachedMetricsSnapshot
+                      cache.getSnapshot(topology);
+                                       ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TopologyMetricsCache$CachedMetricsSnapshot.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TopologyMetricsCache$CachedMetricsSnapshot.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1944: error: cannot access ThreadMetadataImpl
+          threadMetadata = new ThreadMetadataImpl(
+                               ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ThreadMetadataImpl.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ThreadMetadataImpl.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1961: error: cannot access TaskMetadataImpl
+              activeTasksMetadata.add(new TaskMetadataImpl(
+                                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TaskMetadataImpl.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/TaskMetadataImpl.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:217: error: cannot access DefaultStreamPartitioner
+                                        new DefaultStreamPartitioner<>(keySerializer));
+                                            ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/DefaultStreamPartitioner.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/DefaultStreamPartitioner.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/ChangeLoggingKeyValueBytesStore.java:54: error: cannot access MemoryLRUCache
+          if (wrapped() instanceof MemoryLRUCache) {
+                                   ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MemoryLRUCache.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MemoryLRUCache.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBTimeOrderedWindowStore.java:102: error: cannot access WindowStoreIteratorWrapper
+          return new WindowStoreIteratorWrapper(bytesIterator,
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowStoreIteratorWrapper.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowStoreIteratorWrapper.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:151: error: cannot access StoreSerdeInitializer
+          serdes = StoreSerdeInitializer.prepareStoreSerde(
+                   ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/StoreSerdeInitializer.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/StoreSerdeInitializer.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:243: error: cannot access MeteredWindowedKeyValueIterator
+          return new MeteredWindowedKeyValueIterator<>(
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowedKeyValueIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowedKeyValueIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBTimeOrderedSessionStore.java:69: error: cannot access WrappedSessionStoreIterator
+          return new WrappedSessionStoreIterator(bytesIterator, TimeFirstSessionKeySchema::from);
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WrappedSessionStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WrappedSessionStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:192: error: cannot access BlockBasedTableConfigWithAccessibleCache
+          final BlockBasedTableConfigWithAccessibleCache tableConfig = new BlockBasedTableConfigWithAccessibleCache();
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/BlockBasedTableConfigWithAccessibleCache.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/BlockBasedTableConfigWithAccessibleCache.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:308: error: cannot access RocksDBTimestampedStore
+                      if (Arrays.equals(existingFamily, RocksDBTimestampedStore.TIMESTAMPED_VALUES_COLUMN_FAMILY_NAME)) {
+                                                        ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBTimestampedStore.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBTimestampedStore.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:939: error: cannot access RocksDBRangeIterator
+              return new RocksDBRangeIterator(
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBRangeIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBRangeIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBStore.java:967: error: cannot access RocksDbIterator
+              return new RocksDbIterator(name, innerIterWithTimestamp, forward);
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDbIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDbIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:87: error: cannot access CacheFunction
+          final Bytes binaryKey = cacheFunction.key(entry.key());
+                                               ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/CacheFunction.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/CacheFunction.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:182: error: cannot access FilteredCacheIterator
+              new FilteredCacheIterator(cacheIterator, hasNextCondition, cacheFunction);
+                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/FilteredCacheIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/FilteredCacheIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingSessionStore.java:183: error: cannot access MergedSortedCacheSessionStoreIterator
+          return new MergedSortedCacheSessionStoreIterator(filteredCacheIterator, storeIterator, cacheFunction, true);
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheSessionStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheSessionStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:52: error: cannot access ValueAndTimestampSerde
+          super(storeSupplier.name(), keySerde, valueSerde == null ? null : new ValueAndTimestampSerde<>(valueSerde), time);
+                                                                                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerde.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerde.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:63: error: cannot access WindowToTimestampedWindowByteStoreAdapter
+                  store = new WindowToTimestampedWindowByteStoreAdapter(store);
+                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowToTimestampedWindowByteStoreAdapter.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/WindowToTimestampedWindowByteStoreAdapter.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreBuilder.java:73: error: cannot access MeteredTimestampedWindowStore
+          return new MeteredTimestampedWindowStore<>(
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStore.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStore.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:106: error: cannot access KeyValueStoreType
+              if (store instanceof TimestampedKeyValueStore && queryableStoreType instanceof QueryableStoreTypes.KeyValueStoreType) {
+                                                                                                                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$KeyValueStoreType.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$KeyValueStoreType.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:107: error: cannot access ReadOnlyKeyValueStoreFacade
+                  return (T) new ReadOnlyKeyValueStoreFacade<>((TimestampedKeyValueStore<Object, Object>) store);
+                                 ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyKeyValueStoreFacade.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyKeyValueStoreFacade.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:108: error: cannot access WindowStoreType
+              } else if (store instanceof TimestampedWindowStore && queryableStoreType instanceof QueryableStoreTypes.WindowStoreType) {
+                                                                                                                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$WindowStoreType.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/QueryableStoreTypes$WindowStoreType.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:109: error: cannot access ReadOnlyWindowStoreFacade
+                  return (T) new ReadOnlyWindowStoreFacade<>((TimestampedWindowStore<Object, Object>) store);
+                                 ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyWindowStoreFacade.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ReadOnlyWindowStoreFacade.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilderWithHeaders.java:58: error: cannot access ValueTimestampHeadersSerde
+              valueSerde == null ? null : new ValueTimestampHeadersSerde<>(valueSerde),
+                                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueTimestampHeadersSerde.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueTimestampHeadersSerde.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilderWithHeaders.java:72: error: cannot access TimestampedToHeadersStoreAdapter
+                  store = new TimestampedToHeadersStoreAdapter(store);
+                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersStoreAdapter.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersStoreAdapter.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredVersionedKeyValueStore.java:269: error: cannot access MeteredMultiVersionedKeyQueryIterator
+                  final MeteredMultiVersionedKeyQueryIterator<V> typedResult =
+                        ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredMultiVersionedKeyQueryIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredMultiVersionedKeyQueryIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/SessionSegmentsWithHeaders.java:26: error: cannot access RocksDBMigratingSessionStoreWithHeaders
+  class SessionSegmentsWithHeaders extends AbstractSegments<SessionSegmentWithHeaders> {
+                                                           ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBMigratingSessionStoreWithHeaders.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/RocksDBMigratingSessionStoreWithHeaders.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredTimestampedKeyValueStore.java:120: error: cannot access ValueAndTimestampSerializer
+                      if (ValueAndTimestampSerializer.valuesAreSameAndTimeIsIncreasing(oldSerializedValue, newSerializedValue)) {
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerializer.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ValueAndTimestampSerializer.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:214: error: cannot access MergedSortedCacheWindowStoreIterator
+          return new MergedSortedCacheWindowStoreIterator(filteredCacheIterator, underlyingIterator, true);
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheWindowStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheWindowStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingWindowStore.java:280: error: cannot access AbstractMergedSortedCacheStoreIterator
+          return new MergedSortedCacheWindowStoreKeyValueIterator(
+                 ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/AbstractMergedSortedCacheStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/AbstractMergedSortedCacheStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/ListValueStoreBuilder.java:43: error: cannot access ListValueStore
+                  maybeWrapCaching(maybeWrapLogging(new ListValueStore(storeSupplier.get()))),
+                                                        ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ListValueStore.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/ListValueStore.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:404: error: cannot access MergedSortedCacheKeyValueBytesStoreIterator
+          return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, true);
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheKeyValueBytesStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MergedSortedCacheKeyValueBytesStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreWithHeadersBuilder.java:75: error: cannot access TimestampedToHeadersWindowStoreAdapter
+                  store = new TimestampedToHeadersWindowStoreAdapter(store);
+                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersWindowStoreAdapter.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/TimestampedToHeadersWindowStoreAdapter.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedWindowStoreWithHeadersBuilder.java:86: error: cannot access MeteredTimestampedWindowStoreWithHeaders
+          return new MeteredTimestampedWindowStoreWithHeaders<>(
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStoreWithHeaders.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredTimestampedWindowStoreWithHeaders.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/TimestampedKeyValueStoreBuilder.java:62: error: cannot access KeyValueToTimestampedKeyValueByteStoreAdapter
+                  store = new KeyValueToTimestampedKeyValueByteStoreAdapter(store);
+                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/KeyValueToTimestampedKeyValueByteStoreAdapter.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/KeyValueToTimestampedKeyValueByteStoreAdapter.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/RocksDBVersionedStore.java:285: error: cannot access LogicalSegmentIterator
+              return new LogicalSegmentIterator(Collections.singletonList(latestValueStore).listIterator(), key, fromTimestamp, toTimestamp, order);
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/LogicalSegmentIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/LogicalSegmentIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:235: error: cannot access MeteredWindowStoreIterator
+          return new MeteredWindowStoreIterator<>(
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowStoreIterator.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/MeteredWindowStoreIterator.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/KafkaStreams.java:1416: error: cannot access RocksDBMetricsRecordingTrigger
+                      streamsMetrics.rocksDBMetricsRecordingTrigger(),
+                                                                   ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/metrics/RocksDBMetricsRecordingTrigger.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/state/internals/metrics/RocksDBMetricsRecordingTrigger.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/ProcessorContextImpl.java:203: error: cannot access ToInternal
+          final ToInternal toInternal = new ToInternal(to);
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ToInternal.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ToInternal.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStateManagerImpl.java:119: error: cannot access QuietConsumerConfig
+          final int requestTimeoutMs = new ClientUtils.QuietConsumerConfig(consumerProps)
+                                                      ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietConsumerConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietConsumerConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordCollectorImpl.java:346: error: cannot access Response
+          final ProductionExceptionHandler.Response response;
+                                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProductionExceptionHandler$Response.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/errors/ProductionExceptionHandler$Response.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/StreamsBuilder.java:94: error: cannot access InternalConfig
+                  TopologyConfig.InternalConfig.ENABLE_PROCESS_PROCESSVALUE_FIX,
+                                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/TopologyConfig$InternalConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/TopologyConfig$InternalConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:206: error: cannot access GlobalKTableImpl
+          return new GlobalKTableImpl<>(new KTableSourceValueGetterSupplier<>(storeName), materialized.queryableStoreName());
+                     ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/GlobalKTableImpl.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/GlobalKTableImpl.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:206: error: cannot access KTableSourceValueGetterSupplier
+          return new GlobalKTableImpl<>(new KTableSourceValueGetterSupplier<>(storeName), materialized.queryableStoreName());
+                                            ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTableSourceValueGetterSupplier.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTableSourceValueGetterSupplier.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/InternalStreamsBuilder.java:372: error: cannot access KStreamFilter
+                      new KStreamFilter<>((k, v) -> k != null, false),
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamFilter.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamFilter.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/graph/OptimizableRepartitionNode.java:81: error: cannot access ExtractRecordMetadataTimestamp
+          topologyBuilder.addSource(
+                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/ExtractRecordMetadataTimestamp.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/ExtractRecordMetadataTimestamp.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/MaterializedInternal.java:58: error: cannot access Builder
+                  final InternalResourcesNaming.Builder internalResourcesNaming = InternalResourcesNaming.builder().withStateStore(storeName);
+                                               ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/InternalResourcesNaming$Builder.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/InternalResourcesNaming$Builder.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareTaskAssignor.java:348: error: cannot access Graph
+          final Graph<Integer> graph = new MinTrafficGraphConstructor<ClientState>()
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/Graph.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/Graph.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareTaskAssignor.java:348: error: cannot access MinTrafficGraphConstructor
+          final Graph<Integer> graph = new MinTrafficGraphConstructor<ClientState>()
+                                           ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/MinTrafficGraphConstructor.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/MinTrafficGraphConstructor.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:153: error: cannot access StandbyTaskAssignor
+          final StandbyTaskAssignor standbyTaskAssignor = StandbyTaskAssignorFactory.create(configs, null);
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignor.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignor.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:153: error: cannot access StandbyTaskAssignorFactory
+          final StandbyTaskAssignor standbyTaskAssignor = StandbyTaskAssignorFactory.create(configs, null);
+                                                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignorFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/StandbyTaskAssignorFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/HighAvailabilityTaskAssignor.java:235: error: cannot access ConstrainedPrioritySet
+          final ConstrainedPrioritySet statelessActiveTaskClientsByTaskLoad = new ConstrainedPrioritySet(
+                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/ConstrainedPrioritySet.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/ConstrainedPrioritySet.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:210: error: cannot access TaskId
+              final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                        ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:209: error: cannot access TaskId
+          data.setPrevTasks(prevTasks.stream().map(t -> {
+              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/internals/generated/SubscriptionInfoData$TaskId.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/AssignorConfiguration.java:53: error: cannot access QuietStreamsConfig
+          streamsConfig = new ClientUtils.QuietStreamsConfig(configs);
+                                         ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietStreamsConfig.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/ClientUtils$QuietStreamsConfig.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/DefaultApplicationState.java:63: error: cannot access DefaultKafkaStreamsState
+              final KafkaStreamsState kafkaStreamsState = new DefaultKafkaStreamsState(
+                                                              ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/DefaultKafkaStreamsState.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/DefaultKafkaStreamsState.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareGraphConstructorFactory.java:60: error: cannot access BalanceSubtopologyGraphConstructor
+                  return new BalanceSubtopologyGraphConstructor<T>(taskSetsPerTopicGroup);
+                             ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/BalanceSubtopologyGraphConstructor.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/assignment/BalanceSubtopologyGraphConstructor.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:244: error: cannot access AbstractMetricsTransport
+                          metricsConnector.performMaintenance();
+                                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/SessionWindowedCogroupedKStreamImpl.java:95: error: cannot access SessionStoreMaterializer
+              new SessionStoreMaterializer<>(
+                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/SessionStoreMaterializer.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/SessionStoreMaterializer.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/SessionWindowedCogroupedKStreamImpl.java:100: error: cannot access SessionWindowedSerde
+                  new WindowedSerdes.SessionWindowedSerde<>(
+                                    ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/WindowedSerdes$SessionWindowedSerde.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/WindowedSerdes$SessionWindowedSerde.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/CogroupedStreamAggregateBuilder.java:69: error: cannot access KStreamAggregate
+                  new KStreamAggregate<>(storeFactory, initializer, kGroupedStream.getValue());
+                      ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamAggregate.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamAggregate.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/CogroupedStreamAggregateBuilder.java:253: error: cannot access KTablePassThrough
+          final KTableProcessorSupplier<K, VOut, K, VOut> passThrough = new KTablePassThrough<>(parentProcessors, storeName);
+                                                                            ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTablePassThrough.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KTablePassThrough.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:103: error: cannot access KStreamReduce
+              new KStreamReduce<>(storeFactory, reducer),
+                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamReduce.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/KStreamReduce.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:249: error: cannot access MaterializedStoreFactory
+              storeFactory.storeName(),
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:251: error: cannot access MaterializedStoreFactory
+              storeFactory.queryableStoreName(),
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:252: error: cannot access MaterializedStoreFactory
+              storeFactory.keySerde(),
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:253: error: cannot access MaterializedStoreFactory
+              storeFactory.valueSerde(),
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/KGroupedStreamImpl.java:254: error: cannot access MaterializedStoreFactory
+              storeFactory.storeSupplier() instanceof VersionedBytesStoreSupplier);
+                          ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/MaterializedStoreFactory.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:86: error: cannot access Instruction
+                  if (foreignKey == null && !SubscriptionWrapper.Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE.equals(record.value().instruction())) {
+                                                                                                                                                    ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:86: error: cannot access Instruction
+                  if (foreignKey == null && !SubscriptionWrapper.Instruction.PROPAGATE_NULL_IF_NO_FK_VAL_AVAILABLE.equals(record.value().instruction())) {
+                                                                ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionWrapper$Instruction.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/OuterStreamJoinStoreFactory.java:126: error: cannot access WrappingNullableSerde
+                  new ListValueStoreBuilder<>(
+                  ^
+    bad class file: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/WrappingNullableSerde.class
+      unable to access file: java.nio.file.NoSuchFileException: /app/streams/build/classes/java/main/org/apache/kafka/streams/kstream/internals/WrappingNullableSerde.class
+      Please remove or make sure it appears in the correct subdirectory of the classpath.
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:983: error: cannot find symbol
+              final ProcessingExceptionHandler.Response processingExceptionResponse;
+                                              ^
+    symbol:   class Response
+    location: interface ProcessingExceptionHandler
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamTask.java:1014: error: cannot find symbol
+              if (processingExceptionResponse.result() == ProcessingExceptionHandler.Result.FAIL) {
+                                                                                    ^
+    symbol:   variable Result
+    location: interface ProcessingExceptionHandler
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/RecordCollectorImpl.java:486: error: cannot find symbol
+              final ProductionExceptionHandler.Response response;
+                                              ^
+    symbol:   class Response
+    location: interface ProductionExceptionHandler
+  /app/streams/src/main/java/org/apache/kafka/streams/StreamsBuilder.java:92: error: cannot find symbol
+              TopologyConfig.InternalConfig.getBoolean(
+                            ^
+    symbol:   variable InternalConfig
+    location: class TopologyConfig
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:216: error: cannot find symbol
+              final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                        ^
+    symbol:   class TaskId
+    location: class SubscriptionInfoData
+  /app/streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/SubscriptionInfo.java:216: error: cannot find symbol
+              final SubscriptionInfoData.TaskId taskId = new SubscriptionInfoData.TaskId();
+                                                                                 ^
+    symbol:   class TaskId
+    location: class SubscriptionInfoData
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:118: error: cannot find symbol
+                  if (record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_AND_PROPAGATE) ||
+                                                                             ^
+    symbol:   variable Instruction
+    location: class SubscriptionWrapper
+  /app/streams/src/main/java/org/apache/kafka/streams/kstream/internals/foreignkeyjoin/SubscriptionReceiveProcessorSupplier.java:119: error: cannot find symbol
+                      record.value().instruction().equals(SubscriptionWrapper.Instruction.DELETE_KEY_NO_PROPAGATE)) {
+                                                                             ^
+    symbol:   variable Instruction
+    location: class SubscriptionWrapper
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredSessionStore.java:482: warning: [cast] redundant cast to QueryResult<R>
+                  result = (QueryResult<R>) typedQueryResult;
+                           ^
+    where R is a type-variable:
+      R extends Object declared in method <R>runRangeQuery(Query<R>,PositionBound,QueryConfig)
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:107: warning: [cast] redundant cast to T
+                  return (T) new ReadOnlyKeyValueStoreFacade<>((TimestampedKeyValueStore<Object, Object>) store);
+                         ^
+    where T is a type-variable:
+      T extends Object declared in method <T>validateAndCastStores(StateStore,QueryableStoreType<T>,String,TaskId)
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/StreamThreadStateStoreProvider.java:109: warning: [cast] redundant cast to T
+                  return (T) new ReadOnlyWindowStoreFacade<>((TimestampedWindowStore<Object, Object>) store);
+                         ^
+    where T is a type-variable:
+      T extends Object declared in method <T>validateAndCastStores(StateStore,QueryableStoreType<T>,String,TaskId)
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredVersionedKeyValueStore.java:280: warning: [cast] redundant cast to QueryResult<R>
+                  result = (QueryResult<R>) typedQueryResult;
+                           ^
+    where R is a type-variable:
+      R extends Object declared in method <R>runMultiVersionedKeyQuery(Query<R>,PositionBound,QueryConfig)
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:445: warning: [cast] redundant cast to QueryResult<R>
+                  result = (QueryResult<R>) typedQueryResult;
+                           ^
+    where R is a type-variable:
+      R extends Object declared in method <R>runRangeQuery(Query<R>,PositionBound,QueryConfig)
+  /app/streams/src/main/java/org/apache/kafka/streams/state/internals/MeteredWindowStore.java:497: warning: [cast] redundant cast to QueryResult<R>
+                  queryResult = (QueryResult<R>) typedQueryResult;
+                                ^
+    where R is a type-variable:
+      R extends Object declared in method <R>runKeyQuery(Query<R>,PositionBound,QueryConfig)
+  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+  100 errors
+  6 warnings
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1m 13s
+14 actionable tasks: 1 executed, 13 up-to-date

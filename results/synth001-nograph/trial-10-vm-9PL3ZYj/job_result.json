@@ -1,0 +1,29 @@
+{
+    "id": "43b3f7d6-ae8e-47aa-9f68-0b546683d678",
+    "started_at": "2026-03-10T02:21:27.002477",
+    "finished_at": "2026-03-10T02:40:22.445194",
+    "n_total_trials": 1,
+    "stats": {
+        "n_trials": 1,
+        "n_errors": 0,
+        "evals": {
+            "claude-code__adhoc": {
+                "n_trials": 1,
+                "n_errors": 0,
+                "metrics": [
+                    {
+                        "mean": 0.0
+                    }
+                ],
+                "reward_stats": {
+                    "reward": {
+                        "0.0": [
+                            "synth001-nograph__9PL3ZYj"
+                        ]
+                    }
+                },
+                "exception_stats": {}
+            }
+        }
+    }
+}

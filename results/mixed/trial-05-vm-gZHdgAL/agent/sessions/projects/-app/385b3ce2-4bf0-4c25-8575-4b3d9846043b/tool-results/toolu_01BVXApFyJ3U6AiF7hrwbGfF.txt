@@ -1,0 +1,1213 @@
+     1→/*
+     2→ * Licensed to the Apache Software Foundation (ASF) under one or more
+     3→ * contributor license agreements. See the NOTICE file distributed with
+     4→ * this work for additional information regarding copyright ownership.
+     5→ * The ASF licenses this file to You under the Apache License, Version 2.0
+     6→ * (the "License"); you may not use this file except in compliance with
+     7→ * the License. You may obtain a copy of the License at
+     8→ *
+     9→ *    http://www.apache.org/licenses/LICENSE-2.0
+    10→ *
+    11→ * Unless required by applicable law or agreed to in writing, software
+    12→ * distributed under the License is distributed on an "AS IS" BASIS,
+    13→ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    14→ * See the License for the specific language governing permissions and
+    15→ * limitations under the License.
+    16→ */
+    17→package org.apache.kafka.streams.processor.internals;
+    18→
+    19→import org.apache.kafka.clients.consumer.Consumer;
+    20→import org.apache.kafka.common.MetricName;
+    21→import org.apache.kafka.common.TopicPartition;
+    22→import org.apache.kafka.common.Uuid;
+    23→import org.apache.kafka.common.errors.TimeoutException;
+    24→import org.apache.kafka.common.internals.KafkaFutureImpl;
+    25→import org.apache.kafka.common.metrics.MetricConfig;
+    26→import org.apache.kafka.common.metrics.Metrics;
+    27→import org.apache.kafka.common.metrics.Sensor;
+    28→import org.apache.kafka.common.metrics.Sensor.RecordingLevel;
+    29→import org.apache.kafka.common.metrics.stats.Rate;
+    30→import org.apache.kafka.common.metrics.stats.Value;
+    31→import org.apache.kafka.common.metrics.stats.WindowedCount;
+    32→import org.apache.kafka.common.metrics.stats.WindowedSum;
+    33→import org.apache.kafka.common.utils.LogContext;
+    34→import org.apache.kafka.common.utils.Time;
+    35→import org.apache.kafka.streams.StreamsConfig;
+    36→import org.apache.kafka.streams.errors.StreamsException;
+    37→import org.apache.kafka.streams.errors.TaskCorruptedException;
+    38→import org.apache.kafka.streams.processor.StandbyUpdateListener;
+    39→import org.apache.kafka.streams.processor.TaskId;
+    40→import org.apache.kafka.streams.processor.internals.Task.State;
+    41→import org.apache.kafka.streams.processor.internals.TaskAndAction.Action;
+    42→import org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl;
+    43→
+    44→import org.slf4j.Logger;
+    45→
+    46→import java.time.Duration;
+    47→import java.util.ArrayList;
+    48→import java.util.Collection;
+    49→import java.util.Collections;
+    50→import java.util.Deque;
+    51→import java.util.HashSet;
+    52→import java.util.Iterator;
+    53→import java.util.LinkedHashMap;
+    54→import java.util.LinkedList;
+    55→import java.util.List;
+    56→import java.util.Map;
+    57→import java.util.Queue;
+    58→import java.util.Set;
+    59→import java.util.concurrent.BlockingQueue;
+    60→import java.util.concurrent.CompletableFuture;
+    61→import java.util.concurrent.ConcurrentHashMap;
+    62→import java.util.concurrent.LinkedBlockingQueue;
+    63→import java.util.concurrent.TimeUnit;
+    64→import java.util.concurrent.atomic.AtomicBoolean;
+    65→import java.util.concurrent.locks.Condition;
+    66→import java.util.concurrent.locks.Lock;
+    67→import java.util.concurrent.locks.ReentrantLock;
+    68→import java.util.function.Supplier;
+    69→import java.util.stream.Collectors;
+    70→import java.util.stream.Stream;
+    71→
+    72→import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.RATE_DESCRIPTION;
+    73→import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.THREAD_ID_TAG;
+    74→import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.THREAD_TIME_UNIT_DESCRIPTION;
+    75→import static org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.WINDOWED_RATIO_DESCRIPTION_PREFIX;
+    76→
+    77→public class DefaultStateUpdater implements StateUpdater {
+    78→
+    79→    private static final String BUG_ERROR_MESSAGE = "This indicates a bug. " +
+    80→        "Please report at https://issues.apache.org/jira/projects/KAFKA/issues or to the dev-mailing list (https://kafka.apache.org/contact).";
+    81→
+    82→    private class StateUpdaterThread extends Thread {
+    83→
+    84→        private final ChangelogReader changelogReader;
+    85→        private final StateUpdaterMetrics updaterMetrics;
+    86→        private final AtomicBoolean isRunning = new AtomicBoolean(true);
+    87→        private final AtomicBoolean isIdle = new AtomicBoolean(false);
+    88→        private final Map<TaskId, Task> updatingTasks = new ConcurrentHashMap<>();
+    89→        private final Map<TaskId, Task> pausedTasks = new ConcurrentHashMap<>();
+    90→
+    91→        private final WindowedSum idleTimeWindowedSum = new WindowedSum();
+    92→        private final WindowedSum checkpointTimeWindowedSum = new WindowedSum();
+    93→        private final WindowedSum activeRestoreTimeWindowedSum = new WindowedSum();
+    94→        private final WindowedSum standbyRestoreTimeWindowedSum = new WindowedSum();
+    95→        private final WindowedSum runOnceLatencyWindowedSum = new WindowedSum();
+    96→        private final MetricConfig metricsConfig;
+    97→
+    98→        private boolean timeWindowInitialized = false;
+    99→
+   100→        private long totalCheckpointLatency = 0L;
+   101→
+   102→        private volatile long fetchDeadlineClientInstanceId = -1L;
+   103→        private volatile KafkaFutureImpl<Uuid> clientInstanceIdFuture = new KafkaFutureImpl<>();
+   104→
+   105→        public StateUpdaterThread(final String name,
+   106→                                  final StreamsMetricsImpl metrics,
+   107→                                  final ChangelogReader changelogReader) {
+   108→            super(name);
+   109→            this.changelogReader = changelogReader;
+   110→            this.updaterMetrics = new StateUpdaterMetrics(metrics, name);
+   111→            this.metricsConfig = metrics.metricsRegistry().config();
+   112→        }
+   113→
+   114→        public Collection<Task> updatingTasks() {
+   115→            return updatingTasks.values();
+   116→        }
+   117→
+   118→        public Collection<StandbyTask> updatingStandbyTasks() {
+   119→            return updatingTasks.values().stream()
+   120→                .filter(t -> !t.isActive())
+   121→                .map(t -> (StandbyTask) t)
+   122→                .collect(Collectors.toList());
+   123→        }
+   124→
+   125→        private boolean onlyStandbyTasksUpdating() {
+   126→            return !updatingTasks.isEmpty() && updatingTasks.values().stream().noneMatch(Task::isActive);
+   127→        }
+   128→
+   129→        public Collection<Task> pausedTasks() {
+   130→            return pausedTasks.values();
+   131→        }
+   132→
+   133→        public long numUpdatingStandbyTasks() {
+   134→            return updatingTasks.values().stream()
+   135→                .filter(t -> !t.isActive())
+   136→                .count();
+   137→        }
+   138→
+   139→        public long numRestoringActiveTasks() {
+   140→            return updatingTasks.values().stream()
+   141→                .filter(Task::isActive)
+   142→                .count();
+   143→        }
+   144→
+   145→        public long numPausedStandbyTasks() {
+   146→            return pausedTasks.values().stream()
+   147→                .filter(t -> !t.isActive())
+   148→                .count();
+   149→        }
+   150→
+   151→        public long numPausedActiveTasks() {
+   152→            return pausedTasks.values().stream()
+   153→                .filter(Task::isActive)
+   154→                .count();
+   155→        }
+   156→
+   157→        @Override
+   158→        public void run() {
+   159→            log.info("State updater thread started");
+   160→            try {
+   161→                initTimeWindowIfNeeded(time.milliseconds());
+   162→                while (isRunning.get()) {
+   163→                    runOnce();
+   164→                }
+   165→            } catch (final RuntimeException anyOtherException) {
+   166→                handleRuntimeException(anyOtherException);
+   167→            } finally {
+   168→                clearInputQueue();
+   169→                clearUpdatingAndPausedTasks();
+   170→                updaterMetrics.clear();
+   171→                log.info("State updater thread stopped");
+   172→            }
+   173→        }
+   174→
+   175→        private void clearInputQueue() {
+   176→            tasksAndActionsLock.lock();
+   177→            try {
+   178→                tasksAndActions.clear();
+   179→            } finally {
+   180→                tasksAndActionsLock.unlock();
+   181→            }
+   182→        }
+   183→
+   184→        // In each iteration:
+   185→        //   1) check if updating tasks need to be paused
+   186→        //   2) check if paused tasks need to be resumed
+   187→        //   3) restore those updating tasks
+   188→        //   4) checkpoint those updating task states
+   189→        //   5) idle waiting if there is no more tasks to be restored
+   190→        //
+   191→        //   Note that, 1-3) are measured as restoring time, while 4) and 5) measured separately
+   192→        //   as checkpointing time and idle time
+   193→        private void runOnce() {
+   194→            final long totalStartTimeMs = time.milliseconds();
+   195→            performActionsOnTasks();
+   196→
+   197→            resumeTasks();
+   198→            pauseTasks();
+   199→            restoreTasks(totalStartTimeMs);
+   200→
+   201→            maybeGetClientInstanceIds();
+   202→
+   203→            final long checkpointStartTimeMs = time.milliseconds();
+   204→            maybeCheckpointTasks(checkpointStartTimeMs);
+   205→
+   206→            final long waitStartTimeMs = time.milliseconds();
+   207→            waitIfAllChangelogsCompletelyRead();
+   208→
+   209→            final long endTimeMs = time.milliseconds();
+   210→            final long totalWaitTime = Math.max(0L, endTimeMs - waitStartTimeMs);
+   211→            final long totalTime = Math.max(0L, endTimeMs - totalStartTimeMs);
+   212→
+   213→            recordMetrics(endTimeMs, totalTime, totalWaitTime);
+   214→        }
+   215→
+   216→        private void performActionsOnTasks() {
+   217→            tasksAndActionsLock.lock();
+   218→            try {
+   219→                for (final TaskAndAction taskAndAction : tasksAndActions()) {
+   220→                    final Action action = taskAndAction.action();
+   221→                    switch (action) {
+   222→                        case ADD:
+   223→                            addTask(taskAndAction.task());
+   224→                            break;
+   225→                        case REMOVE:
+   226→                            removeTask(taskAndAction.taskId(), taskAndAction.futureForRemove(), taskAndAction.suspendReason());
+   227→                            break;
+   228→                        default:
+   229→                            throw new IllegalStateException("Unknown action type " + action);
+   230→                    }
+   231→                }
+   232→            } finally {
+   233→                tasksAndActionsLock.unlock();
+   234→            }
+   235→        }
+   236→
+   237→        private void resumeTasks() {
+   238→            if (isTopologyResumed.compareAndSet(true, false)) {
+   239→                for (final Task task : pausedTasks.values()) {
+   240→                    if (!topologyMetadata.isPaused(task.id().topologyName())) {
+   241→                        resumeTask(task);
+   242→                    }
+   243→                }
+   244→            }
+   245→        }
+   246→
+   247→        private void pauseTasks() {
+   248→            for (final Task task : updatingTasks.values()) {
+   249→                if (topologyMetadata.isPaused(task.id().topologyName())) {
+   250→                    pauseTask(task);
+   251→                }
+   252→            }
+   253→        }
+   254→
+   255→        private void restoreTasks(final long now) {
+   256→            try {
+   257→                final long restored = changelogReader.restore(updatingTasks);
+   258→                updaterMetrics.restoreSensor.record(restored, now);
+   259→            } catch (final TaskCorruptedException taskCorruptedException) {
+   260→                handleTaskCorruptedException(taskCorruptedException);
+   261→            } catch (final StreamsException streamsException) {
+   262→                handleStreamsException(streamsException);
+   263→            }
+   264→            final Set<TopicPartition> completedChangelogs = changelogReader.completedChangelogs();
+   265→            final List<Task> activeTasks = updatingTasks.values().stream().filter(Task::isActive).collect(Collectors.toList());
+   266→            for (final Task task : activeTasks) {
+   267→                maybeCompleteRestoration((StreamTask) task, completedChangelogs);
+   268→            }
+   269→        }
+   270→
+   271→        private void maybeGetClientInstanceIds() {
+   272→            if (fetchDeadlineClientInstanceId != -1) {
+   273→                if (!clientInstanceIdFuture.isDone()) {
+   274→                    if (fetchDeadlineClientInstanceId >= time.milliseconds()) {
+   275→                        try {
+   276→                            // if the state-updated thread has active work:
+   277→                            //    we pass in a timeout of zero into each `clientInstanceId()` call
+   278→                            //    to just trigger the "get instance id" background RPC;
+   279→                            //    we don't want to block the state updater thread that can do useful work in the meantime
+   280→                            // otherwise, we pass in 100ms to avoid busy waiting
+   281→                            clientInstanceIdFuture.complete(
+   282→                                restoreConsumer.clientInstanceId(
+   283→                                    allWorkDone() ? Duration.ofMillis(100L) : Duration.ZERO
+   284→                                )
+   285→                            );
+   286→                            fetchDeadlineClientInstanceId = -1L;
+   287→                        } catch (final IllegalStateException disabledError) {
+   288→                            // if telemetry is disabled on a client, we swallow the error,
+   289→                            // to allow returning a partial result for all other clients
+   290→                            clientInstanceIdFuture.complete(null);
+   291→                            fetchDeadlineClientInstanceId = -1L;
+   292→                        } catch (final TimeoutException swallow) {
+   293→                            // swallow
+   294→                        } catch (final Exception error) {
+   295→                            clientInstanceIdFuture.completeExceptionally(error);
+   296→                            fetchDeadlineClientInstanceId = -1L;
+   297→                        }
+   298→                    } else {
+   299→                        clientInstanceIdFuture.completeExceptionally(
+   300→                            new TimeoutException("Could not retrieve restore consumer client instance id.")
+   301→                        );
+   302→                        fetchDeadlineClientInstanceId = -1L;
+   303→                    }
+   304→                }
+   305→            }
+   306→        }
+   307→
+   308→        private KafkaFutureImpl<Uuid> restoreConsumerInstanceId(final Duration timeout) {
+   309→            boolean setDeadline = false;
+   310→
+   311→            if (clientInstanceIdFuture.isDone()) {
+   312→                if (clientInstanceIdFuture.isCompletedExceptionally()) {
+   313→                    clientInstanceIdFuture = new KafkaFutureImpl<>();
+   314→                    setDeadline = true;
+   315→                }
+   316→            } else {
+   317→                setDeadline = true;
+   318→            }
+   319→
+   320→            if (setDeadline) {
+   321→                fetchDeadlineClientInstanceId = time.milliseconds() + timeout.toMillis();
+   322→                tasksAndActionsLock.lock();
+   323→                try {
+   324→                    tasksAndActionsCondition.signalAll();
+   325→                } finally {
+   326→                    tasksAndActionsLock.unlock();
+   327→                }
+   328→            }
+   329→
+   330→            return clientInstanceIdFuture;
+   331→        }
+   332→
+   333→
+   334→        private void handleRuntimeException(final RuntimeException runtimeException) {
+   335→            log.error("An unexpected error occurred within the state updater thread: {}", String.valueOf(runtimeException));
+   336→            addToExceptionsAndFailedTasksThenClearUpdatingAndPausedTasks(runtimeException);
+   337→            isRunning.set(false);
+   338→        }
+   339→
+   340→        private void handleTaskCorruptedException(final TaskCorruptedException taskCorruptedException) {
+   341→            log.info("Encountered task corrupted exception: ", taskCorruptedException);
+   342→            final Set<TaskId> corruptedTaskIds = taskCorruptedException.corruptedTasks();
+   343→            final Set<Task> corruptedTasks = new HashSet<>();
+   344→            final Set<TopicPartition> changelogsOfCorruptedTasks = new HashSet<>();
+   345→            for (final TaskId taskId : corruptedTaskIds) {
+   346→                final Task corruptedTask = updatingTasks.get(taskId);
+   347→                if (corruptedTask == null) {
+   348→                    throw new IllegalStateException("Task " + taskId + " is corrupted but is not updating. " + BUG_ERROR_MESSAGE);
+   349→                }
+   350→                corruptedTasks.add(corruptedTask);
+   351→                removeCheckpointForCorruptedTask(corruptedTask);
+   352→                changelogsOfCorruptedTasks.addAll(corruptedTask.changelogPartitions());
+   353→            }
+   354→            changelogReader.unregister(changelogsOfCorruptedTasks);
+   355→            corruptedTasks.forEach(
+   356→                task -> addToExceptionsAndFailedTasksThenRemoveFromUpdatingTasks(new ExceptionAndTask(taskCorruptedException, task))
+   357→            );
+   358→        }
+   359→
+   360→        // TODO: we can let the exception encode the actual corrupted changelog partitions and only
+   361→        //       mark those instead of marking all changelogs
+   362→        private void removeCheckpointForCorruptedTask(final Task task) {
+   363→            try {
+   364→                task.markChangelogAsCorrupted(task.changelogPartitions());
+   365→
+   366→                // we need to enforce a checkpoint that removes the corrupted partitions
+   367→                measureCheckpointLatency(() -> task.maybeCheckpoint(true));
+   368→            } catch (final StreamsException swallow) {
+   369→                log.warn("Checkpoint failed for corrupted task {}", task.id(), swallow);
+   370→            }
+   371→        }
+   372→
+   373→        private void handleStreamsException(final StreamsException streamsException) {
+   374→            log.info("Encountered streams exception: ", streamsException);
+   375→            if (streamsException.taskId().isPresent()) {
+   376→                handleStreamsExceptionWithTask(streamsException, streamsException.taskId().get());
+   377→            } else {
+   378→                handleStreamsExceptionWithoutTask(streamsException);
+   379→            }
+   380→        }
+   381→
+   382→        private void handleStreamsExceptionWithTask(final StreamsException streamsException, final TaskId failedTaskId) {
+   383→            if (updatingTasks.containsKey(failedTaskId)) {
+   384→                addToExceptionsAndFailedTasksThenRemoveFromUpdatingTasks(
+   385→                    new ExceptionAndTask(streamsException, updatingTasks.get(failedTaskId))
+   386→                );
+   387→            } else if (pausedTasks.containsKey(failedTaskId)) {
+   388→                addToExceptionsAndFailedTasksThenRemoveFromPausedTasks(
+   389→                    new ExceptionAndTask(streamsException, pausedTasks.get(failedTaskId))
+   390→                );
+   391→            } else {
+   392→                throw new IllegalStateException("Task " + failedTaskId + " failed but is not updating or paused. " + BUG_ERROR_MESSAGE);
+   393→            }
+   394→        }
+   395→
+   396→        private void handleStreamsExceptionWithoutTask(final StreamsException streamsException) {
+   397→            addToExceptionsAndFailedTasksThenClearUpdatingAndPausedTasks(streamsException);
+   398→        }
+   399→
+   400→        // It is important to remove the corrupted tasks from the updating tasks after they were added to the
+   401→        // failed tasks.
+   402→        // This ensures that all tasks are found in DefaultStateUpdater#getTasks().
+   403→        private void addToExceptionsAndFailedTasksThenRemoveFromUpdatingTasks(final ExceptionAndTask exceptionAndTask) {
+   404→            exceptionsAndFailedTasksLock.lock();
+   405→            try {
+   406→                exceptionsAndFailedTasks.add(exceptionAndTask);
+   407→                updatingTasks.remove(exceptionAndTask.task().id());
+   408→                if (exceptionAndTask.task().isActive()) {
+   409→                    transitToUpdateStandbysIfOnlyStandbysLeft();
+   410→                }
+   411→            } finally {
+   412→                exceptionsAndFailedTasksLock.unlock();
+   413→            }
+   414→        }
+   415→
+   416→        private void addToExceptionsAndFailedTasksThenRemoveFromPausedTasks(final ExceptionAndTask exceptionAndTask) {
+   417→            exceptionsAndFailedTasksLock.lock();
+   418→            try {
+   419→                exceptionsAndFailedTasks.add(exceptionAndTask);
+   420→                pausedTasks.remove(exceptionAndTask.task().id());
+   421→                if (exceptionAndTask.task().isActive()) {
+   422→                    transitToUpdateStandbysIfOnlyStandbysLeft();
+   423→                }
+   424→            } finally {
+   425→                exceptionsAndFailedTasksLock.unlock();
+   426→            }
+   427→        }
+   428→
+   429→        private void addToExceptionsAndFailedTasksThenClearUpdatingAndPausedTasks(final RuntimeException runtimeException) {
+   430→            exceptionsAndFailedTasksLock.lock();
+   431→            try {
+   432→                updatingTasks.values().forEach(
+   433→                    task -> exceptionsAndFailedTasks.add(new ExceptionAndTask(runtimeException, task))
+   434→                );
+   435→                updatingTasks.clear();
+   436→                pausedTasks.values().forEach(
+   437→                    task -> exceptionsAndFailedTasks.add(new ExceptionAndTask(runtimeException, task))
+   438→                );
+   439→                pausedTasks.clear();
+   440→            } finally {
+   441→                exceptionsAndFailedTasksLock.unlock();
+   442→            }
+   443→        }
+   444→
+   445→        private void waitIfAllChangelogsCompletelyRead() {
+   446→            tasksAndActionsLock.lock();
+   447→            try {
+   448→                while (allWorkDone() && fetchDeadlineClientInstanceId == -1L) {
+   449→                    isIdle.set(true);
+   450→                    tasksAndActionsCondition.await();
+   451→                }
+   452→            } catch (final InterruptedException ignored) {
+   453→                // we never interrupt the thread, but only signal the condition
+   454→                // and hence this exception should never be thrown
+   455→            } finally {
+   456→                tasksAndActionsLock.unlock();
+   457→                isIdle.set(false);
+   458→            }
+   459→        }
+   460→
+   461→        private boolean allWorkDone() {
+   462→            final boolean noTasksToUpdate = changelogReader.allChangelogsCompleted() || updatingTasks.isEmpty();
+   463→
+   464→            return isRunning.get() &&
+   465→                noTasksToUpdate &&
+   466→                tasksAndActions.isEmpty() &&
+   467→                !isTopologyResumed.get();
+   468→        }
+   469→
+   470→        private void clearUpdatingAndPausedTasks() {
+   471→            updatingTasks.clear();
+   472→            pausedTasks.clear();
+   473→            changelogReader.clear();
+   474→        }
+   475→
+   476→        private List<TaskAndAction> tasksAndActions() {
+   477→            final List<TaskAndAction> tasksAndActionsToProcess = new ArrayList<>(tasksAndActions);
+   478→            tasksAndActions.clear();
+   479→            return tasksAndActionsToProcess;
+   480→        }
+   481→
+   482→        private void addTask(final Task task) {
+   483→            final TaskId taskId = task.id();
+   484→
+   485→            Task existingTask = pausedTasks.get(taskId);
+   486→            if (existingTask != null) {
+   487→                throw new IllegalStateException(
+   488→                    (existingTask.isActive() ? "Active" : "Standby") + " task " + taskId + " already exist in paused tasks, " +
+   489→                        "should not try to add another " + (task.isActive() ? "active" : "standby") + " task with the same id. "
+   490→                        + BUG_ERROR_MESSAGE);
+   491→            }
+   492→            existingTask = updatingTasks.get(taskId);
+   493→            if (existingTask != null) {
+   494→                throw new IllegalStateException(
+   495→                    (existingTask.isActive() ? "Active" : "Standby") + " task " + taskId + " already exist in updating tasks, " +
+   496→                        "should not try to add another " + (task.isActive() ? "active" : "standby") + " task with the same id. "
+   497→                        + BUG_ERROR_MESSAGE);
+   498→            }
+   499→
+   500→            if (isStateless(task)) {
+   501→                addToRestoredTasks((StreamTask) task);
+   502→                log.info("Stateless active task " + taskId + " was added to the restored tasks of the state updater");
+   503→            } else if (topologyMetadata.isPaused(taskId.topologyName())) {
+   504→                pausedTasks.put(taskId, task);
+   505→                changelogReader.register(task.changelogPartitions(), task.stateManager());
+   506→                log.debug((task.isActive() ? "Active" : "Standby")
+   507→                    + " task " + taskId + " was directly added to the paused tasks.");
+   508→            } else {
+   509→                updatingTasks.put(taskId, task);
+   510→                changelogReader.register(task.changelogPartitions(), task.stateManager());
+   511→                if (task.isActive()) {
+   512→                    log.info("Stateful active task " + taskId + " was added to the state updater");
+   513→                    changelogReader.enforceRestoreActive();
+   514→                } else {
+   515→                    log.info("Standby task " + taskId + " was added to the state updater");
+   516→                    if (updatingTasks.size() == 1) {
+   517→                        changelogReader.transitToUpdateStandby();
+   518→                    }
+   519→                }
+   520→            }
+   521→        }
+   522→
+   523→        private void removeTask(final TaskId taskId,
+   524→                                final CompletableFuture<RemovedTaskResult> future,
+   525→                                final StandbyUpdateListener.SuspendReason suspendReason) {
+   526→            try {
+   527→                if (!removeUpdatingTask(taskId, future, suspendReason)
+   528→                    && !removePausedTask(taskId, future, suspendReason)
+   529→                    && !removeRestoredTask(taskId, future)
+   530→                    && !removeFailedTask(taskId, future)) {
+   531→
+   532→                    future.complete(null);
+   533→                    log.warn("Task {} could not be removed from the state updater because the state updater does not"
+   534→                        + " own this task.", taskId);
+   535→                }
+   536→            } catch (final StreamsException streamsException) {
+   537→                handleStreamsExceptionWithTask(streamsException, taskId);
+   538→                future.completeExceptionally(streamsException);
+   539→            } catch (final RuntimeException runtimeException) {
+   540→                handleRuntimeException(runtimeException);
+   541→                future.completeExceptionally(runtimeException);
+   542→            }
+   543→        }
+   544→
+   545→        private boolean removeUpdatingTask(final TaskId taskId,
+   546→                                           final CompletableFuture<RemovedTaskResult> future,
+   547→                                           final StandbyUpdateListener.SuspendReason suspendReason) {
+   548→            if (!updatingTasks.containsKey(taskId)) {
+   549→                return false;
+   550→            }
+   551→            final Task task = updatingTasks.get(taskId);
+   552→            prepareUpdatingTaskForRemoval(task, suspendReason);
+   553→            updatingTasks.remove(taskId);
+   554→            if (task.isActive()) {
+   555→                transitToUpdateStandbysIfOnlyStandbysLeft();
+   556→            }
+   557→            log.info((task.isActive() ? "Active" : "Standby")
+   558→                + " task " + task.id() + " was removed from the updating tasks.");
+   559→            future.complete(new RemovedTaskResult(task));
+   560→            return true;
+   561→        }
+   562→
+   563→        private void prepareUpdatingTaskForRemoval(final Task task,
+   564→                                                   final StandbyUpdateListener.SuspendReason suspendReason) {
+   565→            measureCheckpointLatency(() -> task.maybeCheckpoint(true));
+   566→            final Collection<TopicPartition> changelogPartitions = task.changelogPartitions();
+   567→            changelogReader.unregister(changelogPartitions, suspendReason);
+   568→        }
+   569→
+   570→        private boolean removePausedTask(final TaskId taskId,
+   571→                                         final CompletableFuture<RemovedTaskResult> future,
+   572→                                         final StandbyUpdateListener.SuspendReason suspendReason) {
+   573→            if (!pausedTasks.containsKey(taskId)) {
+   574→                return false;
+   575→            }
+   576→            final Task task = pausedTasks.get(taskId);
+   577→            preparePausedTaskForRemoval(task, suspendReason);
+   578→            pausedTasks.remove(taskId);
+   579→            log.info((task.isActive() ? "Active" : "Standby")
+   580→                + " task " + task.id() + " was removed from the paused tasks.");
+   581→            future.complete(new RemovedTaskResult(task));
+   582→            return true;
+   583→        }
+   584→
+   585→        private void preparePausedTaskForRemoval(final Task task,
+   586→                                                 final StandbyUpdateListener.SuspendReason suspendReason) {
+   587→            final Collection<TopicPartition> changelogPartitions = task.changelogPartitions();
+   588→            changelogReader.unregister(changelogPartitions, suspendReason);
+   589→        }
+   590→
+   591→        private boolean removeRestoredTask(final TaskId taskId, final CompletableFuture<RemovedTaskResult> future) {
+   592→            restoredActiveTasksLock.lock();
+   593→            try {
+   594→                final Iterator<StreamTask> iterator = restoredActiveTasks.iterator();
+   595→                while (iterator.hasNext()) {
+   596→                    final StreamTask restoredTask = iterator.next();
+   597→                    if (restoredTask.id().equals(taskId)) {
+   598→                        iterator.remove();
+   599→                        log.info((restoredTask.isActive() ? "Active" : "Standby")
+   600→                            + " task " + restoredTask.id() + " was removed from the restored tasks.");
+   601→                        future.complete(new RemovedTaskResult(restoredTask));
+   602→                        return true;
+   603→                    }
+   604→                }
+   605→                return false;
+   606→            } finally {
+   607→                restoredActiveTasksLock.unlock();
+   608→            }
+   609→        }
+   610→
+   611→        private boolean removeFailedTask(final TaskId taskId, final CompletableFuture<RemovedTaskResult> future) {
+   612→            exceptionsAndFailedTasksLock.lock();
+   613→            try {
+   614→                final Iterator<ExceptionAndTask> iterator = exceptionsAndFailedTasks.iterator();
+   615→                while (iterator.hasNext()) {
+   616→                    final ExceptionAndTask exceptionAndTask = iterator.next();
+   617→                    final Task failedTask = exceptionAndTask.task();
+   618→                    if (failedTask.id().equals(taskId)) {
+   619→                        iterator.remove();
+   620→                        log.info((failedTask.isActive() ? "Active" : "Standby")
+   621→                            + " task " + failedTask.id() + " was removed from the failed tasks.");
+   622→                        future.complete(new RemovedTaskResult(failedTask, exceptionAndTask.exception()));
+   623→                        return true;
+   624→                    }
+   625→                }
+   626→                return false;
+   627→            } finally {
+   628→                exceptionsAndFailedTasksLock.unlock();
+   629→            }
+   630→        }
+   631→
+   632→        private void pauseTask(final Task task) {
+   633→            final TaskId taskId = task.id();
+   634→            // do not need to unregister changelog partitions for paused tasks
+   635→            try {
+   636→                measureCheckpointLatency(() -> task.maybeCheckpoint(true));
+   637→                pausedTasks.put(taskId, task);
+   638→                updatingTasks.remove(taskId);
+   639→                if (task.isActive()) {
+   640→                    transitToUpdateStandbysIfOnlyStandbysLeft();
+   641→                }
+   642→                log.info((task.isActive() ? "Active" : "Standby")
+   643→                    + " task " + task.id() + " was paused from the updating tasks and added to the paused tasks.");
+   644→
+   645→            } catch (final StreamsException streamsException) {
+   646→                handleStreamsExceptionWithTask(streamsException, taskId);
+   647→            }
+   648→        }
+   649→
+   650→        private void resumeTask(final Task task) {
+   651→            final TaskId taskId = task.id();
+   652→            updatingTasks.put(taskId, task);
+   653→            pausedTasks.remove(taskId);
+   654→
+   655→            if (task.isActive()) {
+   656→                log.info("Stateful active task " + task.id() + " was resumed to the updating tasks of the state updater");
+   657→                changelogReader.enforceRestoreActive();
+   658→            } else {
+   659→                log.info("Standby task " + task.id() + " was resumed to the updating tasks of the state updater");
+   660→                if (updatingTasks.size() == 1) {
+   661→                    changelogReader.transitToUpdateStandby();
+   662→                }
+   663→            }
+   664→        }
+   665→
+   666→        private boolean isStateless(final Task task) {
+   667→            return task.changelogPartitions().isEmpty() && task.isActive();
+   668→        }
+   669→
+   670→        private void maybeCompleteRestoration(final StreamTask task,
+   671→                                              final Set<TopicPartition> restoredChangelogs) {
+   672→            final Collection<TopicPartition> changelogPartitions = task.changelogPartitions();
+   673→            if (restoredChangelogs.containsAll(changelogPartitions)) {
+   674→                try {
+   675→                    if (topologyMetadata.topologyVersion() > restorationStartTopologyVersion) {
+   676→                        log.info("Topology version changed during restoration of task {}, re-queuing", task.id());
+   677→                        changelogReader.unregister(changelogPartitions);
+   678→                        requeueTaskForRestoration(task);
+   679→                        return;
+   680→                    }
+   681→                    measureCheckpointLatency(() -> task.maybeCheckpoint(true));
+   682→                    changelogReader.unregister(changelogPartitions);
+   683→                    addToRestoredTasks(task);
+   684→                    log.info("Stateful active task " + task.id() + " completed restoration");
+   685→                    transitToUpdateStandbysIfOnlyStandbysLeft();
+   686→                } catch (final StreamsException streamsException) {
+   687→                    handleStreamsExceptionWithTask(streamsException, task.id());
+   688→                }
+   689→            }
+   690→        }
+   691→
+   692→        private void requeueTaskForRestoration(final StreamTask task) {
+   693→            updatingTasks.remove(task.id());
+   694→            tasksAndActionsLock.lock();
+   695→            try {
+   696→                tasksAndActions.add(TaskAndAction.createAddTask(task));
+   697→                tasksAndActionsCondition.signalAll();
+   698→            } finally {
+   699→                tasksAndActionsLock.unlock();
+   700→            }
+   701→        }
+   702→
+   703→        private void transitToUpdateStandbysIfOnlyStandbysLeft() {
+   704→            if (onlyStandbyTasksUpdating()) {
+   705→                changelogReader.transitToUpdateStandby();
+   706→            }
+   707→        }
+   708→
+   709→        private void addToRestoredTasks(final StreamTask task) {
+   710→            restoredActiveTasksLock.lock();
+   711→            try {
+   712→                restoredActiveTasks.add(task);
+   713→                updatingTasks.remove(task.id());
+   714→                log.debug("Active task " + task.id() + " was added to the restored tasks");
+   715→                restoredActiveTasksCondition.signalAll();
+   716→            } finally {
+   717→                restoredActiveTasksLock.unlock();
+   718→            }
+   719→        }
+   720→
+   721→        private void maybeCheckpointTasks(final long now) {
+   722→            final long elapsedMsSinceLastCommit = now - lastCommitMs;
+   723→            if (elapsedMsSinceLastCommit > commitIntervalMs) {
+   724→                if (log.isDebugEnabled()) {
+   725→                    log.debug("Checkpointing state of all restoring tasks since {}ms has elapsed (commit interval is {}ms)",
+   726→                        elapsedMsSinceLastCommit, commitIntervalMs);
+   727→                }
+   728→
+   729→                measureCheckpointLatency(() -> {
+   730→                    for (final Task task : updatingTasks.values()) {
+   731→                        try {
+   732→                            // do not enforce checkpointing during restoration if its position has not advanced much
+   733→                            task.maybeCheckpoint(false);
+   734→                        } catch (final StreamsException streamsException) {
+   735→                            handleStreamsExceptionWithTask(streamsException, task.id());
+   736→                        }
+   737→                    }
+   738→                });
+   739→
+   740→                lastCommitMs = now;
+   741→            }
+   742→        }
+   743→
+   744→        private void measureCheckpointLatency(final Runnable actionToMeasure) {
+   745→            final long startMs = time.milliseconds();
+   746→            try {
+   747→                actionToMeasure.run();
+   748→            } finally {
+   749→                totalCheckpointLatency += Math.max(0L, time.milliseconds() - startMs);
+   750→            }
+   751→        }
+   752→
+   753→        private void recordMetrics(final long now, final long totalLatency, final long totalWaitLatency) {
+   754→            final long totalRestoreLatency = Math.max(0L, totalLatency - totalWaitLatency - totalCheckpointLatency);
+   755→
+   756→            recordWindowedSum(
+   757→                now,
+   758→                totalWaitLatency,
+   759→                totalCheckpointLatency,
+   760→                totalRestoreLatency * (changelogReader.isRestoringActive() ? 1.0d : 0.0d),
+   761→                totalRestoreLatency * (changelogReader.isRestoringActive() ? 0.0d : 1.0d),
+   762→                totalLatency
+   763→            );
+   764→
+   765→            recordRatios(now);
+   766→
+   767→            totalCheckpointLatency = 0L;
+   768→        }
+   769→
+   770→        private void initTimeWindowIfNeeded(final long now) {
+   771→            if (!timeWindowInitialized) {
+   772→                idleTimeWindowedSum.record(metricsConfig, 0.0, now);
+   773→                checkpointTimeWindowedSum.record(metricsConfig, 0.0, now);
+   774→                activeRestoreTimeWindowedSum.record(metricsConfig, 0.0, now);
+   775→                standbyRestoreTimeWindowedSum.record(metricsConfig, 0.0, now);
+   776→                runOnceLatencyWindowedSum.record(metricsConfig, 0.0, now);
+   777→                timeWindowInitialized = true;
+   778→            }
+   779→        }
+   780→
+   781→        private void recordWindowedSum(final long now,
+   782→                                       final double idleTime,
+   783→                                       final double checkpointTime,
+   784→                                       final double activeRestoreTime,
+   785→                                       final double standbyRestoreTime,
+   786→                                       final double totalLatency) {
+   787→            idleTimeWindowedSum.record(metricsConfig, idleTime, now);
+   788→            checkpointTimeWindowedSum.record(metricsConfig, checkpointTime, now);
+   789→            activeRestoreTimeWindowedSum.record(metricsConfig, activeRestoreTime, now);
+   790→            standbyRestoreTimeWindowedSum.record(metricsConfig, standbyRestoreTime, now);
+   791→            runOnceLatencyWindowedSum.record(metricsConfig, totalLatency, now);
+   792→        }
+   793→
+   794→        private void recordRatios(final long now) {
+   795→            final double runOnceLatencyWindow = runOnceLatencyWindowedSum.measure(metricsConfig, now);
+   796→
+   797→            recordRatio(now, runOnceLatencyWindow, idleTimeWindowedSum, updaterMetrics.idleRatioSensor);
+   798→            recordRatio(now, runOnceLatencyWindow, checkpointTimeWindowedSum, updaterMetrics.checkpointRatioSensor);
+   799→            recordRatio(now, runOnceLatencyWindow, activeRestoreTimeWindowedSum, updaterMetrics.activeRestoreRatioSensor);
+   800→            recordRatio(now, runOnceLatencyWindow, standbyRestoreTimeWindowedSum, updaterMetrics.standbyRestoreRatioSensor);
+   801→        }
+   802→
+   803→        private void recordRatio(final long now,
+   804→                                 final double runOnceLatencyWindow,
+   805→                                 final WindowedSum windowedSum,
+   806→                                 final Sensor ratioSensor) {
+   807→            if (runOnceLatencyWindow > 0.0) {
+   808→                final double elapsedTime = windowedSum.measure(metricsConfig, now);
+   809→                ratioSensor.record(elapsedTime / runOnceLatencyWindow, now);
+   810→            } else {
+   811→                ratioSensor.record(0.0, now);
+   812→            }
+   813→        }
+   814→
+   815→    }
+   816→
+   817→    private final Time time;
+   818→    private final Logger log;
+   819→    private final String name;
+   820→    private final StreamsMetricsImpl metrics;
+   821→    private final Consumer<byte[], byte[]> restoreConsumer;
+   822→    private final ChangelogReader changelogReader;
+   823→    private final TopologyMetadata topologyMetadata;
+   824→    private final Queue<TaskAndAction> tasksAndActions = new LinkedList<>();
+   825→    private final Lock tasksAndActionsLock = new ReentrantLock();
+   826→    private final Condition tasksAndActionsCondition = tasksAndActionsLock.newCondition();
+   827→    private final Queue<StreamTask> restoredActiveTasks = new LinkedList<>();
+   828→    private final Lock restoredActiveTasksLock = new ReentrantLock();
+   829→    private final Condition restoredActiveTasksCondition = restoredActiveTasksLock.newCondition();
+   830→    private final Lock exceptionsAndFailedTasksLock = new ReentrantLock();
+   831→    private final Queue<ExceptionAndTask> exceptionsAndFailedTasks = new LinkedList<>();
+   832→    private final BlockingQueue<Task> removedTasks = new LinkedBlockingQueue<>();
+   833→    private final AtomicBoolean isTopologyResumed = new AtomicBoolean(false);
+   834→
+   835→    private final long commitIntervalMs;
+   836→    private long lastCommitMs;
+   837→    private volatile long restorationStartTopologyVersion = -1L;
+   838→
+   839→    private StateUpdaterThread stateUpdaterThread = null;
+   840→
+   841→    public DefaultStateUpdater(final String name,
+   842→                               final StreamsMetricsImpl metrics,
+   843→                               final StreamsConfig config,
+   844→                               final Consumer<byte[], byte[]> restoreConsumer,
+   845→                               final ChangelogReader changelogReader,
+   846→                               final TopologyMetadata topologyMetadata,
+   847→                               final Time time) {
+   848→        this.time = time;
+   849→        this.name = name;
+   850→        this.metrics = metrics;
+   851→        this.restoreConsumer = restoreConsumer;
+   852→        this.changelogReader = changelogReader;
+   853→        this.topologyMetadata = topologyMetadata;
+   854→        this.commitIntervalMs = config.getLong(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG);
+   855→
+   856→        final String logPrefix = String.format("state-updater [%s] ", name);
+   857→        final LogContext logContext = new LogContext(logPrefix);
+   858→        this.log = logContext.logger(DefaultStateUpdater.class);
+   859→    }
+   860→
+   861→    public void start() {
+   862→        if (stateUpdaterThread == null) {
+   863→            if (!restoredActiveTasks.isEmpty() || !exceptionsAndFailedTasks.isEmpty()) {
+   864→                throw new IllegalStateException("State updater started with non-empty output queues. "
+   865→                    + BUG_ERROR_MESSAGE);
+   866→            }
+   867→            restorationStartTopologyVersion = topologyMetadata.topologyVersion();
+   868→            stateUpdaterThread = new StateUpdaterThread(name, metrics, changelogReader);
+   869→            stateUpdaterThread.start();
+   870→
+   871→            // initialize the last commit as of now to prevent first commit happens immediately
+   872→            this.lastCommitMs = time.milliseconds();
+   873→        }
+   874→    }
+   875→
+   876→    @Override
+   877→    public void shutdown(final Duration timeout) {
+   878→        if (stateUpdaterThread != null) {
+   879→            log.info("Shutting down state updater thread");
+   880→
+   881→            // first set the running flag and then
+   882→            // notify the condition in case the thread is waiting on it;
+   883→            // note this ordering should not be changed
+   884→            stateUpdaterThread.isRunning.set(false);
+   885→
+   886→            tasksAndActionsLock.lock();
+   887→            try {
+   888→                tasksAndActionsCondition.signalAll();
+   889→            } finally {
+   890→                tasksAndActionsLock.unlock();
+   891→            }
+   892→
+   893→            try {
+   894→                stateUpdaterThread.join(timeout.toMillis());
+   895→                if (stateUpdaterThread.isAlive()) {
+   896→                    throw new StreamsException("State updater thread did not shutdown within the timeout");
+   897→                }
+   898→                stateUpdaterThread = null;
+   899→            } catch (final InterruptedException ignored) {
+   900→            }
+   901→        }
+   902→    }
+   903→
+   904→    @Override
+   905→    public void add(final Task task) {
+   906→        verifyStateFor(task);
+   907→
+   908→        tasksAndActionsLock.lock();
+   909→        try {
+   910→            tasksAndActions.add(TaskAndAction.createAddTask(task));
+   911→            tasksAndActionsCondition.signalAll();
+   912→        } finally {
+   913→            tasksAndActionsLock.unlock();
+   914→        }
+   915→    }
+   916→
+   917→    private void verifyStateFor(final Task task) {
+   918→        if (task.isActive() && task.state() != State.RESTORING) {
+   919→            throw new IllegalStateException("Active task " + task.id() + " is not in state RESTORING. " + BUG_ERROR_MESSAGE);
+   920→        }
+   921→        if (!task.isActive() && task.state() != State.RUNNING) {
+   922→            throw new IllegalStateException("Standby task " + task.id() + " is not in state RUNNING. " + BUG_ERROR_MESSAGE);
+   923→        }
+   924→    }
+   925→
+   926→    @Override
+   927→    public CompletableFuture<RemovedTaskResult> remove(final TaskId taskId,
+   928→                                                       final StandbyUpdateListener.SuspendReason suspendReason) {
+   929→        final CompletableFuture<RemovedTaskResult> future = new CompletableFuture<>();
+   930→        tasksAndActionsLock.lock();
+   931→        try {
+   932→            tasksAndActions.add(TaskAndAction.createRemoveTask(taskId, future, suspendReason));
+   933→            tasksAndActionsCondition.signalAll();
+   934→        } finally {
+   935→            tasksAndActionsLock.unlock();
+   936→        }
+   937→        return future;
+   938→    }
+   939→
+   940→    @Override
+   941→    public void signalResume() {
+   942→        tasksAndActionsLock.lock();
+   943→        try {
+   944→            isTopologyResumed.set(true);
+   945→            tasksAndActionsCondition.signalAll();
+   946→        } finally {
+   947→            tasksAndActionsLock.unlock();
+   948→        }
+   949→    }
+   950→
+   951→    @Override
+   952→    public Set<StreamTask> drainRestoredActiveTasks(final Duration timeout) {
+   953→        final long timeoutMs = timeout.toMillis();
+   954→        final long startTime = time.milliseconds();
+   955→        final long deadline = startTime + timeoutMs;
+   956→        long now = startTime;
+   957→        final Set<StreamTask> result = new HashSet<>();
+   958→        try {
+   959→            while (now <= deadline && result.isEmpty()) {
+   960→                restoredActiveTasksLock.lock();
+   961→                try {
+   962→                    while (restoredActiveTasks.isEmpty() && now <= deadline) {
+   963→                        // We can ignore whether the deadline expired during await, as the while loop condition will
+   964→                        // check again for deadline expiration.
+   965→                        @SuppressWarnings("UnusedLocalVariable")
+   966→                        final boolean ignored = restoredActiveTasksCondition.await(deadline - now, TimeUnit.MILLISECONDS);
+   967→                        now = time.milliseconds();
+   968→                    }
+   969→                    result.addAll(restoredActiveTasks);
+   970→                    restoredActiveTasks.clear();
+   971→                } finally {
+   972→                    restoredActiveTasksLock.unlock();
+   973→                }
+   974→                now = time.milliseconds();
+   975→            }
+   976→            return result;
+   977→        } catch (final InterruptedException ignored) {
+   978→        }
+   979→        return result;
+   980→    }
+   981→
+   982→    @Override
+   983→    public List<ExceptionAndTask> drainExceptionsAndFailedTasks() {
+   984→        final List<ExceptionAndTask> result = new ArrayList<>();
+   985→        exceptionsAndFailedTasksLock.lock();
+   986→        try {
+   987→            result.addAll(exceptionsAndFailedTasks);
+   988→            exceptionsAndFailedTasks.clear();
+   989→        } finally {
+   990→            exceptionsAndFailedTasksLock.unlock();
+   991→        }
+   992→        return result;
+   993→    }
+   994→
+   995→    @Override
+   996→    public boolean hasExceptionsAndFailedTasks() {
+   997→        exceptionsAndFailedTasksLock.lock();
+   998→        try {
+   999→            return !exceptionsAndFailedTasks.isEmpty();
+  1000→        } finally {
+  1001→            exceptionsAndFailedTasksLock.unlock();
+  1002→        }
+  1003→    }
+  1004→
+  1005→    public Set<StandbyTask> updatingStandbyTasks() {
+  1006→        return stateUpdaterThread != null
+  1007→            ? Set.copyOf(stateUpdaterThread.updatingStandbyTasks())
+  1008→            : Collections.emptySet();
+  1009→    }
+  1010→
+  1011→    @Override
+  1012→    public Set<Task> updatingTasks() {
+  1013→        return stateUpdaterThread != null
+  1014→            ? Set.copyOf(stateUpdaterThread.updatingTasks())
+  1015→            : Collections.emptySet();
+  1016→    }
+  1017→
+  1018→    public Set<StreamTask> restoredActiveTasks() {
+  1019→        restoredActiveTasksLock.lock();
+  1020→        try {
+  1021→            return Set.copyOf(restoredActiveTasks);
+  1022→        } finally {
+  1023→            restoredActiveTasksLock.unlock();
+  1024→        }
+  1025→    }
+  1026→
+  1027→    public List<ExceptionAndTask> exceptionsAndFailedTasks() {
+  1028→        exceptionsAndFailedTasksLock.lock();
+  1029→        try {
+  1030→            return List.copyOf(exceptionsAndFailedTasks);
+  1031→        } finally {
+  1032→            exceptionsAndFailedTasksLock.unlock();
+  1033→        }
+  1034→    }
+  1035→
+  1036→    public Set<Task> removedTasks() {
+  1037→        return Set.copyOf(removedTasks);
+  1038→    }
+  1039→
+  1040→    public Set<Task> pausedTasks() {
+  1041→        return stateUpdaterThread != null
+  1042→            ? Set.copyOf(stateUpdaterThread.pausedTasks())
+  1043→            : Collections.emptySet();
+  1044→    }
+  1045→
+  1046→    @Override
+  1047→    public Set<Task> tasks() {
+  1048→        return executeWithQueuesLocked(() -> streamOfTasks().map(ReadOnlyTask::new).collect(Collectors.toSet()));
+  1049→    }
+  1050→
+  1051→    @Override
+  1052→    public boolean restoresActiveTasks() {
+  1053→        return !executeWithQueuesLocked(
+  1054→            () -> streamOfTasks().filter(Task::isActive).collect(Collectors.toSet())
+  1055→        ).isEmpty();
+  1056→    }
+  1057→
+  1058→    public Set<StreamTask> activeTasks() {
+  1059→        return executeWithQueuesLocked(
+  1060→            () -> streamOfTasks().filter(Task::isActive).map(t -> (StreamTask) t).collect(Collectors.toSet())
+  1061→        );
+  1062→    }
+  1063→
+  1064→    @Override
+  1065→    public Set<StandbyTask> standbyTasks() {
+  1066→        return executeWithQueuesLocked(
+  1067→            () -> streamOfTasks().filter(t -> !t.isActive()).map(t -> (StandbyTask) t).collect(Collectors.toSet())
+  1068→        );
+  1069→    }
+  1070→
+  1071→    @Override
+  1072→    public KafkaFutureImpl<Uuid> restoreConsumerInstanceId(final Duration timeout) {
+  1073→        return stateUpdaterThread.restoreConsumerInstanceId(timeout);
+  1074→    }
+  1075→
+  1076→    public boolean isRunning() {
+  1077→        return stateUpdaterThread != null && stateUpdaterThread.isRunning.get();
+  1078→    }
+  1079→
+  1080→    // used for testing
+  1081→    boolean isIdle() {
+  1082→        if (stateUpdaterThread != null) {
+  1083→            return stateUpdaterThread.isIdle.get();
+  1084→        }
+  1085→        return false;
+  1086→    }
+  1087→
+  1088→    private <T> Set<T> executeWithQueuesLocked(final Supplier<Set<T>> action) {
+  1089→        tasksAndActionsLock.lock();
+  1090→        restoredActiveTasksLock.lock();
+  1091→        exceptionsAndFailedTasksLock.lock();
+  1092→        try {
+  1093→            return action.get();
+  1094→        } finally {
+  1095→            exceptionsAndFailedTasksLock.unlock();
+  1096→            restoredActiveTasksLock.unlock();
+  1097→            tasksAndActionsLock.unlock();
+  1098→        }
+  1099→    }
+  1100→
+  1101→    private Stream<Task> streamOfTasks() {
+  1102→        return
+  1103→            Stream.concat(
+  1104→                streamOfNonPausedTasks(),
+  1105→                pausedTasks().stream()
+  1106→            );
+  1107→    }
+  1108→
+  1109→    private Stream<Task> streamOfNonPausedTasks() {
+  1110→        return
+  1111→            Stream.concat(
+  1112→                tasksAndActions.stream()
+  1113→                    .filter(taskAndAction -> taskAndAction.action() == Action.ADD)
+  1114→                    .map(TaskAndAction::task),
+  1115→                Stream.concat(
+  1116→                    updatingTasks().stream(),
+  1117→                    Stream.concat(
+  1118→                        restoredActiveTasks.stream(),
+  1119→                        Stream.concat(
+  1120→                            exceptionsAndFailedTasks.stream().map(ExceptionAndTask::task),
+  1121→                            removedTasks.stream()))));
+  1122→    }
+  1123→
+  1124→    private class StateUpdaterMetrics {
+  1125→        private static final String STATE_LEVEL_GROUP = "stream-state-updater-metrics";
+  1126→
+  1127→        private static final String IDLE_RATIO_DESCRIPTION = WINDOWED_RATIO_DESCRIPTION_PREFIX + THREAD_TIME_UNIT_DESCRIPTION + "being idle";
+  1128→        private static final String RESTORE_RATIO_DESCRIPTION = WINDOWED_RATIO_DESCRIPTION_PREFIX + THREAD_TIME_UNIT_DESCRIPTION + "restoring active tasks";
+  1129→        private static final String UPDATE_RATIO_DESCRIPTION = WINDOWED_RATIO_DESCRIPTION_PREFIX + THREAD_TIME_UNIT_DESCRIPTION + "updating standby tasks";
+  1130→        private static final String CHECKPOINT_RATIO_DESCRIPTION = WINDOWED_RATIO_DESCRIPTION_PREFIX + THREAD_TIME_UNIT_DESCRIPTION + "checkpointing tasks restored progress";
+  1131→        private static final String RESTORE_RECORDS_RATE_DESCRIPTION = RATE_DESCRIPTION + "records restored";
+  1132→        private static final String RESTORE_RATE_DESCRIPTION = RATE_DESCRIPTION + "restore calls triggered";
+  1133→
+  1134→        private final Sensor restoreSensor;
+  1135→        private final Sensor idleRatioSensor;
+  1136→        private final Sensor activeRestoreRatioSensor;
+  1137→        private final Sensor standbyRestoreRatioSensor;
+  1138→        private final Sensor checkpointRatioSensor;
+  1139→
+  1140→        private final Deque<Sensor> allSensors = new LinkedList<>();
+  1141→        private final Deque<MetricName> allMetricNames = new LinkedList<>();
+  1142→
+  1143→        private StateUpdaterMetrics(final StreamsMetricsImpl metrics, final String threadId) {
+  1144→            final Map<String, String> threadLevelTags = new LinkedHashMap<>();
+  1145→            threadLevelTags.put(THREAD_ID_TAG, threadId);
+  1146→            final Metrics metricsRegistry = metrics.metricsRegistry();
+  1147→
+  1148→            MetricName metricName = metricsRegistry.metricName("active-restoring-tasks",
+  1149→                STATE_LEVEL_GROUP,
+  1150→                "The number of active tasks currently undergoing restoration",
+  1151→                threadLevelTags);
+  1152→            metricsRegistry.addMetric(metricName, (config, now) -> stateUpdaterThread != null ?
+  1153→                stateUpdaterThread.numRestoringActiveTasks() : 0);
+  1154→            allMetricNames.push(metricName);
+  1155→
+  1156→            metricName = metricsRegistry.metricName("standby-updating-tasks",
+  1157→                STATE_LEVEL_GROUP,
+  1158→                "The number of standby tasks currently undergoing state update",
+  1159→                threadLevelTags);
+  1160→            metricsRegistry.addMetric(metricName, (config, now) -> stateUpdaterThread != null ?
+  1161→                stateUpdaterThread.numUpdatingStandbyTasks() : 0);
+  1162→            allMetricNames.push(metricName);
+  1163→
+  1164→            metricName = metricsRegistry.metricName("active-paused-tasks",
+  1165→                STATE_LEVEL_GROUP,
+  1166→                "The number of active tasks paused restoring",
+  1167→                threadLevelTags);
+  1168→            metricsRegistry.addMetric(metricName, (config, now) -> stateUpdaterThread != null ?
+  1169→                stateUpdaterThread.numPausedActiveTasks() : 0);
+  1170→            allMetricNames.push(metricName);
+  1171→
+  1172→            metricName = metricsRegistry.metricName("standby-paused-tasks",
+  1173→                STATE_LEVEL_GROUP,
+  1174→                "The number of standby tasks paused state update",
+  1175→                threadLevelTags);
+  1176→            metricsRegistry.addMetric(metricName, (config, now) -> stateUpdaterThread != null ?
+  1177→                stateUpdaterThread.numPausedStandbyTasks() : 0);
+  1178→            allMetricNames.push(metricName);
+  1179→
+  1180→            this.idleRatioSensor = metrics.threadLevelSensor(threadId, "idle-ratio", RecordingLevel.INFO);
+  1181→            this.idleRatioSensor.add(new MetricName("idle-ratio", STATE_LEVEL_GROUP, IDLE_RATIO_DESCRIPTION, threadLevelTags), new Value());
+  1182→            allSensors.add(this.idleRatioSensor);
+  1183→
+  1184→            this.activeRestoreRatioSensor = metrics.threadLevelSensor(threadId, "active-restore-ratio", RecordingLevel.INFO);
+  1185→            this.activeRestoreRatioSensor.add(new MetricName("active-restore-ratio", STATE_LEVEL_GROUP, RESTORE_RATIO_DESCRIPTION, threadLevelTags), new Value());
+  1186→            allSensors.add(this.activeRestoreRatioSensor);
+  1187→
+  1188→            this.standbyRestoreRatioSensor = metrics.threadLevelSensor(threadId, "standby-update-ratio", RecordingLevel.INFO);
+  1189→            this.standbyRestoreRatioSensor.add(new MetricName("standby-update-ratio", STATE_LEVEL_GROUP, UPDATE_RATIO_DESCRIPTION, threadLevelTags), new Value());
+  1190→            allSensors.add(this.standbyRestoreRatioSensor);
+  1191→
+  1192→            this.checkpointRatioSensor = metrics.threadLevelSensor(threadId, "checkpoint-ratio", RecordingLevel.INFO);
+  1193→            this.checkpointRatioSensor.add(new MetricName("checkpoint-ratio", STATE_LEVEL_GROUP, CHECKPOINT_RATIO_DESCRIPTION, threadLevelTags), new Value());
+  1194→            allSensors.add(this.checkpointRatioSensor);
+  1195→
+  1196→            this.restoreSensor = metrics.threadLevelSensor(threadId, "restore-records", RecordingLevel.INFO);
+  1197→            this.restoreSensor.add(new MetricName("restore-records-rate", STATE_LEVEL_GROUP, RESTORE_RECORDS_RATE_DESCRIPTION, threadLevelTags), new Rate());
+  1198→            this.restoreSensor.add(new MetricName("restore-call-rate", STATE_LEVEL_GROUP, RESTORE_RATE_DESCRIPTION, threadLevelTags), new Rate(new WindowedCount()));
+  1199→            allSensors.add(this.restoreSensor);
+  1200→        }
+  1201→
+  1202→        void clear() {
+  1203→            while (!allSensors.isEmpty()) {
+  1204→                metrics.removeSensor(allSensors.pop());
+  1205→            }
+  1206→
+  1207→            while (!allMetricNames.isEmpty()) {
+  1208→                metrics.removeMetric(allMetricNames.pop());
+  1209→            }
+  1210→        }
+  1211→    }
+  1212→}
+  1213→

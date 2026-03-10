@@ -1,0 +1,38 @@
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace3005995439240899541
+Iterations: 0
+Bug D present — creating missed signal scenario for Fray
+2026-03-10 01:19:22 [INFO]: Error found at iter: 0, step: 265, Elapsed time: 295ms
+
+2026-03-10 01:19:22 [INFO]: Error: org.pastalab.fray.runtime.DeadlockException
+Thread: Thread[#22,Thread-0,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Thread.join(Thread.java:1887)
+	at java.base/java.lang.Thread.join(Thread.java:1963)
+	at org.apache.kafka.streams.processor.internals.BugDVerificationTest.main(BugDVerificationTest.java:93)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.pastalab.fray.core.command.MethodExecutor.execute(Executor.kt:67)
+	at org.pastalab.fray.core.TestRunner.run$lambda$0(TestRunner.kt:61)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#23,Thread-1,5,main]
+Stacktrace: 
+	at java.base/jdk.internal.misc.Unsafe.park(Native Method)
+	at java.base/java.util.concurrent.locks.LockSupport.park(LockSupport.java:369)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionNode.block(AbstractQueuedSynchronizer.java:520)
+	at java.base/java.util.concurrent.ForkJoinPool.unmanagedBlock(ForkJoinPool.java:4364)
+	at java.base/java.util.concurrent.ForkJoinPool.managedBlock(ForkJoinPool.java)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1752)
+	at org.pastalab.fray.core.RunContext.objectWaitDoneImpl(RunContext.kt:524)
+	at org.pastalab.fray.core.RunContext.conditionAwaitDone-gIAlu-s(RunContext.kt:590)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onConditionAwaitDone(RuntimeDelegate.kt:191)
+	at java.base/org.pastalab.fray.runtime.Runtime.onConditionAwaitDone(Runtime.java:110)
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1771)
+	at org.apache.kafka.streams.processor.internals.BugDVerificationTest.lambda$main$0(BugDVerificationTest.java:69)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+
+2026-03-10 01:19:22 [INFO]: The recording is saved to /tmp/fray-workspace3005995439240899541/recording
+

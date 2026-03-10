@@ -1,0 +1,72 @@
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace13365996570071018288
+Iterations: 0
+All 3 edges present — creating deadlock scenario for Fray
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace13365996570071018288
+Iterations: 1
+All 3 edges present — creating deadlock scenario for Fray
+[2J[2HFray Testing:
+Report is available at: /tmp/fray-workspace13365996570071018288
+Iterations: 2
+All 3 edges present — creating deadlock scenario for Fray
+2026-03-09 23:58:25 [INFO]: Error found at iter: 2, step: 147, Elapsed time: 392ms
+
+2026-03-09 23:58:25 [INFO]: Error: org.pastalab.fray.runtime.DeadlockException
+Thread: Thread[#33,Thread-8,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Thread.join(Thread.java:1887)
+	at java.base/java.lang.Thread.join(Thread.java:1963)
+	at org.apache.kafka.streams.processor.internals.MetricsCycleVerificationTest.main(MetricsCycleVerificationTest.java:93)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.pastalab.fray.core.command.MethodExecutor.execute(Executor.kt:67)
+	at org.pastalab.fray.core.TestRunner.run$lambda$0(TestRunner.kt:61)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#34,Thread-9,5,main]
+Stacktrace: 
+	at java.base/java.lang.Thread.getStackTrace(Thread.java:2193)
+	at org.pastalab.fray.core.RunContext.reportError(RunContext.kt:137)
+	at org.pastalab.fray.core.RunContext.scheduleNextOperation(RunContext.kt:1231)
+	at org.pastalab.fray.core.RunContext.lockImpl(RunContext.kt:673)
+	at org.pastalab.fray.core.RunContext.lockLock-gIAlu-s(RunContext.kt:701)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onLockLock(RuntimeDelegate.kt:143)
+	at java.base/org.pastalab.fray.runtime.Runtime.onLockLock(Runtime.java:70)
+	at java.base/java.util.concurrent.locks.ReentrantReadWriteLock$WriteLock.lock(ReentrantReadWriteLock.java)
+	at org.apache.kafka.streams.processor.internals.MetricsCycleVerificationTest.lambda$main$0(MetricsCycleVerificationTest.java:62)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#35,Thread-10,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Object.wait(Object.java:351)
+	at org.pastalab.fray.core.utils.Sync.block(Sync.kt:29)
+	at org.pastalab.fray.core.ThreadContext.block(ThreadContext.kt:24)
+	at org.pastalab.fray.core.RunContext.scheduleNextOperation(RunContext.kt:1283)
+	at org.pastalab.fray.core.RunContext.lockImpl(RunContext.kt:673)
+	at org.pastalab.fray.core.RunContext.lockLock-gIAlu-s(RunContext.kt:701)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onLockLock(RuntimeDelegate.kt:143)
+	at java.base/org.pastalab.fray.runtime.Runtime.onLockLock(Runtime.java:70)
+	at java.base/java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java)
+	at org.apache.kafka.streams.processor.internals.MetricsCycleVerificationTest.lambda$main$1(MetricsCycleVerificationTest.java:71)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Thread: Thread[#36,Thread-11,5,main]
+Stacktrace: 
+	at java.base/java.lang.Object.wait0(Native Method)
+	at java.base/java.lang.Object.wait(Object.java:389)
+	at java.base/java.lang.Object.wait(Object.java:351)
+	at org.pastalab.fray.core.utils.Sync.block(Sync.kt:29)
+	at org.pastalab.fray.core.ThreadContext.block(ThreadContext.kt:24)
+	at org.pastalab.fray.core.RunContext.scheduleNextOperation(RunContext.kt:1283)
+	at org.pastalab.fray.core.RunContext.lockImpl(RunContext.kt:673)
+	at org.pastalab.fray.core.RunContext.monitorEnter-gIAlu-s(RunContext.kt:690)
+	at org.pastalab.fray.core.delegates.RuntimeDelegate.onMonitorEnter(RuntimeDelegate.kt:160)
+	at java.base/org.pastalab.fray.runtime.Runtime.onMonitorEnter(Runtime.java:158)
+	at org.apache.kafka.streams.processor.internals.MetricsCycleVerificationTest.lambda$main$2(MetricsCycleVerificationTest.java:82)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+
+2026-03-09 23:58:25 [INFO]: The recording is saved to /tmp/fray-workspace13365996570071018288/recording
+

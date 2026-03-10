@@ -1,0 +1,147 @@
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:256:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:294:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:300:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:1080:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamThread.java:2053:    // this method is NOT thread-safe (we rely on the callee to be `synchronized`)
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:407:    public final synchronized void setStreamsConfig(final StreamsConfig applicationConfig) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:417:    public final synchronized void setNamedTopology(final NamedTopology namedTopology) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:421:    public synchronized TopologyConfig topologyConfigs() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:434:    public final synchronized InternalTopologyBuilder rewriteTopology(final StreamsConfig config) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:922:    public synchronized Map<Integer, Set<String>> nodeGroups() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:963:    public synchronized ProcessorTopology buildTopology() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:979:    public synchronized ProcessorTopology buildSubtopology(final int topicGroupId) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:988:    public synchronized ProcessorTopology buildGlobalStateTopology() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1193:    public synchronized Map<Subtopology, TopicsInfo> subtopologyToTopicsInfo() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1397:    public synchronized Collection<Set<String>> copartitionGroups() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1509:    public synchronized List<String> fullSourceTopicNames() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:1517:    synchronized String sourceTopicPatternString() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:2240:    synchronized void addSubscribedTopicsFromAssignment(final Set<TopicPartition> partitions, final String logPrefix) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:2256:    synchronized void addSubscribedTopicsFromMetadata(final Set<String> topics, final String logPrefix) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:2275:    public synchronized List<String> allSourcePatternStrings() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java:2283:    public synchronized Map<String, StoreFactory> stateStores() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/MetricsSessionManager.java:26:import java.util.concurrent.locks.ReentrantLock;
+streams/src/main/java/org/apache/kafka/streams/processor/internals/MetricsSessionManager.java:37:    private final ReentrantLock sessionLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/MetricsSessionManager.java:60:        sessionLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/MetricsSessionManager.java:82:        sessionLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/MetricsSessionManager.java:97:        sessionLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:112:    public synchronized Collection<StreamsMetadata> allMetadataForStore(final String storeName) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:149:    public synchronized Collection<StreamsMetadata> allMetadataForStore(final String storeName, final String topologyName) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:173:    public synchronized Collection<StreamsMetadata> allMetadataForTopology(final String topologyName) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:206:    public synchronized <K> KeyQueryMetadata keyQueryMetadataForKey(final String storeName,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:223:    public synchronized <K> KeyQueryMetadata keyQueryMetadataForKey(final String storeName,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:247:    public synchronized <K> KeyQueryMetadata keyQueryMetadataForKey(final String storeName,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:282:    public synchronized <K> KeyQueryMetadata keyQueryMetadataForKey(final String storeName,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StreamsMetadataState.java:311:    synchronized void onChange(final Map<HostInfo, Set<TopicPartition>> activePartitionHostMap,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStreamThread.java:163:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStreamThread.java:188:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStreamThread.java:194:        synchronized (stateLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStreamThread.java:454:    public synchronized void start() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/GlobalStreamThread.java:483:    // this method is NOT thread-safe (we rely on the callee to be `synchronized`)
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationQueue.java:30:        synchronized (pq) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationQueue.java:37:        synchronized (pq) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationQueue.java:46:        synchronized (pq) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationQueue.java:74:        synchronized (pq) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.java:22:import java.util.concurrent.locks.ReentrantReadWriteLock;
+streams/src/main/java/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.java:34:    private final ReentrantReadWriteLock transportLock = new ReentrantReadWriteLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.java:40:        transportLock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/AbstractMetricsTransport.java:48:        transportLock.readLock().lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetricsCache.java:27: * are synchronized on this instance's intrinsic monitor. Cache entries
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetricsCache.java:49:    public synchronized CachedMetricsSnapshot getSnapshot(final String topologyName) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetricsCache.java:68:    public synchronized void invalidateAll() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetricsCache.java:76:    public synchronized void invalidateTopology(final String topologyName) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetricsCache.java:83:    public synchronized int size() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:50:    // should be synchronized when accessed
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:198:    public synchronized void addActiveTask(final StreamTask task) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:217:    public synchronized void addStandbyTask(final StandbyTask task) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:238:    public synchronized void removeTask(final Task taskToRemove) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:261:    public synchronized void replaceStandbyWithActive(final StreamTask activeTask) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:298:    public synchronized void clear() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:314:    private synchronized Task getTask(final TaskId taskId) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:344:    public synchronized Collection<TaskId> activeInitializedTaskIds() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:349:    public synchronized Collection<StreamTask> activeInitializedTasks() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:354:    public synchronized Collection<StandbyTask> standbyInitializedTasks() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:363:    public synchronized Set<Task> allInitializedTasks() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:368:    public synchronized Set<Task> allNonFailedInitializedTasks() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:379:    public synchronized Set<TaskId> allInitializedTaskIds() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/Tasks.java:384:    public synchronized Map<TaskId, Task> allInitializedTasksPerId() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:212:        synchronized (clientLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:237:        synchronized (clientLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:249:        synchronized (threadLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:271:        synchronized (threadLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:283:        synchronized (clientLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:299:        synchronized (threadLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:334:        synchronized (clientLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:342:        synchronized (clientLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:351:        synchronized (threadLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:360:        synchronized (threadLevelMetrics) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:441:        synchronized (taskLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:448:        synchronized (taskLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:468:        synchronized (nodeLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:477:        synchronized (nodeLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:498:        synchronized (topicLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:508:        synchronized (topicLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:532:        synchronized (cacheLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/metrics/StreamsMetricsImpl.java:549:        synchronized (cacheLevelSensors) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/namedtopology/KafkaStreamsNamedTopologyWrapper.java:103:     * Note: this is synchronized to ensure that the application state cannot change while we add topologies
+streams/src/main/java/org/apache/kafka/streams/processor/internals/namedtopology/KafkaStreamsNamedTopologyWrapper.java:105:    public synchronized void start(final Collection<NamedTopology> initialTopologies) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/namedtopology/KafkaStreamsNamedTopologyWrapper.java:150:    public synchronized Optional<NamedTopology> getTopologyByName(final String name) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/namedtopology/NamedTopologyBuilder.java:35:    public synchronized NamedTopology build() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:286:    public synchronized boolean removeStartupState(final TaskId taskId) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:390:                synchronized (taskDirCreationLock) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:393:                    // one blocks on `synchronized` while the other creates the directory,
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:500:    synchronized boolean lock(final TaskId taskId) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:527:    synchronized void unlock(final TaskId taskId) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:565:    public synchronized void clean() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/StateDirectory.java:609:    public synchronized void cleanRemovedTasks(final long cleanupDelayMs) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetadata.java:55:import java.util.concurrent.locks.ReentrantLock;
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetadata.java:88:        public ReentrantLock topologyLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetadata.java:149:        version.topologyLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TopologyMetadata.java:180:            version.topologyLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationSchedule.java:101:        synchronized void setSchedule(final PunctuationSchedule schedule) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/PunctuationSchedule.java:106:        public synchronized void cancel() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/TaskExecutionMetadata.java:198:        public synchronized void registerTaskError(final Task task, final Throwable t, final long now) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:67:import java.util.concurrent.locks.ReentrantLock;
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:176:            tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:218:            tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:337:                tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:419:            exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:432:            exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:445:            exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:461:            tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:607:            restoredActiveTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:627:            exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:708:            restoredActiveTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:823:    private final Lock tasksAndActionsLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:826:    private final Lock restoredActiveTasksLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:828:    private final Lock exceptionsAndFailedTasksLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:890:            tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:912:        tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:934:        tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:946:        tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:964:                restoredActiveTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:989:        exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1001:        exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1023:        restoredActiveTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1032:        exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1093:        tasksAndActionsLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1094:        restoredActiveTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/DefaultStateUpdater.java:1095:        exceptionsAndFailedTasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:35:    synchronized ReadyToProcessResult readyToProcess(final long wallClockTime) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:40:    synchronized void updatePartitions(final Set<TopicPartition> inputPartitions, final Function<TopicPartition, RecordQueue> recordQueueCreator) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:45:    synchronized void setPartitionTime(final TopicPartition partition, final long partitionTime) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:50:    synchronized StampedRecord nextRecord(final RecordInfo info, final long wallClockTime) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:55:    synchronized int addRawRecords(final TopicPartition partition, final Iterable<ConsumerRecord<byte[], byte[]>> rawRecords) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:60:    synchronized long partitionTimestamp(final TopicPartition partition) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:65:    synchronized long streamTime() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:70:    synchronized Long headRecordOffset(final TopicPartition partition) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:80:    synchronized int numBuffered() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:85:    synchronized int numBuffered(final TopicPartition tp) {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:90:    synchronized void clear() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:95:    synchronized void updateLags() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:100:    synchronized void close() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/SynchronizedPartitionGroup.java:105:    synchronized Set<TopicPartition> partitions() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/assignment/RackAwareTaskAssignor.java:122:    public synchronized boolean canEnableRackAwareAssignor() {
+streams/src/main/java/org/apache/kafka/streams/processor/internals/tasks/DefaultTaskManager.java:42:import java.util.concurrent.locks.ReentrantLock;
+streams/src/main/java/org/apache/kafka/streams/processor/internals/tasks/DefaultTaskManager.java:60:    private final Lock tasksLock = new ReentrantLock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/tasks/DefaultTaskManager.java:348:        tasksLock.lock();
+streams/src/main/java/org/apache/kafka/streams/processor/internals/tasks/DefaultTaskManager.java:357:        tasksLock.lock();

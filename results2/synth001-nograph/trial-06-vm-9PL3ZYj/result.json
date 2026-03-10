@@ -1,0 +1,94 @@
+{
+    "id": "a9671da6-067e-4069-b958-328f993714cb",
+    "task_name": "synth001-nograph",
+    "trial_name": "synth001-nograph__9PL3ZYj",
+    "trial_uri": "file:///home/ubuntu/opus4.6-task/jobs/2026-03-10__02-21-27/synth001-nograph__9PL3ZYj",
+    "task_id": {
+        "path": "harbor_tasks_clean/synth001-nograph"
+    },
+    "source": null,
+    "task_checksum": "8586ef517b64c9c5d8560e7156f472c420fab0e746c0279b1e073e9af4cf62da",
+    "config": {
+        "task": {
+            "path": "harbor_tasks_clean/synth001-nograph",
+            "git_url": null,
+            "git_commit_id": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "synth001-nograph__9PL3ZYj",
+        "trials_dir": "jobs/2026-03-10__02-21-27",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "claude-code",
+            "import_path": null,
+            "model_name": "claude-opus-4-6",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {}
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": false,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "43b3f7d6-ae8e-47aa-9f68-0b546683d678"
+    },
+    "agent_info": {
+        "name": "claude-code",
+        "version": "unknown",
+        "model_info": null
+    },
+    "agent_result": {
+        "n_input_tokens": null,
+        "n_cache_tokens": null,
+        "n_output_tokens": null,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": null,
+    "started_at": "2026-03-10T02:21:27.005935Z",
+    "finished_at": "2026-03-10T02:40:22.440586Z",
+    "environment_setup": {
+        "started_at": "2026-03-10T02:21:27.556263Z",
+        "finished_at": "2026-03-10T02:21:31.442408Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-03-10T02:21:31.442647Z",
+        "finished_at": "2026-03-10T02:21:45.405163Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-03-10T02:21:45.405232Z",
+        "finished_at": "2026-03-10T02:39:27.644488Z"
+    },
+    "verifier": {
+        "started_at": "2026-03-10T02:39:27.646866Z",
+        "finished_at": "2026-03-10T02:40:11.170290Z"
+    }
+}

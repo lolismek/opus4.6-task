@@ -1,0 +1,5 @@
+Bug A: FAIL (deadlock detected)
+Bug B: FAIL (deadlock detected)
+Bug C: FAIL (deadlock detected)
+Bug D: FAIL (hang detected)
+Only 0/4 bugs fixed

@@ -1,0 +1,45 @@
+Setting up Claude Code...
+[?2026h
+Checking installation status...[?2026l[?2026h
+Installing Claude Code native build latest...[?2026l[?2026h
+Setting up launcher and shell integration...[?2026l[?2026h
+⚠ Setup notes:
+  • Native installation exists but ~/.local/bin is not in your PATH. Run:
+
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> your shell config file &&
+  source your shell config file
+[?2026l[?2026h
+✔ Claude Code successfully installed!
+
+  Version: 2.1.71
+
+  Location: ~/.local/bin/claude
+
+
+  Next: Run claude --help to get started
+
+⚠ Setup notes:
+  • Native installation exists but ~/.local/bin is not in your PATH. Run:
+
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> your shell config file &&
+  source your shell config file
+[?2026l[?2026h
+✔ Claude Code successfully installed!
+
+  Version: 2.1.71
+
+  Location: ~/.local/bin/claude
+
+
+  Next: Run claude --help to get started
+
+⚠ Setup notes:
+  • Native installation exists but ~/.local/bin is not in your PATH. Run:
+
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> your shell config file &&
+  source your shell config file
+[?2026l[?2026h
+[?2026l
+✅ Installation complete!
+
+2.1.71 (Claude Code)

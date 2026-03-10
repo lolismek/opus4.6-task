@@ -1,0 +1,378 @@
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-116-        final Position mergedPosition = Position.emptyPosition();
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-117-        final Position wrappedPosition = wrapped().getPosition();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:118:        synchronized (position) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:119:            synchronized (wrappedPosition) {
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-120-                mergedPosition.merge(position);
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-121-                mergedPosition.merge(wrappedPosition);
+--
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-145-            final int partition = internalContext.taskId().partition();
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-146-            final Lock lock = this.lock.readLock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:147:            lock.lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:148:            try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:149:                validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:150:                final Position mergedPosition = getPosition();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:151:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:152:                // We use the merged position since the cache and the store may be at different positions
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:153:                if (!StoreQueryUtils.isPermitted(mergedPosition, positionBound, partition)) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:154:                    result = QueryResult.notUpToBound(mergedPosition, positionBound, partition);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:155:                } else {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:156:                    result = (QueryResult<R>) handler.apply(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:157:                        query,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:158:                        mergedPosition,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:159:                        positionBound,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:160:                        config,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:161:                        this
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:162:                    );
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:163:                }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:164:            } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:165:                lock.unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:166:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:167:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:168:        if (config.isCollectExecutionInfo()) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:169:            result.addExecutionInfo(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:170:                "Handled in " + getClass() + " in " + (System.nanoTime() - start) + "ns");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:171:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:172:        return result;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:173:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:174:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:175:    @SuppressWarnings("unchecked")
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:176:    private <R> QueryResult<R> runKeyQuery(final Query<R> query,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:177:                                           final Position mergedPosition,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:178:                                           final PositionBound positionBound,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:179:                                           final QueryConfig config) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:180:        if (cacheType == CacheType.TIMESTAMPED_KEY_VALUE_STORE_WITH_HEADERS) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:181:            throw new UnsupportedOperationException("Queries (IQv2) are not supported for timestamped key-value stores with headers yet.");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:182:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:183:        QueryResult<R> result = null;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:184:        final KeyQuery<Bytes, byte[]> keyQuery = (KeyQuery<Bytes, byte[]>) query;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:185:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:186:        if (keyQuery.isSkipCache()) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:187:            return wrapped().query(query, positionBound, config);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:188:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:189:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:190:        final Bytes key = keyQuery.getKey();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:191:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:192:        synchronized (mergedPosition) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:193:            if (internalContext.cache() != null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:194:                final LRUCacheEntry lruCacheEntry = internalContext.cache().get(cacheName, key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:195:                if (lruCacheEntry != null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:196:                    final byte[] rawValue;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:197:                    if (cacheType == CacheType.TIMESTAMPED_KEY_VALUE_STORE && !WrappedStateStore.isTimestamped(wrapped()) && !StoreQueryUtils.isAdapter(wrapped())) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:198:                        rawValue = ValueAndTimestampDeserializer.rawValue(lruCacheEntry.value());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:199:                    } else {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:200:                        rawValue = lruCacheEntry.value();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:201:                    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:202:                    result = (QueryResult<R>) QueryResult.forResult(rawValue);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:203:                }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:204:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:205:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:206:            // We don't need to check the position at the state store since we already performed the check on
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:207:            // the merged position above
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:208:            if (result == null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:209:                result = wrapped().query(query, PositionBound.unbounded(), config);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:210:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:211:            result.setPosition(mergedPosition.copy());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:212:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:213:        return result;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:214:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:215:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:216:    private void putAndMaybeForward(final ThreadCache.DirtyEntry entry,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:217:                                    final InternalProcessorContext<?, ?> context) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:218:        if (flushListener != null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:219:            final byte[] rawNewValue = entry.newValue();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:220:            final byte[] rawOldValue = rawNewValue == null || sendOldValues ? wrapped().get(entry.key()) : null;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:221:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:222:            // this is an optimization: if this key did not exist in underlying store and also not in the cache,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:223:            // we can skip flushing to downstream as well as writing to underlying store
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:224:            if (rawNewValue != null || rawOldValue != null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:225:                // we need to get the old values if needed, and then put to store, and then flush
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:226:                final ProcessorRecordContext current = context.recordContext();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:227:                try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:228:                    context.setRecordContext(entry.entry().context());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:229:                    wrapped().put(entry.key(), entry.newValue());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:230:                    flushListener.apply(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:231:                        new Record<>(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:232:                            entry.key().get(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:233:                            new Change<>(rawNewValue, sendOldValues ? rawOldValue : null),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:234:                            entry.entry().context().timestamp(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:235:                            entry.entry().context().headers()));
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:236:                } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:237:                    context.setRecordContext(current);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:238:                }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:239:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:240:        } else {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:241:            final ProcessorRecordContext current = context.recordContext();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:242:            try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:243:                context.setRecordContext(entry.entry().context());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:244:                wrapped().put(entry.key(), entry.newValue());
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:245:            } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:246:                context.setRecordContext(current);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:247:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:248:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:249:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:250:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:251:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:252:    public boolean setFlushListener(final CacheFlushListener<byte[], byte[]> flushListener,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:253:                                    final boolean sendOldValues) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:254:        this.flushListener = flushListener;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:255:        this.sendOldValues = sendOldValues;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:256:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:257:        return true;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:258:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:259:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:260:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:261:    public void put(final Bytes key,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:262:                    final byte[] value) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:263:        Objects.requireNonNull(key, "key cannot be null");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:264:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:265:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:266:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:267:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:268:            // for null bytes, we still put it into cache indicating tombstones
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:269:            putInternal(key, value);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:270:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:271:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:272:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:273:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:274:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:275:    private void putInternal(final Bytes key,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:276:                             final byte[] value) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:277:        synchronized (position) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:278:            internalContext.cache().put(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:279:                cacheName,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:280:                key,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:281:                new LRUCacheEntry(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:282:                    value,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:283:                    internalContext.recordContext().headers(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:284:                    true,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:285:                    internalContext.recordContext().offset(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:286:                    internalContext.recordContext().timestamp(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:287:                    internalContext.recordContext().partition(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:288:                    internalContext.recordContext().topic(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:289:                    internalContext.recordContext().sourceRawKey(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:290:                    internalContext.recordContext().sourceRawValue()
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:291:                )
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:292:            );
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:293:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:294:            StoreQueryUtils.updatePosition(position, internalContext);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:295:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:296:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:297:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:298:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:299:    public byte[] putIfAbsent(final Bytes key,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:300:                              final byte[] value) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:301:        Objects.requireNonNull(key, "key cannot be null");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:302:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:303:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:304:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:305:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:306:            final byte[] v = getInternal(key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:307:            if (v == null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:308:                putInternal(key, value);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:309:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:310:            return v;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:311:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:312:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:313:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:314:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:315:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:316:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:317:    public void putAll(final List<KeyValue<Bytes, byte[]>> entries) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:318:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:319:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:320:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:321:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:322:            for (final KeyValue<Bytes, byte[]> entry : entries) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:323:                Objects.requireNonNull(entry.key, "key cannot be null");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:324:                put(entry.key, entry.value);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:325:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:326:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:327:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:328:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:329:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:330:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:331:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:332:    public byte[] delete(final Bytes key) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:333:        Objects.requireNonNull(key, "key cannot be null");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:334:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:335:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:336:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:337:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:338:            return deleteInternal(key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:339:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:340:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:341:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:342:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:343:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:344:    private byte[] deleteInternal(final Bytes key) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:345:        final byte[] v = getInternal(key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:346:        putInternal(key, null);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:347:        return v;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:348:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:349:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:350:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:351:    public byte[] get(final Bytes key) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:352:        Objects.requireNonNull(key, "key cannot be null");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:353:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:354:        final Lock theLock;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:355:        if (Thread.currentThread().equals(streamThread)) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:356:            theLock = lock.writeLock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:357:        } else {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:358:            theLock = lock.readLock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:359:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:360:        theLock.lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:361:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:362:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:363:            return getInternal(key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:364:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:365:            theLock.unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:366:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:367:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:368:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:369:    private byte[] getInternal(final Bytes key) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:370:        LRUCacheEntry entry = null;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:371:        if (internalContext.cache() != null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:372:            entry = internalContext.cache().get(cacheName, key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:373:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:374:        if (entry == null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:375:            final byte[] rawValue = wrapped().get(key);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:376:            if (rawValue == null) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:377:                return null;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:378:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:379:            // only update the cache if this call is on the streamThread
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:380:            // as we don't want other threads to trigger an eviction/flush
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:381:            if (Thread.currentThread().equals(streamThread)) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:382:                internalContext.cache().put(cacheName, key, new LRUCacheEntry(rawValue));
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:383:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:384:            return rawValue;
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:385:        } else {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:386:            return entry.value();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:387:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:388:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:389:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:390:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:391:    public KeyValueIterator<Bytes, byte[]> range(final Bytes from,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:392:                                                 final Bytes to) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:393:        if (Objects.nonNull(from) && Objects.nonNull(to) && from.compareTo(to) > 0) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:394:            LOG.warn("Returning empty iterator for fetch with invalid key range: from > to. " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:395:                "This may be due to range arguments set in the wrong order, " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:396:                "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:397:                "Note that the built-in numerical serdes do not follow this for negative numbers");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:398:            return KeyValueIterators.emptyIterator();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:399:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:400:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:401:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:402:        final KeyValueIterator<Bytes, byte[]> storeIterator = wrapped().range(from, to);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:403:        final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().range(cacheName, from, to);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:404:        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, true);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:405:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:406:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:407:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:408:    public KeyValueIterator<Bytes, byte[]> reverseRange(final Bytes from,
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:409:                                                        final Bytes to) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:410:        if (Objects.nonNull(from) && Objects.nonNull(to) && from.compareTo(to) > 0) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:411:            LOG.warn("Returning empty iterator for fetch with invalid key range: from > to. " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:412:                "This may be due to range arguments set in the wrong order, " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:413:                "or serdes that don't preserve ordering when lexicographically comparing the serialized bytes. " +
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:414:                "Note that the built-in numerical serdes do not follow this for negative numbers");
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:415:            return KeyValueIterators.emptyIterator();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:416:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:417:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:418:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:419:        final KeyValueIterator<Bytes, byte[]> storeIterator = wrapped().reverseRange(from, to);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:420:        final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().reverseRange(cacheName, from, to);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:421:        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, false);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:422:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:423:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:424:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:425:    public KeyValueIterator<Bytes, byte[]> all() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:426:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:427:        final KeyValueIterator<Bytes, byte[]> storeIterator = wrapped().all();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:428:        final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().all(cacheName);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:429:        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, true);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:430:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:431:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:432:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:433:    public <PS extends Serializer<P>, P> KeyValueIterator<Bytes, byte[]> prefixScan(final P prefix, final PS prefixKeySerializer) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:434:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:435:        final KeyValueIterator<Bytes, byte[]> storeIterator = wrapped().prefixScan(prefix, prefixKeySerializer);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:436:        final Bytes from = Bytes.wrap(prefixKeySerializer.serialize(null, prefix));
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:437:        final Bytes to = Bytes.increment(from);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:438:        final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().range(cacheName, from, to, false);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:439:        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, true);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:440:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:441:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:442:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:443:    public KeyValueIterator<Bytes, byte[]> reverseAll() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:444:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:445:        final KeyValueIterator<Bytes, byte[]> storeIterator = wrapped().reverseAll();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:446:        final ThreadCache.MemoryLRUCacheBytesIterator cacheIterator = internalContext.cache().reverseAll(cacheName);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:447:        return new MergedSortedCacheKeyValueBytesStoreIterator(cacheIterator, storeIterator, false);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:448:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:449:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:450:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:451:    public long approximateNumEntries() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:452:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:453:        lock.readLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:454:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:455:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:456:            return wrapped().approximateNumEntries();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:457:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:458:            lock.readLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:459:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:460:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:461:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:462:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:463:    public void commit(final Map<TopicPartition, Long> changelogOffsets) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:464:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:465:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:466:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:467:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:468:            internalContext.cache().flush(cacheName);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:469:            wrapped().commit(changelogOffsets);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:470:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:471:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:472:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:473:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:474:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:475:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:476:    public void flushCache() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:477:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:478:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:479:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:480:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:481:            internalContext.cache().flush(cacheName);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:482:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:483:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:484:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:485:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:486:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:487:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:488:    public void clearCache() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:489:        validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:490:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:491:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:492:            validateStoreOpen();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:493:            internalContext.cache().clear(cacheName);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:494:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:495:            lock.writeLock().unlock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:496:        }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:497:    }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:498:
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:499:    @Override
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:500:    public void close() {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:501:        lock.writeLock().lock();
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:502:        try {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:503:            final LinkedList<RuntimeException> suppressed = executeAll(
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:504:                () -> internalContext.cache().flush(cacheName),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:505:                () -> internalContext.cache().close(cacheName),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:506:                wrapped()::close
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:507:            );
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:508:            if (!suppressed.isEmpty()) {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:509:                throwSuppressed("Caught an exception while closing caching key value store for store " + name(),
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:510:                    suppressed);
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:511:            }
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:512:        } finally {
+streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java:513:            lock.writeLock().unlock();
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-514-        }
+/app/streams/src/main/java/org/apache/kafka/streams/state/internals/CachingKeyValueStore.java-515-    }
