@@ -85,7 +85,27 @@ WORKDIR /app
 RUN rm -f /app/streams/src/test/java/org/apache/kafka/streams/processor/internals/MetricsCycleVerificationTest.java \
     && rm -f /app/streams/build/classes/java/test/org/apache/kafka/streams/processor/internals/MetricsCycleVerificationTest.class
 COPY --from=kafka-builder /tmp/streams-test-classpath.txt /opt/fray/streams-test-classpath.txt
+# Fix cached classpath: replace build-stage paths with final image paths
+RUN sed -i 's|/build/kafka/|/app/|g' /opt/fray/streams-test-classpath.txt
 
-RUN printf '#!/bin/bash\nset -e\nif [ $# -lt 1 ]; then echo "Usage: fray-gradle <main-class> [-- fray-options...]"; exit 1; fi\nMAIN_CLASS="$1"; shift\nFRAY_OPTS=""\nif [ "$1" = "--" ]; then shift; FRAY_OPTS="$@"; fi\ncd /app\nCP=$(./gradlew -q :streams:printTestClasspath --no-daemon 2>/dev/null || cat /opt/fray/streams-test-classpath.txt)\nexec fray -cp "$CP" "$MAIN_CLASS" -- $FRAY_OPTS\n' > /usr/local/bin/fray-gradle && chmod +x /usr/local/bin/fray-gradle
+# fray-gradle wrapper: runs a test class through Fray using the streams test classpath
+# Filters Gradle noise (non-path lines) from the classpath query output
+RUN cat > /usr/local/bin/fray-gradle << 'WRAPPER'
+#!/bin/bash
+set -e
+if [ $# -lt 1 ]; then echo "Usage: fray-gradle <main-class> [-- fray-options...]"; exit 1; fi
+MAIN_CLASS="$1"; shift
+FRAY_OPTS=""
+if [ "$1" = "--" ]; then shift; FRAY_OPTS="$@"; fi
+cd /app
+# Try live Gradle query, filter to only lines containing path separators (: with /)
+CP=$(./gradlew -q :streams:printTestClasspath --no-daemon 2>/dev/null | grep '^/' | tail -1)
+# Fallback to cached classpath if live query failed or was empty
+if [ -z "$CP" ]; then
+    CP=$(cat /opt/fray/streams-test-classpath.txt | grep '^/' | tail -1)
+fi
+exec fray -cp "$CP" "$MAIN_CLASS" -- $FRAY_OPTS
+WRAPPER
+chmod +x /usr/local/bin/fray-gradle
 
 RUN mkdir -p /logs/verifier
