@@ -27,9 +27,9 @@ This repo implements each stage of that pipeline.
                                 │
                                 ▼
   Target Repo ──► Lock Graph Pipeline ──► lock_graph.json
-  (e.g. ZooKeeper)   (tree-sitter +      (lock orderings,
-                       Facebook Infer)     nested acquisitions,
-                                           wait/notify sites)
+  (e.g. Kafka)      (tree-sitter +      (lock orderings,
+                      Facebook Infer)     nested acquisitions,
+                                          wait/notify sites)
                                 │
                                 ▼
                         Deadlock Injection
@@ -41,28 +41,38 @@ This repo implements each stage of that pipeline.
                                 │
                                 ▼
                         AI Agent Evaluation
-                    (Claude, GPT, etc. via Harbor)
+                    (Claude Opus 4.6 via Harbor)
 ```
 
 ## Repository Structure
 
 ```
 .
-├── deadlock_catalog.md        # Human-readable catalog of 23 deadlock bugs
-├── deadlock_patterns.json     # Machine-readable patterns with lock graphs
-├── lock_graph_pipeline/       # Python tool: extract lock graphs from Java repos
-├── harbor_tasks/              # Harbor benchmark tasks for AI agent evaluation
-│   ├── README.md              # Task format, running instructions, platform notes
-│   ├── PORTING_GUIDE.md       # How to port more SCTBench tasks
-│   └── deadlock01bad/         # Example task: 2-lock cyclic deadlock
-├── tasks/                     # Injection targets (real codebases with injected bugs)
-│   ├── README.md              # Guide for creating new injection tasks
-│   └── zookeeper-deadlock/    # ZooKeeper with injected ABBA deadlock
-│       ├── INJECTION_NOTES.md # Lock cycle, trigger, verification docs
-│       └── zookeeper/         # The ZooKeeper repo clone
-├── output/                    # Generated lock graph artifacts
-├── JaConTeBe_TSVD/            # Cloned JaConTeBe benchmark (47 bug kernels)
-└── jobs/                      # Harbor evaluation run outputs
+├── deadlock_catalog.md           # Human-readable catalog of 23 deadlock bugs
+├── deadlock_patterns.json        # Machine-readable patterns with lock graphs
+├── lock_graph_pipeline/          # Python tool: extract lock graphs from Java repos
+├── harbor_tasks_clean/           # Harbor benchmark tasks (active, Kafka Streams)
+│   ├── README.md                 # Task descriptions and running instructions
+│   ├── synth001-graph/           # 3-node cycle, recognizable class names
+│   ├── synth001-nograph/         # 3-node cycle, obfuscated class names
+│   ├── dbcp270-graph/            # ABBA cycle, recognizable
+│   ├── dbcp270-nograph/          # ABBA cycle, obfuscated
+│   ├── derby5560-graph/          # Serialization graph cycle, recognizable
+│   ├── derby5560-nograph/        # Serialization graph cycle, obfuscated
+│   └── mixed/                    # 4 bugs simultaneously (very_hard)
+├── results2/                     # Evaluation results (Claude Opus 4.6, March 2026)
+│   ├── README.md                 # Full report with per-trial results
+│   ├── synth001-graph/           # 1 trial (1 success)
+│   ├── synth001-nograph/         # 9 trials (2 successes)
+│   └── mixed/                    # 5 trials (0 successes)
+├── tasks/                        # Injection targets (real codebases with injected bugs)
+│   ├── README.md                 # Guide for creating new injection tasks
+│   └── zookeeper-deadlock/       # ZooKeeper with injected ABBA deadlock
+├── output/                       # Generated lock graph artifacts
+├── JaConTeBe_TSVD/               # Cloned JaConTeBe benchmark (47 bug kernels)
+├── jobs/                         # Raw Harbor job outputs (local Mac runs)
+├── harbor_tasks/                 # [DEPRECATED] Early Harbor tasks (SCTBench ports)
+└── results/                      # [DEPRECATED] Earlier results snapshot (use results2/)
 ```
 
 ## Components
@@ -124,25 +134,52 @@ Uses lock graph output + pattern catalog to inject realistic deadlocks into targ
 
 ### 4. Harbor Benchmark Tasks
 
-Standalone [Harbor](https://github.com/harbor-framework/harbor) tasks that package injected bugs for AI agent evaluation using [Fray](https://github.com/cmu-pasta/fray) for systematic concurrency testing.
+Standalone [Harbor](https://github.com/harbor-framework/harbor) tasks that package injected bugs into Apache Kafka Streams for AI agent evaluation using [Fray](https://github.com/cmu-pasta/fray) for systematic concurrency testing.
 
 ```bash
 # Run a task with Claude Code agent
 ANTHROPIC_API_KEY=<key> harbor run \
-  --path harbor_tasks/deadlock01bad \
+  --path harbor_tasks_clean/synth001-nograph \
   --agent claude-code \
   --model claude-opus-4-6 \
   --n-concurrent 1 \
   --no-delete
 ```
 
+**Available tasks** (in `harbor_tasks_clean/`):
+
+| Task | Difficulty | Bug Type | Variant |
+|------|-----------|----------|---------|
+| `synth001-graph` | hard | 3-node conditional callback cycle | Recognizable class names |
+| `synth001-nograph` | hard | 3-node conditional callback cycle | Obfuscated class names |
+| `dbcp270-graph` | hard | Two-object ABBA cycle | Recognizable |
+| `dbcp270-nograph` | hard | Two-object ABBA cycle | Obfuscated |
+| `derby5560-graph` | hard | Serialization graph cycle | Recognizable |
+| `derby5560-nograph` | hard | Serialization graph cycle | Obfuscated |
+| `mixed` | very_hard | 4 concurrent bugs (deadlocks + missed signal) | — |
+
 Each task includes:
-- **Dockerfile**: Builds Fray from source, pre-compiles buggy Java code
+- **Dockerfile**: Builds Fray from source, pre-compiles Kafka Streams with injected bugs
 - **instruction.md**: Bug description shown to the agent (no spoilers)
 - **test.sh**: Recompiles agent's fix, runs Fray, writes reward (0 or 1)
 - **solve.sh**: Gold patch for oracle baseline
 
-See [`harbor_tasks/PORTING_GUIDE.md`](harbor_tasks/PORTING_GUIDE.md) for porting more tasks from [SCTBench](https://github.com/cmu-pasta/spaghetti-bench) (28 tasks available).
+### 5. Evaluation Results
+
+Claude Opus 4.6 was evaluated on the synth001 and mixed tasks across two environments (local Mac with QEMU emulation, AWS VM with native x86_64). See [`results2/README.md`](results2/README.md) for the full report.
+
+**Summary** (15 valid trials, March 9–10, 2026):
+
+| Task | Valid Runs | Successes | Pass Rate |
+|------|-----------|-----------|-----------|
+| synth001-graph | 1 | 1 | 100% (insufficient sample) |
+| synth001-nograph | 9 | 2 | **22.2%** |
+| mixed | 5 | 0 | **0%** |
+
+Key findings:
+- The most common failure mode is the agent identifying the **wrong lock pattern** — a real-looking pattern in existing Kafka code rather than the injected bug
+- The `mixed` task (4 simultaneous bugs) appears too hard for a single agent session within the timeout
+- Obfuscated class names (nograph variant) significantly increase difficulty
 
 ## Dependencies
 

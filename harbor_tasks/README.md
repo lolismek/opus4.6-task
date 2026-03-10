@@ -1,4 +1,6 @@
-# Harbor Benchmark Tasks
+# Harbor Benchmark Tasks (DEPRECATED)
+
+> **This directory is deprecated.** It contains early SCTBench-ported tasks (single-file Java bugs). The active benchmark tasks are in `../harbor_tasks_clean/` which injects deadlock patterns into Apache Kafka Streams for more realistic evaluation. See `../harbor_tasks_clean/README.md`.
 
 Standalone [Harbor](https://github.com/harbor-framework/harbor) tasks for evaluating AI agents on concurrency bug fixing. Each task is a self-contained Docker environment with a buggy Java program, Fray-based verification, and a gold patch.
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Purpose
 
-This repository is a research project for analyzing and cataloging **Java concurrency deadlock patterns** from the [JaConTeBe benchmark](https://mir.cs.illinois.edu/marinov/publications/LinETAL15JaConTeBe.pdf) (ASE 2015), and for building tooling to **inject equivalent patterns into larger Java repositories** for testing/research. The pipeline extracts lock graphs from target repos so an LLM can identify natural insertion points for deadlock injection.
+This repository is a research project for analyzing and cataloging **Java concurrency deadlock patterns** from the [JaConTeBe benchmark](https://mir.cs.illinois.edu/marinov/publications/LinETAL15JaConTeBe.pdf) (ASE 2015), building tooling to **inject equivalent patterns into larger Java repositories** for testing/research, and **benchmarking AI agents** (Claude Opus 4.6) on finding and fixing these injected bugs using the [Harbor](https://github.com/harbor-framework/harbor) evaluation framework with [Fray](https://github.com/cmu-pasta/fray) verification.
 
 ## Repository Structure
 
@@ -14,7 +14,11 @@ This repository is a research project for analyzing and cataloging **Java concur
 - `lock_graph_pipeline/` — Python pipeline for extracting lock graphs from Java repos. See `lock_graph_pipeline/README.md` for full documentation.
 - `output/` — Generated lock graph outputs (JSON + Markdown) from pipeline runs.
 - `tasks/` — Injection targets: real open-source repos with deadlocks injected. Each injection gets a wrapper directory (e.g., `tasks/zookeeper-deadlock/`) containing `INJECTION_NOTES.md` and the repo clone. See `tasks/README.md` for the injection workflow.
-- `harbor_tasks/` — [Harbor](https://github.com/harbor-framework/harbor) benchmark tasks for evaluating AI agents on concurrency bug fixing. Each task is a standalone Docker environment with a buggy Java file, Fray-based verification, and a gold patch. See `harbor_tasks/README.md` for task format and `harbor_tasks/PORTING_GUIDE.md` for porting SCTBench tasks.
+- `harbor_tasks_clean/` — **Active** [Harbor](https://github.com/harbor-framework/harbor) benchmark tasks for evaluating AI agents on concurrency bug fixing in Kafka Streams. 7 tasks across 3 injection patterns (synth001, dbcp270, derby5560) with graph/nograph variants plus a multi-bug mixed task. Each task is a standalone Docker environment with Fray-based verification. See `harbor_tasks_clean/README.md` for task descriptions.
+- `harbor_tasks/` — **Deprecated**. Early Harbor tasks (SCTBench ports). Kept for reference only. Use `harbor_tasks_clean/` instead.
+- `results2/` — **Evaluation results** from Claude Opus 4.6 agent runs (March 2026). 15 valid trials across synth001-graph, synth001-nograph, and mixed tasks. See `results2/README.md` for the full report.
+- `results/` — **Deprecated**. Earlier results snapshot that included suspicious runs. Kept for backup only. Use `results2/` instead.
+- `jobs/` — Raw Harbor job outputs from local Mac runs.
 
 ## Key Data
 
@@ -22,6 +26,18 @@ This repository is a research project for analyzing and cataloging **Java concur
 - **1 synthetic injection pattern** (SYNTH-001): 3-node conditional callback cycle, adapted from a Go concurrency bug to idiomatic Java
 - **6 recurring patterns**: Two-Object Cycle, Callback-Induced Cycle, All-Waiters/Missed Notify, Serialization Graph Cycle, Infrastructure-vs-Application Lock, 3-Node Conditional Callback Cycle
 - Bug kernel source files are Java, located under `JaConTeBe_TSVD/jacontebe/{project}/src/`
+
+## Evaluation Results Summary
+
+Claude Opus 4.6 evaluated on Kafka Streams deadlock tasks (March 9–10, 2026):
+
+| Task | Valid Runs | Pass Rate |
+|------|-----------|-----------|
+| synth001-graph | 1 | 100% (n=1) |
+| synth001-nograph | 9 | **22.2%** |
+| mixed (4 bugs) | 5 | **0%** |
+
+See `results2/README.md` for detailed per-trial results, failure analysis, and methodology.
 
 ## Lock Graph Pipeline
 
@@ -56,6 +72,31 @@ python -m lock_graph_pipeline /path/to/java/source --mode infer --infer-out /pat
 | `template_matcher.py` | Matches extracted graph against `deadlock_patterns.json` |
 | `output_formatter.py` | JSON + Markdown output |
 | `extract_lock_graph.py` | CLI entry point |
+
+## Harbor Tasks (harbor_tasks_clean/)
+
+### Running a task
+
+```bash
+ANTHROPIC_API_KEY=<key> harbor run \
+  --path harbor_tasks_clean/synth001-nograph \
+  --agent claude-code \
+  --model claude-opus-4-6 \
+  --n-concurrent 1 \
+  --no-delete
+```
+
+### Available tasks
+
+| Task | Difficulty | Bug Type | Injected Into |
+|------|-----------|----------|---------------|
+| `synth001-graph` | hard | 3-node deadlock cycle (recognizable names) | Kafka Streams |
+| `synth001-nograph` | hard | 3-node deadlock cycle (obfuscated names) | Kafka Streams |
+| `dbcp270-graph` | hard | Two-object ABBA cycle (recognizable) | Kafka Streams |
+| `dbcp270-nograph` | hard | Two-object ABBA cycle (obfuscated) | Kafka Streams |
+| `derby5560-graph` | hard | Serialization graph cycle (recognizable) | Kafka Streams |
+| `derby5560-nograph` | hard | Serialization graph cycle (obfuscated) | Kafka Streams |
+| `mixed` | very_hard | 4 bugs (2 deadlocks + 1 observer cycle + 1 missed signal) | Kafka Streams |
 
 ## Working with JaConTeBe Test Cases
 
