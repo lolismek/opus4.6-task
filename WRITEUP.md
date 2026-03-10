@@ -20,17 +20,19 @@
 
 ---
 
-## 1. Approach: A Pipeline for Generating Concurrency Bug Tasks
+## 1. Approach: A Pipeline for Generating Deadlock Tasks
 
-Rather than hand-crafting a single task, I built a **semi-automated pipeline** that can produce many tasks from a structured catalog of real-world concurrency bug patterns. The submitted task (`synth001-nograph`) is one output of this pipeline — but the pipeline itself is the more significant contribution.
+Rather than hand-crafting a single task, I built a **semi-automated pipeline** that can produce many tasks from a structured catalog of real-world deadlock patterns. The submitted task (`synth001-nograph`) is one output of this pipeline — but the pipeline itself is the more significant contribution.
 
-### Why Concurrency Bugs?
+### Why Deadlocks?
 
-Concurrency bugs are a well-documented pain point in production software engineering, yet they are dramatically underrepresented in coding benchmarks. SWE-bench, the most widely-used LLM coding benchmark, contains exactly **1 deadlock-related issue** out of 2,294 tasks. This gap is not because deadlocks are rare — they are a recurring source of production incidents in any multi-threaded Java system — but because they are hard to reproduce deterministically and hard to evaluate automatically.
+Deadlocks are one of the most feared classes of production bugs in multi-threaded systems. They cause complete service hangs — no error, no crash, just threads permanently waiting on each other. They are non-deterministic, often unreproducible in testing, and notoriously difficult to diagnose from thread dumps alone. Every team running concurrent Java services (Kafka, Cassandra, Elasticsearch, etc.) has war stories about deadlocks that took days to track down.
 
-I was inspired by [Spaghetti Bench](https://github.com/cmu-pasta/spaghetti-bench) (CMU PASTA Lab), which evaluates AI agents on synthetic concurrency bugs using the [Fray](https://github.com/cmu-pasta/fray) systematic testing framework. Spaghetti Bench demonstrated that Fray can serve as a reliable automated verifier for concurrency fixes — but its tasks are single-file synthetic programs (e.g., a 50-line `Deadlock01Bad.java`). Useful for unit-testing concurrency reasoning, but far from the complexity of finding a deadlock buried in a real codebase.
+Yet deadlocks are dramatically underrepresented in coding benchmarks. SWE-bench, the most widely-used LLM coding benchmark, contains exactly **1 deadlock-related issue** out of 2,294 tasks. This gap is not because deadlocks are rare — they are a recurring source of production incidents — but because they are hard to reproduce deterministically and hard to evaluate automatically.
 
-This project bridges that gap: **real codebases, injected bugs from cataloged patterns, and Fray-based verification.**
+I was inspired by [Spaghetti Bench](https://github.com/cmu-pasta/spaghetti-bench) (CMU PASTA Lab), which evaluates AI agents on synthetic concurrency bugs using the [Fray](https://github.com/cmu-pasta/fray) systematic testing framework. Spaghetti Bench demonstrated that Fray can serve as a reliable automated verifier for deadlock fixes — but its tasks are single-file synthetic programs (e.g., a 50-line `Deadlock01Bad.java`). Useful for unit-testing deadlock reasoning, but far from the complexity of finding a deadlock buried in a real codebase.
+
+This project bridges that gap: **real codebases, injected deadlocks from cataloged patterns, and Fray-based verification.**
 
 ### Pipeline Overview
 

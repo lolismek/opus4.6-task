@@ -1,14 +1,14 @@
-# Concurrency Bug Benchmark Pipeline
+# Deadlock Benchmark Pipeline
 
-A research pipeline for **cataloging Java concurrency deadlock patterns**, **extracting lock graphs** from real-world repositories, **injecting realistic deadlocks** into target codebases, and **benchmarking AI agents** on fixing them — all in a single automated workflow.
+A research pipeline for **cataloging Java deadlock patterns**, **extracting lock graphs** from real-world repositories, **injecting realistic deadlocks** into target codebases, and **benchmarking AI agents** on finding and fixing them — all in a single automated workflow.
 
 ## Motivation
 
-Concurrency bugs are notoriously hard to detect and fix. Can LLM-based coding agents reliably fix deadlocks, race conditions, and missed-signal bugs? To answer this, we need:
+Deadlocks are one of the most feared classes of production bugs in multi-threaded systems — they cause complete service hangs, are non-deterministic, and notoriously difficult to diagnose. Can LLM-based coding agents reliably find and fix deadlocks in real codebases? To answer this, we need:
 
 1. A **catalog of real deadlock patterns** from known bugs
 2. A **tool to analyze lock ordering** in any Java codebase
-3. A method to **inject realistic bugs** at natural insertion points
+3. A method to **inject realistic deadlocks** at natural insertion points
 4. A **benchmark harness** to evaluate AI agents on fixing them
 
 This repo implements each stage of that pipeline.
